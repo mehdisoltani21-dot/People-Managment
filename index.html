@@ -8,10 +8,46 @@
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
+
+  <!-- صفحه ورود -->
+  <div id="login-page" class="login-page">
+    <div class="login-box">
+      <h1>🔐 ورود به سیستم</h1>
+      <p class="login-subtitle">ثبت اطلاعات نفرات و خطاها</p>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="loginUser">کاربر</label>
+          <select id="loginUser" required>
+            <option value="">-- انتخاب کاربر --</option>
+            <option value="mehdi-soltani">مهدی سلطانی</option>
+            <option value="masoud-kazemi">مسعود کاظمی</option>
+            <option value="mehdi-afshar">مهدی افشار</option>
+            <option value="arash-baba">آرش بابا</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="loginPass">رمز عبور</label>
+          <input type="password" id="loginPass" placeholder="رمز عبور را وارد کنید" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%">ورود</button>
+        <p id="login-error" class="login-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- صفحه اصلی -->
+  <div id="app-page" class="container" style="display:none;">
     <header>
-      <h1>📋 ثبت اطلاعات نفرات و خطاها</h1>
-      <p class="subtitle">افزودن، ویرایش و مدیریت اطلاعات پرسنل</p>
+      <div class="header-top">
+        <div>
+          <h1>📋 ثبت اطلاعات نفرات و خطاها</h1>
+          <p class="subtitle">افزودن، ویرایش و مدیریت اطلاعات پرسنل</p>
+        </div>
+        <div class="user-info">
+          <span id="current-user-name"></span>
+          <button type="button" class="btn btn-secondary btn-sm" id="logout-btn">خروج</button>
+        </div>
+      </div>
     </header>
 
     <section class="form-section">
@@ -93,6 +129,7 @@
               <th>تاریخ گزارش</th>
               <th>تاریخ وقوع</th>
               <th>توضیحات</th>
+              <th>ثبت‌کننده</th>
               <th>عملیات</th>
             </tr>
           </thead>

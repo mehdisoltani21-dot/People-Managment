@@ -12,6 +12,71 @@ body {
   line-height: 1.6;
 }
 
+/* صفحه ورود */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.login-box {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-box h1 {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 6px;
+  color: #1a202c;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: #718096;
+  margin-bottom: 28px;
+  font-size: 0.95rem;
+}
+
+.login-error {
+  color: #c53030;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  min-height: 20px;
+}
+
+/* هدر */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 8px 14px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-size: 0.9rem;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
 .container {
   max-width: 1300px;
   margin: 0 auto;
@@ -19,7 +84,6 @@ body {
 }
 
 header {
-  text-align: center;
   margin-bottom: 32px;
 }
 
@@ -200,7 +264,7 @@ header h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 950px;
+  min-width: 1000px;
 }
 
 thead th {
