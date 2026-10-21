@@ -1,9 +1,10 @@
 // ========== کاربران و دسترسی‌ها ==========
+// نسخه: 2026-10-21-v2
 const users = {
   "mehdi-soltani": {
     name: "مهدی سلطانی",
     password: "ms136810",
-    role: "admin"          // دسترسی کامل
+    role: "admin"
   },
   "masoud-kazemi": {
     name: "مسعود کاظمی",
@@ -13,7 +14,7 @@ const users = {
   "mehdi-afshar": {
     name: "مهدی افشار",
     password: "ma123456",
-    role: "operator"       // فقط مشاهده + ثبت
+    role: "operator"
   },
   "arash-baba": {
     name: "آرش بابا",
@@ -70,7 +71,6 @@ const errorTypes = [
 const STORAGE_KEY = "peopleErrorRecords_v3";
 const SESSION_KEY = "currentUser";
 
-// ========== عناصر DOM ==========
 const loginPage = document.getElementById("login-page");
 const appPage = document.getElementById("app-page");
 const loginForm = document.getElementById("login-form");
@@ -99,7 +99,6 @@ let records = [];
 let editIndex = null;
 let currentUser = null;
 
-// ========== توابع کمکی ==========
 function getTodayPersian() {
   return new Date().toLocaleDateString("fa-IR", {
     year: "numeric", month: "2-digit", day: "2-digit"
@@ -122,11 +121,10 @@ function isAdmin() {
   return currentUser && currentUser.role === "admin";
 }
 
-// ========== ورود و خروج ==========
 loginForm.addEventListener("submit", e => {
   e.preventDefault();
   const userId = loginUser.value;
-  const pass = loginPass.value;
+  const pass = (loginPass.value || "").trim();
 
   const user = users[userId];
   if (!user || user.password !== pass) {
@@ -160,7 +158,6 @@ function showApp() {
   setDefaultDates();
 }
 
-// بررسی ورود قبلی
 function checkSession() {
   try {
     const saved = sessionStorage.getItem(SESSION_KEY);
@@ -173,7 +170,6 @@ function checkSession() {
   showLogin();
 }
 
-// ========== پر کردن لیست‌ها ==========
 function populatePeopleSelect() {
   peopleList.forEach(person => {
     const option = document.createElement("option");
@@ -203,7 +199,6 @@ function setDefaultDates() {
   occurrenceDateInput.value = "";
 }
 
-// ========== ذخیره‌سازی ==========
 function loadRecords() {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
@@ -239,7 +234,6 @@ function saveRecords() {
   }
 }
 
-// ========== جدول ==========
 function renderTable(filter = "") {
   const search = filter.trim().toLowerCase();
 
@@ -311,7 +305,6 @@ function renderTable(filter = "") {
   });
 }
 
-// ========== فرم ==========
 form.addEventListener("submit", e => {
   e.preventDefault();
 
@@ -329,7 +322,6 @@ form.addEventListener("submit", e => {
     return;
   }
 
-  // فقط ادمین می‌تونه ویرایش کنه
   if (editIndex !== null && !isAdmin()) {
     alert("شما اجازه ویرایش ندارید.");
     return;
@@ -449,7 +441,6 @@ function resetForm() {
 
 searchInput.addEventListener("input", () => renderTable(searchInput.value));
 
-// ========== راه‌اندازی ==========
 populatePeopleSelect();
 populateSelect(workstationSelect, workstations, "-- انتخاب ایستگاه کاری --");
 populateSelect(errorTypeSelect, errorTypes, "-- انتخاب نوع خطا --");
