@@ -2,22 +2,22 @@
 const users = {
   "mehdi-soltani": {
     name: "مهدی سلطانی",
-    password: "ms1403",
+    password: "ms136810",
     role: "admin"          // دسترسی کامل
   },
   "masoud-kazemi": {
     name: "مسعود کاظمی",
-    password: "mk1403",
+    password: "mk133320",
     role: "admin"
   },
   "mehdi-afshar": {
     name: "مهدی افشار",
-    password: "ma1403",
+    password: "ma123456",
     role: "operator"       // فقط مشاهده + ثبت
   },
   "arash-baba": {
     name: "آرش بابا",
-    password: "ab1403",
+    password: "ab362541",
     role: "operator"
   }
 };
