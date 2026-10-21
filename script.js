@@ -1,29 +1,11 @@
-// ========== کاربران و دسترسی‌ها ==========
-// نسخه: 2026-10-21-v2
+// نسخه: 2026-10-21-v4
 const users = {
-  "mehdi-soltani": {
-    name: "مهدی سلطانی",
-    password: "ms136810",
-    role: "admin"
-  },
-  "masoud-kazemi": {
-    name: "مسعود کاظمی",
-    password: "mk133320",
-    role: "admin"
-  },
-  "mehdi-afshar": {
-    name: "مهدی افشار",
-    password: "ma123456",
-    role: "operator"
-  },
-  "arash-baba": {
-    name: "آرش بابا",
-    password: "ab362541",
-    role: "operator"
-  }
+  "mehdi-soltani": { name: "مهدی سلطانی", password: "ms136810", role: "admin" },
+  "masoud-kazemi": { name: "مسعود کاظمی", password: "mk133320", role: "admin" },
+  "mehdi-afshar": { name: "مهدی افشار", password: "ma123456", role: "operator" },
+  "arash-baba": { name: "آرش بابا", password: "ab362541", role: "operator" }
 };
 
-// ========== لیست‌ها ==========
 const peopleList = [
   { id: "7020", name: "Arash Baba" },
   { id: "7021", name: "Daryoush Kazemkhanloo" },
@@ -54,18 +36,10 @@ const workstations = [
 ];
 
 const errorTypes = [
-  "عدم اجرای صحیح وظایف محوله",
-  "غیبت و تأخیر",
-  "وضعیت ظاهری نامناسب",
-  "استفاده غیر استاندارد لوازم مصرفی",
-  "عدم استفاده از وسایل ایمنی فردی",
-  "عدم استفاده از وسایل حفاظت فردی",
-  "ماشین آلات و تجهیزات",
-  "مشکلات فرآیندی",
-  "عدم آموزش",
-  "شرایط محیطی",
-  "عدم رعایت مقررات ایمنی و دستورالعمل ها",
-  "ازدحام و بی نظمی"
+  "عدم اجرای صحیح وظایف محوله", "غیبت و تأخیر", "وضعیت ظاهری نامناسب",
+  "استفاده غیر استاندارد لوازم مصرفی", "عدم استفاده از وسایل ایمنی فردی",
+  "عدم استفاده از وسایل حفاظت فردی", "ماشین آلات و تجهیزات", "مشکلات فرآیندی",
+  "عدم آموزش", "شرایط محیطی", "عدم رعایت مقررات ایمنی و دستورالعمل ها", "ازدحام و بی نظمی"
 ];
 
 const STORAGE_KEY = "peopleErrorRecords_v3";
@@ -85,6 +59,7 @@ const formTitle = document.getElementById("form-title");
 const submitBtn = document.getElementById("submit-btn");
 const cancelBtn = document.getElementById("cancel-btn");
 const personSelect = document.getElementById("personSelect");
+const personIdDisplay = document.getElementById("personIdDisplay");
 const workstationSelect = document.getElementById("workstation");
 const warningTypeSelect = document.getElementById("warningType");
 const errorTypeSelect = document.getElementById("errorType");
@@ -94,27 +69,21 @@ const descriptionInput = document.getElementById("description");
 const recordsBody = document.getElementById("records-body");
 const emptyMessage = document.getElementById("empty-message");
 const searchInput = document.getElementById("search-input");
+const filterSummary = document.getElementById("filter-summary");
 
 let records = [];
 let editIndex = null;
 let currentUser = null;
 
 function getTodayPersian() {
-  return new Date().toLocaleDateString("fa-IR", {
-    year: "numeric", month: "2-digit", day: "2-digit"
-  });
+  return new Date().toLocaleDateString("fa-IR", { year: "numeric", month: "2-digit", day: "2-digit" });
 }
 
 function formatDisplayDate(isoDate) {
   if (!isoDate) return "-";
   try {
-    const d = new Date(isoDate + "T00:00:00");
-    return d.toLocaleDateString("fa-IR", {
-      year: "numeric", month: "2-digit", day: "2-digit"
-    });
-  } catch {
-    return isoDate;
-  }
+    return new Date(isoDate + "T00:00:00").toLocaleDateString("fa-IR", { year: "numeric", month: "2-digit", day: "2-digit" });
+  } catch { return isoDate; }
 }
 
 function isAdmin() {
@@ -125,13 +94,11 @@ loginForm.addEventListener("submit", e => {
   e.preventDefault();
   const userId = loginUser.value;
   const pass = (loginPass.value || "").trim();
-
   const user = users[userId];
   if (!user || user.password !== pass) {
     loginError.textContent = "نام کاربری یا رمز عبور اشتباه است.";
     return;
   }
-
   currentUser = { id: userId, ...user };
   sessionStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
   showApp();
@@ -161,20 +128,21 @@ function showApp() {
 function checkSession() {
   try {
     const saved = sessionStorage.getItem(SESSION_KEY);
-    if (saved) {
-      currentUser = JSON.parse(saved);
-      showApp();
-      return;
-    }
+    if (saved) { currentUser = JSON.parse(saved); showApp(); return; }
   } catch {}
   showLogin();
 }
+
+personSelect.addEventListener("change", () => {
+  const selected = personSelect.options[personSelect.selectedIndex];
+  personIdDisplay.value = selected && selected.value ? selected.value : "";
+});
 
 function populatePeopleSelect() {
   peopleList.forEach(person => {
     const option = document.createElement("option");
     option.value = person.id;
-    option.textContent = `${person.id} - ${person.name}`;
+    option.textContent = person.name;
     option.dataset.name = person.name;
     personSelect.appendChild(option);
   });
@@ -202,11 +170,9 @@ function setDefaultDates() {
 function loadRecords() {
   try {
     const data = localStorage.getItem(STORAGE_KEY);
-    const parsed = data ? JSON.parse(data) : [];
-    records = Array.isArray(parsed) ? parsed : [];
-  } catch {
-    records = [];
-  }
+    records = data ? JSON.parse(data) : [];
+    if (!Array.isArray(records)) records = [];
+  } catch { records = []; }
 
   records = records.map(r => ({
     id: r.id ?? Date.now() + Math.random(),
@@ -240,6 +206,7 @@ function renderTable(filter = "") {
   const filtered = records
     .map((record, index) => ({ record, index }))
     .filter(({ record }) => {
+      if (!search) return true;
       return [
         record.personId, record.fullName, record.workstation,
         record.warningType, record.errorType, record.reportDate,
@@ -248,6 +215,34 @@ function renderTable(filter = "") {
     });
 
   recordsBody.innerHTML = "";
+
+  // خلاصه فیلتر
+  if (search && filtered.length > 0) {
+    // اگر جستجو روی یک نفر خاص باشه، تعداد اخطارهاش رو نشون بده
+    const byPerson = {};
+    filtered.forEach(({ record }) => {
+      const key = record.personId + "|" + record.fullName;
+      if (!byPerson[key]) byPerson[key] = { id: record.personId, name: record.fullName, count: 0 };
+      byPerson[key].count++;
+    });
+
+    const summaryParts = Object.values(byPerson).map(p =>
+      `<strong>${p.name}</strong> (کد ${p.id}): <span class="count-badge">${p.count}</span> اخطار`
+    );
+
+    filterSummary.innerHTML = `
+      <div class="summary-box">
+        <span>نتیجه فیلتر: <strong>${filtered.length}</strong> مورد</span>
+        <div class="person-counts">${summaryParts.join(" &nbsp;|&nbsp; ")}</div>
+      </div>
+    `;
+    filterSummary.style.display = "block";
+  } else if (search && filtered.length === 0) {
+    filterSummary.innerHTML = `<div class="summary-box">نتیجه‌ای یافت نشد.</div>`;
+    filterSummary.style.display = "block";
+  } else {
+    filterSummary.style.display = "none";
+  }
 
   if (filtered.length === 0) {
     emptyMessage.classList.add("show");
@@ -342,11 +337,8 @@ form.addEventListener("submit", e => {
 
   const prev = editIndex !== null ? records[editIndex] : null;
 
-  if (editIndex !== null) {
-    records[editIndex] = newRecord;
-  } else {
-    records.unshift(newRecord);
-  }
+  if (editIndex !== null) records[editIndex] = newRecord;
+  else records.unshift(newRecord);
 
   if (!saveRecords()) {
     if (editIndex !== null) records[editIndex] = prev;
@@ -359,15 +351,12 @@ form.addEventListener("submit", e => {
 });
 
 function editRecord(index) {
-  if (!isAdmin()) {
-    alert("شما اجازه ویرایش ندارید.");
-    return;
-  }
-
+  if (!isAdmin()) { alert("شما اجازه ویرایش ندارید."); return; }
   const r = records[index];
   if (!r) return;
 
   personSelect.value = r.personId;
+  personIdDisplay.value = r.personId;
 
   if (r.workstation && !workstations.includes(r.workstation)) {
     const opt = document.createElement("option");
@@ -376,7 +365,6 @@ function editRecord(index) {
     workstationSelect.appendChild(opt);
   }
   workstationSelect.value = r.workstation;
-
   warningTypeSelect.value = r.warningType || "";
 
   if (r.errorType && !errorTypes.includes(r.errorType)) {
@@ -395,26 +383,17 @@ function editRecord(index) {
   formTitle.textContent = "ویرایش رکورد";
   submitBtn.textContent = "به‌روزرسانی";
   cancelBtn.style.display = "inline-block";
-
   document.querySelector(".form-section").scrollIntoView({ behavior: "smooth" });
 }
 
 function deleteRecord(index) {
-  if (!isAdmin()) {
-    alert("شما اجازه حذف ندارید.");
-    return;
-  }
-
+  if (!isAdmin()) { alert("شما اجازه حذف ندارید."); return; }
   if (!records[index]) return;
   if (!confirm("آیا مطمئن هستید که می‌خواهید این رکورد را حذف کنید؟")) return;
 
   const deleted = records[index];
   records.splice(index, 1);
-
-  if (!saveRecords()) {
-    records.splice(index, 0, deleted);
-    return;
-  }
+  if (!saveRecords()) { records.splice(index, 0, deleted); return; }
 
   renderTable(searchInput.value);
   if (editIndex === index) resetForm();
@@ -425,18 +404,15 @@ cancelBtn.addEventListener("click", resetForm);
 
 function resetForm() {
   form.reset();
+  personIdDisplay.value = "";
   editIndex = null;
   formTitle.textContent = "افزودن رکورد جدید";
   submitBtn.textContent = "ذخیره";
   cancelBtn.style.display = "none";
   setDefaultDates();
 
-  Array.from(workstationSelect.options).forEach(o => {
-    if (o.textContent.endsWith(" (قبلی)")) o.remove();
-  });
-  Array.from(errorTypeSelect.options).forEach(o => {
-    if (o.textContent.endsWith(" (قبلی)")) o.remove();
-  });
+  Array.from(workstationSelect.options).forEach(o => { if (o.textContent.endsWith(" (قبلی)")) o.remove(); });
+  Array.from(errorTypeSelect.options).forEach(o => { if (o.textContent.endsWith(" (قبلی)")) o.remove(); });
 }
 
 searchInput.addEventListener("input", () => renderTable(searchInput.value));
