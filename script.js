@@ -1,6 +1,5 @@
 
-// نسخه: 2026-10-21-v5-supabase
-// از کلید Publishable استفاده شده؛ هرگز service_role را در مرورگر قرار ندهید.
+ // نسخه: 2026-10-21-v6-supabase-fix
 const SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
 
@@ -8,6 +7,7 @@ if (!window.supabase?.createClient) {
   alert("کتابخانه Supabase بارگذاری نشده است. ترتیب اسکریپت‌ها در index.html را بررسی کنید.");
   throw new Error("Supabase JS library is missing");
 }
+
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
@@ -83,7 +83,9 @@ let busy = false;
 
 function getTodayPersian() {
   return new Date().toLocaleDateString("fa-IR", {
-    year: "numeric", month: "2-digit", day: "2-digit"
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
   });
 }
 
@@ -91,7 +93,9 @@ function formatDisplayDate(isoDate) {
   if (!isoDate) return "-";
   try {
     return new Date(isoDate + "T00:00:00").toLocaleDateString("fa-IR", {
-      year: "numeric", month: "2-digit", day: "2-digit"
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
     });
   } catch {
     return isoDate;
@@ -102,7 +106,6 @@ function isAdmin() {
   return Boolean(currentUser && currentUser.role === "admin");
 }
 
-// سازگاری با نام‌های قدیمی موجود در فرم ورود
 function normalizeUsername(value) {
   const username = String(value || "").trim().toLowerCase();
   const aliases = {
@@ -128,23 +131,24 @@ function showApp() {
 }
 
 async function loadCurrentProfile(authUser) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("user_profiles")
     .select("id, username, full_name, role")
     .eq("id", authUser.id)
-    .single();
+    .maybeSingle();
 
   if (error || !data) {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     currentUser = null;
     showLogin();
     throw new Error(
-      "پروفایل این کاربر در user_profiles پیدا نشد. نام کاربری و پروفایل Supabase را بررسی کنید."
+      "پروفایل کاربر پیدا نشد. وجود کاربر در جدول user_profiles و تطابق id آن با Authentication → Users را بررسی کنید." +
+      (error ? " جزئیات: " + error.message : "")
     );
   }
 
   if (!["admin", "operator"].includes(data.role)) {
-    await supabase.auth.signOut();
+    await supabaseClient.auth.signOut();
     currentUser = null;
     showLogin();
     throw new Error("نقش این کاربر معتبر نیست.");
@@ -177,7 +181,7 @@ loginForm.addEventListener("submit", async (e) => {
 
   try {
     const email = `${username}@people-manager.invalid`;
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
       email,
       password
     });
@@ -189,7 +193,7 @@ loginForm.addEventListener("submit", async (e) => {
 
     await startAppForSession(data.user);
   } catch (err) {
-    console.error(err);
+    console.error("Login/profile error:", err);
     loginError.textContent =
       err.message || "ورود انجام نشد. تنظیمات Supabase را بررسی کنید.";
   } finally {
@@ -199,7 +203,7 @@ loginForm.addEventListener("submit", async (e) => {
 
 logoutBtn.addEventListener("click", async () => {
   try {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabaseClient.auth.signOut();
     if (error) throw error;
   } catch (err) {
     alert("خروج کامل نشد: " + (err.message || "خطای نامشخص"));
@@ -274,7 +278,7 @@ async function loadRecords() {
   emptyMessage.classList.add("show");
   emptyMessage.textContent = "در حال دریافت اطلاعات...";
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("people_error_records")
     .select("*")
     .order("created_at", { ascending: false });
@@ -297,7 +301,6 @@ function renderTable(filter = "") {
     .map((record, index) => ({ record, index }))
     .filter(({ record }) => {
       if (!search) return true;
-
       return [
         record.personId, record.fullName, record.workstation,
         record.warningType, record.errorType, record.reportDate,
@@ -312,7 +315,6 @@ function renderTable(filter = "") {
 
     filtered.forEach(({ record }) => {
       const key = record.personId + "|" + record.fullName;
-
       if (!byPerson[key]) {
         byPerson[key] = {
           id: record.personId,
@@ -320,12 +322,10 @@ function renderTable(filter = "") {
           count: 0
         };
       }
-
       byPerson[key].count++;
     });
 
     filterSummary.innerHTML = "";
-
     const summaryBox = document.createElement("div");
     summaryBox.className = "summary-box";
 
@@ -353,7 +353,6 @@ function renderTable(filter = "") {
         count,
         document.createTextNode(" اخطار")
       );
-
       counts.appendChild(line);
     });
 
@@ -383,16 +382,11 @@ function renderTable(filter = "") {
     const tr = document.createElement("tr");
 
     const cells = [
-      rowIndex + 1,
-      record.personId,
-      record.fullName,
-      record.workstation,
-      record.warningType || "-",
-      record.errorType,
-      record.reportDate || "-",
+      rowIndex + 1, record.personId, record.fullName,
+      record.workstation, record.warningType || "-",
+      record.errorType, record.reportDate || "-",
       formatDisplayDate(record.occurrenceDate),
-      record.description || "-",
-      record.createdBy || "-"
+      record.description || "-", record.createdBy || "-"
     ];
 
     cells.forEach((val) => {
@@ -429,7 +423,6 @@ function renderTable(filter = "") {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-
   if (!currentUser || busy) return;
 
   const selected = personSelect.options[personSelect.selectedIndex];
@@ -438,17 +431,14 @@ form.addEventListener("submit", async (e) => {
     alert("لطفاً نام نفر را انتخاب کنید.");
     return;
   }
-
   if (!workstationSelect.value) {
     alert("لطفاً ایستگاه کاری را انتخاب کنید.");
     return;
   }
-
   if (!errorTypeSelect.value) {
     alert("لطفاً نوع خطا را انتخاب کنید.");
     return;
   }
-
   if (editIndex !== null && !isAdmin()) {
     alert("شما اجازه ویرایش ندارید.");
     return;
@@ -474,12 +464,13 @@ form.addEventListener("submit", async (e) => {
     let result;
 
     if (existing) {
-      result = await supabase
+      result = await supabaseClient
         .from("people_error_records")
         .update(payload)
-        .eq("id", existing.id);
+        .eq("id", existing.id)
+        .select("id");
     } else {
-      result = await supabase
+      result = await supabaseClient
         .from("people_error_records")
         .insert({
           ...payload,
@@ -489,6 +480,9 @@ form.addEventListener("submit", async (e) => {
     }
 
     if (result.error) throw result.error;
+    if (existing && (!result.data || result.data.length === 0)) {
+      throw new Error("رکوردی ویرایش نشد؛ سطح دسترسی مدیر و شناسه رکورد را بررسی کنید.");
+    }
 
     await loadRecords();
     resetForm();
@@ -559,12 +553,16 @@ async function deleteRecord(index) {
   }
 
   try {
-    const { error } = await supabase
+    const { data, error } = await supabaseClient
       .from("people_error_records")
       .delete()
-      .eq("id", record.id);
+      .eq("id", record.id)
+      .select("id");
 
     if (error) throw error;
+    if (!data || data.length === 0) {
+      throw new Error("رکورد حذف نشد؛ سطح دسترسی مدیر و شناسه رکورد را بررسی کنید.");
+    }
 
     if (editIndex === index) resetForm();
     await loadRecords();
@@ -588,7 +586,6 @@ function resetForm() {
   Array.from(workstationSelect.options).forEach((o) => {
     if (o.textContent.endsWith(" (قبلی)")) o.remove();
   });
-
   Array.from(errorTypeSelect.options).forEach((o) => {
     if (o.textContent.endsWith(" (قبلی)")) o.remove();
   });
@@ -602,10 +599,10 @@ populateSelect(errorTypeSelect, errorTypes, "-- انتخاب نوع خطا --");
 showLogin();
 
 (async function initializeAuth() {
-  const { data, error } = await supabase.auth.getSession();
+  const { data, error } = await supabaseClient.auth.getSession();
 
   if (error) {
-    console.error(error);
+    console.error("Session error:", error);
     showLogin();
     return;
   }
@@ -614,7 +611,7 @@ showLogin();
     try {
       await startAppForSession(data.session.user);
     } catch (err) {
-      console.error(err);
+      console.error("Session profile error:", err);
       alert(err.message || "بازیابی نشست کاربر انجام نشد.");
       showLogin();
     }
