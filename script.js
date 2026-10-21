@@ -8,7 +8,10 @@ if (!window.supabase?.createClient) {
   alert("کتابخانه Supabase بارگذاری نشده است. ترتیب اسکریپت‌ها در index.html را بررسی کنید.");
   throw new Error("Supabase JS library is missing");
 }
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 const peopleList = [
   { id: "7020", name: "Arash Baba" },
