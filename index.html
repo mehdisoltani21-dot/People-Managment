@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ثبت اطلاعات نفرات و خطاها</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 ثبت اطلاعات نفرات و خطاها</h1>
+      <p class="subtitle">افزودن، ویرایش و مدیریت اطلاعات پرسنل</p>
+    </header>
+
+    <section class="form-section">
+      <h2 id="form-title">افزودن رکورد جدید</h2>
+      <form id="record-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="personSelect">نام و نام خانوادگی</label>
+            <select id="personSelect" required>
+              <option value="">-- انتخاب نفر --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="workstation">ایستگاه کاری</label>
+            <select id="workstation" required>
+              <option value="">-- انتخاب ایستگاه کاری --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="warningType">نوع اخطار</label>
+            <select id="warningType">
+              <option value="">-- انتخاب نوع اخطار --</option>
+              <option value="شفاهی">شفاهی</option>
+              <option value="کتبی">کتبی</option>
+              <option value="ارجاع به کمیته انضباطی">ارجاع به کمیته انضباطی</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="errorType">نوع خطا</label>
+            <select id="errorType" required>
+              <option value="">-- انتخاب نوع خطا --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="reportDate">تاریخ گزارش</label>
+            <input type="text" id="reportDate" readonly>
+          </div>
+
+          <div class="form-group">
+            <label for="occurrenceDate">تاریخ وقوع</label>
+            <input type="date" id="occurrenceDate">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="description">توضیحات</label>
+            <textarea id="description" rows="3" placeholder="توضیحات اختیاری..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="submit-btn">ذخیره</button>
+          <button type="button" class="btn btn-secondary" id="cancel-btn" style="display:none;">انصراف</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="table-section">
+      <div class="table-header">
+        <h2>لیست رکوردها</h2>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="جستجو بر اساس نام، کد، ایستگاه، نوع اخطار یا خطا...">
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="records-table">
+          <thead>
+            <tr>
+              <th>ردیف</th>
+              <th>کد</th>
+              <th>نام و نام خانوادگی</th>
+              <th>ایستگاه کاری</th>
+              <th>نوع اخطار</th>
+              <th>نوع خطا</th>
+              <th>تاریخ گزارش</th>
+              <th>تاریخ وقوع</th>
+              <th>توضیحات</th>
+              <th>عملیات</th>
+            </tr>
+          </thead>
+          <tbody id="records-body"></tbody>
+        </table>
+      </div>
+
+      <p id="empty-message" class="empty-message">هنوز هیچ رکوردی ثبت نشده است.</p>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
