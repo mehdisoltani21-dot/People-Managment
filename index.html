@@ -2,8 +2,15 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1a1510">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f5a623">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="APW">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="./icon-192.svg">
+  <link rel="icon" href="./icon-192.svg" type="image/svg+xml">
   <title>APW ایرانیان | تولید ام‌دی‌اف</title>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -22,6 +29,8 @@
     .btn{display:inline-flex;align-items:center;justify-content:center;background:#f5a623;color:#1a1208;font-family:inherit;font-size:1.15rem;font-weight:700;text-decoration:none;padding:1rem 2.8rem;border-radius:12px;box-shadow:0 10px 28px rgba(245,166,35,.42)}
     .btn:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(245,166,35,.55)}
     .hint{margin-top:.85rem;font-size:.82rem;color:rgba(255,255,255,.55)}
+    .install-btn{margin-top:1rem;background:transparent;border:1px solid rgba(245,166,35,.5);color:#f5a623;font-family:inherit;font-size:.95rem;font-weight:600;padding:.7rem 1.5rem;border-radius:10px;cursor:pointer;display:none}
+    .install-btn.show{display:inline-flex}
     footer{position:absolute;bottom:1.2rem;left:0;right:0;text-align:center;font-size:.78rem;color:rgba(255,255,255,.4)}
   </style>
 </head>
@@ -33,9 +42,33 @@
     </div>
     <h1><span>APW</span> ایرانیان</h1>
     <p class="subtitle">تولیدکننده تخصصی ام‌دی‌اف و محصولات چوبی</p>
-    <a class="btn" href="./panel/">ورود به سایت</a>
+    <a class="btn" href="./panel/">ورود به نرم‌افزار</a>
+    <button type="button" id="install-btn" class="install-btn">نصب روی گوشی</button>
     <p class="hint">سامانه مدیریت نفرات و ثبت خطاها</p>
     <footer>APW ایرانیان · تولید ام‌دی‌اف</footer>
   </div>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js").catch(function () {});
+    }
+    var deferredPrompt = null;
+    var installBtn = document.getElementById("install-btn");
+    window.addEventListener("beforeinstallprompt", function (e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.classList.add("show");
+    });
+    installBtn.addEventListener("click", function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function () {
+        deferredPrompt = null;
+        installBtn.classList.remove("show");
+      });
+    });
+    window.addEventListener("appinstalled", function () {
+      installBtn.classList.remove("show");
+    });
+  </script>
 </body>
 </html>
