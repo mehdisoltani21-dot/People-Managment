@@ -1,16 +1,37 @@
-// لینک مستقیم با رمز واقعی هر کاربر
+// لینک مستقیم — رمزها طبق اعلام کاربر
 window.APW_ACCESS_LINKS = {
-  "apw-ms-k8v2n4": { username: "mahdi-soltani", password: "Ms136810", label: "مهدی سلطانی" },
-  "apw-mk-p3w9x1": { username: "masoud-kazemi", password: "Mk133320", label: "مسعود کاظمی" },
-  "apw-ma-h5t7q2": { username: "mahdi-afshar", password: "Ma123456", label: "مهدی افشار" },
-  "apw-ab-r6y4m8": { username: "arash-baba", password: "Ab144420", label: "آرش بابا" }
+  "apw-ms-k8v2n4": {
+    usernames: ["mahdi-soltani", "mehdi-soltani"],
+    password: "Ms136810",
+    label: "مهدی سلطانی"
+  },
+  "apw-mk-p3w9x1": {
+    usernames: ["masoud-kazemi"],
+    password: "Mk133320",
+    label: "مسعود کاظمی"
+  },
+  "apw-ma-h5t7q2": {
+    usernames: ["mahdi-afshar", "mehdi-afshar"],
+    password: "Ma123456",
+    label: "مهدی افشار"
+  },
+  "apw-ab-r6y4m8": {
+    usernames: ["arash-baba"],
+    password: "Ab144420",
+    label: "آرش بابا"
+  }
 };
 
 (function waitAndLogin() {
   function ready() {
     return typeof supabaseClient !== "undefined"
-      && typeof normalizeUsername === "function"
       && typeof startAppForSession === "function";
+  }
+
+  async function tryLogin(email, password) {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error || !data || !data.user) return null;
+    return data.user;
   }
 
   async function run() {
@@ -20,30 +41,39 @@ window.APW_ACCESS_LINKS = {
     if (!token || !links[token]) return;
 
     const entry = links[token];
-    if (!entry.password) return;
+    const password = String(entry.password || "").trim();
+    if (!password) return;
 
-    const username = normalizeUsername(entry.username);
-    const email = username + "@people-manager.invalid";
-    const password = entry.password;
     const loginError = document.getElementById("login-error");
     if (loginError) loginError.textContent = "ورود مستقیم...";
 
-    try {
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (error || !data || !data.user) {
-        if (loginError) {
-          loginError.textContent = "ورود مستقیم ناموفق بود. نام کاربری یا رمز را بررسی کنید.";
-        }
-        return;
-      }
+    const names = entry.usernames || [entry.username];
+    let user = null;
+    let lastError = null;
+
+    for (let i = 0; i < names.length; i++) {
+      const email = String(names[i]).trim().toLowerCase() + "@people-manager.invalid";
       try {
-        window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
-      } catch (e) {}
-      await startAppForSession(data.user);
-    } catch (err) {
-      console.error(err);
-      if (loginError) loginError.textContent = err.message || "ورود مستقیم ناموفق بود.";
+        user = await tryLogin(email, password);
+        if (user) break;
+      } catch (err) {
+        lastError = err;
+      }
     }
+
+    if (!user) {
+      if (loginError) {
+        loginError.textContent = "ورود مستقیم ناموفق بود. رمز یا نام کاربری را دوباره چک کنید.";
+      }
+      if (lastError) console.error(lastError);
+      return;
+    }
+
+    try {
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+    } catch (e) {}
+
+    await startAppForSession(user);
   }
 
   let tries = 0;
@@ -52,7 +82,7 @@ window.APW_ACCESS_LINKS = {
     if (ready()) {
       clearInterval(timer);
       run();
-    } else if (tries > 80) {
+    } else if (tries > 100) {
       clearInterval(timer);
     }
   }, 100);
