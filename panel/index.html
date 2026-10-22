@@ -8,7 +8,41 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css?v=7">
+  <link rel="stylesheet" href="../style.css?v=8">
+  <style>
+    .home-view { max-width: 720px; margin: 36px auto 16px; padding: 0 16px; }
+    .home-title { text-align: center; margin-bottom: 26px; }
+    .home-title h2 { font-size: 1.3rem; font-weight: 800; color: #f5f0e8; margin-bottom: 6px; }
+    .home-title p { color: #a89a86; font-size: .9rem; }
+    .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 560px) { .home-grid { grid-template-columns: 1fr; } }
+    .home-card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 12px; min-height: 170px; padding: 26px 16px; border-radius: 18px;
+      border: 1px solid #3d3428; background: linear-gradient(145deg, #2a2318, #1a1610);
+      cursor: pointer; color: inherit; font-family: inherit;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    }
+    .home-card:hover {
+      transform: translateY(-3px); border-color: #f5a623;
+      box-shadow: 0 14px 32px rgba(245,166,35,.18);
+    }
+    .home-icon {
+      width: 70px; height: 70px; border-radius: 18px; display: flex;
+      align-items: center; justify-content: center; font-size: 1.9rem; font-weight: 800;
+      background: linear-gradient(135deg, #f5a623, #d97706); color: #1a1208;
+      box-shadow: 0 10px 24px rgba(245,166,35,.28);
+    }
+    .home-card h3 { font-size: 1.08rem; font-weight: 800; color: #f5f0e8; }
+    .home-card span { font-size: .8rem; color: #a89a86; }
+    .view-back {
+      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px;
+      background: #3a3226; border: 1px solid #4a4034; color: #ebe3d4;
+      font-family: inherit; font-size: .88rem; font-weight: 600;
+      padding: 8px 14px; border-radius: 10px; cursor: pointer;
+    }
+    .view-back:hover { background: #4a4034; }
+  </style>
 </head>
 <body>
   <section id="login-page" class="login-page">
@@ -38,6 +72,7 @@
       <div class="login-footer">APW · سامانه مدیریت نفرات واحد تولید</div>
     </div>
   </section>
+
   <main id="app-page" class="app-page" style="display:none">
     <div class="container">
       <header class="app-header">
@@ -56,7 +91,28 @@
           <button type="button" id="logout-btn" class="btn btn-secondary btn-sm">خروج از حساب</button>
         </div>
       </header>
-      <section class="form-section">
+
+      <section id="home-view" class="home-view">
+        <div class="home-title">
+          <h2>انتخاب عملیات</h2>
+          <p>یکی از گزینه‌های زیر را انتخاب کنید</p>
+        </div>
+        <div class="home-grid">
+          <button type="button" class="home-card" id="go-new-record">
+            <div class="home-icon">＋</div>
+            <h3>رکورد جدید</h3>
+            <span>ثبت گزارش و اخطار</span>
+          </button>
+          <button type="button" class="home-card" id="go-view-records">
+            <div class="home-icon">▤</div>
+            <h3>مشاهده رکوردها</h3>
+            <span>جدول سوابق ثبت‌شده</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="form-section" id="form-view" hidden>
+        <button type="button" class="view-back" id="back-from-form">→ بازگشت به منو</button>
         <div class="section-heading">
           <div class="section-icon">＋</div>
           <div>
@@ -111,16 +167,9 @@
           </div>
         </form>
       </section>
-      <div class="records-toolbar">
-        <div class="records-toolbar-text">
-          <h2>سوابق ثبت‌شده</h2>
-          <p>برای مشاهده جدول و تهیه خروجی، از دکمه زیر استفاده کنید.</p>
-        </div>
-        <button type="button" id="toggle-records-btn" class="btn btn-primary" aria-expanded="false" aria-controls="records-panel">
-          <span class="button-symbol">▤</span> مشاهده رکوردها
-        </button>
-      </div>
+
       <section class="table-section" id="records-panel" hidden>
+        <button type="button" class="view-back" id="back-from-records">→ بازگشت به منو</button>
         <div class="table-header">
           <div>
             <h2>جدول رکوردها</h2>
@@ -150,49 +199,69 @@
           <span>خروجی اکسل بر اساس نتایج جست‌وجوی فعلی تهیه می‌شود.</span>
         </div>
       </section>
+
       <footer class="app-footer">APW · سامانه مدیریت نفرات واحد تولید</footer>
     </div>
   </main>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../script.js?v=10"></script>
-  <script src="../access.js?v=4"></script>
+  <script src="../script.js?v=11"></script>
+  <script src="../access.js?v=5"></script>
   <script>
     (() => {
+      const home = document.getElementById("home-view");
+      const formView = document.getElementById("form-view");
       const panel = document.getElementById("records-panel");
-      const toggle = document.getElementById("toggle-records-btn");
+      const goNew = document.getElementById("go-new-record");
+      const goView = document.getElementById("go-view-records");
+      const backForm = document.getElementById("back-from-form");
+      const backRec = document.getElementById("back-from-records");
       const exportButton = document.getElementById("export-records-btn");
       const tableBody = document.getElementById("records-body");
-      if (!panel || !toggle || !exportButton) return;
-      panel.hidden = true;
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.addEventListener("click", () => {
-        const willOpen = panel.hidden;
-        panel.hidden = !willOpen;
-        toggle.setAttribute("aria-expanded", String(willOpen));
-        toggle.innerHTML = willOpen
-          ? '<span class="button-symbol">×</span> بستن رکوردها'
-          : '<span class="button-symbol">▤</span> مشاهده رکوردها';
-        if (willOpen) panel.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+
+      function showHome() {
+        if (home) home.hidden = false;
+        if (formView) formView.hidden = true;
+        if (panel) panel.hidden = true;
+      }
+      function showForm() {
+        if (home) home.hidden = true;
+        if (formView) formView.hidden = false;
+        if (panel) panel.hidden = true;
+      }
+      function showRecords() {
+        if (home) home.hidden = true;
+        if (formView) formView.hidden = true;
+        if (panel) panel.hidden = false;
+      }
+
+      goNew && goNew.addEventListener("click", showForm);
+      goView && goView.addEventListener("click", showRecords);
+      backForm && backForm.addEventListener("click", showHome);
+      backRec && backRec.addEventListener("click", showHome);
+      showHome();
+
       function csvCell(value) {
         let text = String(value ?? "");
         if (/^[\s\u0000-\u001f]*[=+\-@]/.test(text)) text = "'" + text;
         return '"' + text.replace(/"/g, '""') + '"';
       }
-      exportButton.addEventListener("click", () => {
-        const rows = Array.from(tableBody.querySelectorAll("tr"));
-        if (rows.length === 0) { alert("رکوردی برای خروجی گرفتن وجود ندارد."); return; }
-        const headers = ["ردیف","کد نفر","نام نفر","ایستگاه کاری","نوع اخطار","نوع خطا","تاریخ گزارش","تاریخ وقوع","شرح","ثبت‌کننده"];
-        const dataRows = rows.map((tr) => Array.from(tr.querySelectorAll("td")).slice(0, 10).map(td => td.textContent.trim()));
-        const csv = [headers, ...dataRows].map(row => row.map(csvCell).join(",")).join("\r\n");
-        const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "APW_Records_" + new Date().toISOString().slice(0, 10) + ".csv";
-        document.body.appendChild(link); link.click(); link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      });
+      if (exportButton) {
+        exportButton.addEventListener("click", () => {
+          const rows = Array.from((tableBody || document.createElement("tbody")).querySelectorAll("tr"));
+          if (rows.length === 0) { alert("رکوردی برای خروجی گرفتن وجود ندارد."); return; }
+          const headers = ["ردیف","کد نفر","نام نفر","ایستگاه کاری","نوع اخطار","نوع خطا","تاریخ گزارش","تاریخ وقوع","شرح","ثبت‌کننده"];
+          const dataRows = rows.map((tr) => Array.from(tr.querySelectorAll("td")).slice(0, 10).map(td => td.textContent.trim()));
+          const csv = [headers, ...dataRows].map(row => row.map(csvCell).join(",")).join("\r\n");
+          const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "APW_Records_" + new Date().toISOString().slice(0, 10) + ".csv";
+          document.body.appendChild(link); link.click(); link.remove();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+      }
     })();
   </script>
 </body>
