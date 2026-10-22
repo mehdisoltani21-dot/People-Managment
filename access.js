@@ -2,7 +2,8 @@
 window.APW_ACCESS_LINKS = {
   "apw-ms-k8v2n4": { username: "mahdi-soltani", password: "Ms136810", label: "مهدی سلطانی" },
   "apw-mk-p3w9x1": { username: "masoud-kazemi", password: "Mk133320", label: "مسعود کاظمی" },
-  "apw-ma-h5t7q2": { username: "mahdi-afshar", password: "Ma123456", label: "مهدی افشار" }
+  "apw-ma-h5t7q2": { username: "mahdi-afshar", password: "Ma123456", label: "مهدی افشار" },
+  "apw-ab-r6y4m8": { username: "arash-baba", password: "Ab144420", label: "آرش بابا" }
 };
 
 (function waitAndLogin() {
