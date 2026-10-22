@@ -1,9 +1,8 @@
-// Direct access tokens - password in Supabase must equal token
+// لینک مستقیم با رمز واقعی هر کاربر
 window.APW_ACCESS_LINKS = {
-  "apw-ms-k8v2n4": { username: "mahdi-soltani", label: "مهدی سلطانی" },
-  "apw-mk-p3w9x1": { username: "masoud-kazemi", label: "مسعود کاظمی" },
-  "apw-ma-h5t7q2": { username: "mahdi-afshar", label: "مهدی افشار" },
-  "apw-ab-r6y4m8": { username: "arash-baba", label: "آرش بابا" }
+  "apw-ms-k8v2n4": { username: "mahdi-soltani", password: "Ms136810", label: "مهدی سلطانی" },
+  "apw-mk-p3w9x1": { username: "masoud-kazemi", password: "Mk133320", label: "مسعود کاظمی" },
+  "apw-ma-h5t7q2": { username: "mahdi-afshar", password: "Ma123456", label: "مهدی افشار" }
 };
 
 (function waitAndLogin() {
@@ -20,9 +19,11 @@ window.APW_ACCESS_LINKS = {
     if (!token || !links[token]) return;
 
     const entry = links[token];
+    if (!entry.password) return;
+
     const username = normalizeUsername(entry.username);
     const email = username + "@people-manager.invalid";
-    const password = token;
+    const password = entry.password;
     const loginError = document.getElementById("login-error");
     if (loginError) loginError.textContent = "ورود مستقیم...";
 
@@ -30,7 +31,7 @@ window.APW_ACCESS_LINKS = {
       const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (error || !data || !data.user) {
         if (loginError) {
-          loginError.textContent = "لینک مستقیم فعال نیست. در Supabase رمز این کاربر را برابر توکن بگذارید.";
+          loginError.textContent = "ورود مستقیم ناموفق بود. نام کاربری یا رمز را بررسی کنید.";
         }
         return;
       }
@@ -50,7 +51,7 @@ window.APW_ACCESS_LINKS = {
     if (ready()) {
       clearInterval(timer);
       run();
-    } else if (tries > 50) {
+    } else if (tries > 80) {
       clearInterval(timer);
     }
   }, 100);
