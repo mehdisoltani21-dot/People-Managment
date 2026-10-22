@@ -1,22 +1,6 @@
-# People-Managment
+# APW ایرانیان
 
-سایت ثبت اطلاعات نفرات، ایستگاه کاری، نوع اخطار و خطا
+صفحه اصلی شرکت APW ایرانیان (تولید ام‌دی‌اف)
 
-**آدرس سایت بعد از فعال‌سازی Pages:**  
-https://mehdisoltani21-dot.github.io/People-Managment/
-
-## فیلدها
-- نام و نام خانوادگی (انتخاب از لیست)
-- ایستگاه کاری
-- نوع اخطار
-- نوع خطا
-- تاریخ گزارش (خودکار شمسی)
-- تاریخ وقوع
-- توضیحات
-
-## فعال‌سازی GitHub Pages
-1. برو به Settings → Pages
-2. Source را روی **Deploy from a branch** بگذار
-3. Branch: **main**  |  Folder: **/ (root)**
-4. Save کن
-5. بعد از ۱–۲ دقیقه سایت بالا می‌آید
+- **صفحه اصلی:** https://mehdisoltani21-dot.github.io/People-Managment/
+- **سامانه مدیریت نفرات:** https://mehdisoltani21-dot.github.io/People-Managment/panel/
