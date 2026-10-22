@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بارکد ورود مستقیم | APW</title>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -35,13 +36,20 @@
     }
     .card h2 { font-size: 1.15rem; margin-bottom: 6px; color: #f5a623; }
     .card .role { font-size: .82rem; color: #a89a86; margin-bottom: 14px; }
-    .card img {
-      width: 200px; height: 200px;
-      background: #fff; border-radius: 12px; padding: 10px;
+    .qr-wrap {
+      display: flex; justify-content: center; align-items: center;
+      background: #fff; border-radius: 12px; padding: 12px; margin: 0 auto;
+      width: 220px; height: 220px;
     }
-    .card a {
+    .qr-wrap canvas { width: 196px !important; height: 196px !important; }
+    .card a.link-text {
       display: block; margin-top: 12px; font-size: .72rem;
-      color: #f5c56a; word-break: break-all; text-decoration: none;
+      color: #f5c56a; word-break: break-all; text-decoration: none; line-height: 1.5;
+    }
+    .open-btn {
+      display: inline-block; margin-top: 12px; padding: 10px 18px;
+      background: #f5a623; color: #1a1208; font-weight: 700;
+      border-radius: 10px; text-decoration: none; font-size: .95rem;
     }
     .warn {
       max-width: 980px; margin: 28px auto 0;
@@ -55,7 +63,8 @@
       .warn { border-color: #ccc; color: #333; background: #f7f7f7; }
       .card { break-inside: avoid; border-color: #ddd; background: #fff; }
       .card h2 { color: #b45309; }
-      .card a { color: #333; }
+      .card a.link-text { color: #333; }
+      .open-btn { display: none; }
     }
   </style>
 </head>
@@ -66,31 +75,63 @@
   <div class="grid" id="grid"></div>
 
   <div class="warn">
-    <strong>نکته امنیتی:</strong> این بارکدها را فقط به خود همان نفر بدهید. هرکس بارکد را داشته باشد وارد همان حساب می‌شود.
+    <strong>نکته:</strong> بارکد را با دوربین گوشی اسکن کنید. اگر اسکن کار نکرد، دکمه «باز کردن لینک» را بزنید.<br>
+    این بارکدها را فقط به خود همان نفر بدهید.
   </div>
 
   <script>
-    const BASE = location.origin + location.pathname.replace(/codes\.html$/, "") + "panel/";
+    const BASE = "https://mehdisoltani21-dot.github.io/People-Managment/panel/";
     const people = [
-      { name: "مهدی سلطانی", token: "apw-ms-k8v2n4", role: "دسترسی قبلی خودش" },
-      { name: "مسعود کاظمی", token: "apw-mk-p3w9x1", role: "دسترسی قبلی خودش" },
-      { name: "مهدی افشار", token: "apw-ma-h5t7q2", role: "دسترسی قبلی خودش" },
-      { name: "آرش بابا", token: "apw-ab-r6y4m8", role: "دسترسی قبلی خودش" }
+      { name: "مهدی سلطانی", token: "apw-ms-k8v2n4" },
+      { name: "مسعود کاظمی", token: "apw-mk-p3w9x1" },
+      { name: "مهدی افشار", token: "apw-ma-h5t7q2" },
+      { name: "آرش بابا", token: "apw-ab-r6y4m8" }
     ];
 
     const grid = document.getElementById("grid");
-    people.forEach((p) => {
+
+    function makeCard(p) {
       const url = BASE + "?t=" + encodeURIComponent(p.token);
-      const qr = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=" + encodeURIComponent(url);
       const card = document.createElement("div");
       card.className = "card";
+      const qrId = "qr-" + p.token;
       card.innerHTML =
         "<h2>" + p.name + "</h2>" +
-        "<div class=\"role\">" + p.role + "</div>" +
-        "<img src=\"" + qr + "\" alt=\"QR " + p.name + "">" +
-        "<a href=\"" + url + "\">" + url + "</a>";
+        "<div class=\"role\">ورود مستقیم به حساب</div>" +
+        "<div class=\"qr-wrap\" id=\"" + qrId + "\"></div>" +
+        "<a class=\"open-btn\" href=\"" + url + "\" target=\"_blank\" rel=\"noopener\">باز کردن لینک</a>" +
+        "<a class=\"link-text\" href=\"" + url + "\">" + url + "</a>";
       grid.appendChild(card);
-    });
+
+      const box = document.getElementById(qrId);
+      if (window.QRCode && QRCode.toCanvas) {
+        QRCode.toCanvas(url, {
+          width: 196,
+          margin: 1,
+          color: { dark: "#000000", light: "#ffffff" }
+        }, function (err, canvas) {
+          if (err) {
+            box.innerHTML = "<span style=\"color:#333;font-size:12px\">خطا در ساخت بارکد</span>";
+            return;
+          }
+          box.innerHTML = "";
+          box.appendChild(canvas);
+        });
+      } else {
+        box.innerHTML = "<a href=\"" + url + "\" style=\"color:#333\">لینک ورود</a>";
+      }
+    }
+
+    function start() {
+      people.forEach(makeCard);
+    }
+
+    if (window.QRCode) {
+      start();
+    } else {
+      window.addEventListener("load", start);
+      setTimeout(start, 800);
+    }
   </script>
 </body>
 </html>
