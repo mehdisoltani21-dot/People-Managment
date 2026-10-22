@@ -1,5 +1,5 @@
-const CACHE = "apw-v1";
-const ASSETS = ["./", "./index.html", "./manifest.json", "./panel/", "./panel/index.html"];
+const CACHE = "apw-v3";
+const ASSETS = ["./", "./index.html", "./manifest.json", "./style.css?v=7", "./panel/", "./panel/index.html"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
@@ -13,6 +13,10 @@ self.addEventListener("activate", (e) => {
 
 self.addEventListener("fetch", (e) => {
   e.respondWith(
-    caches.match(e.request).then((cached) => cached || fetch(e.request).catch(() => caches.match("./")))
+    fetch(e.request).then((res) => {
+      const copy = res.clone();
+      caches.open(CACHE).then((c) => c.put(e.request, copy));
+      return res;
+    }).catch(() => caches.match(e.request).then((cached) => cached || caches.match("./")))
   );
 });
