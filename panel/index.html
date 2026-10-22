@@ -3,25 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1120">
-  <title>مدیریت نفرات و خطاها | APW</title>
-
+  <meta name="theme-color" content="#f5a623">
+  <title>مدیریت نفرات واحد تولید | APW</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css?v=5">
+  <link rel="stylesheet" href="../style.css?v=7">
 </head>
 <body>
-
-  <!-- Login -->
   <section id="login-page" class="login-page">
     <div class="login-box">
       <div class="brand-mark">APW</div>
       <div class="brand-caption">PEOPLE MANAGEMENT</div>
-
-      <h1>مدیریت نفرات و خطاها</h1>
+      <h1>مدیریت نفرات واحد تولید</h1>
       <p class="login-subtitle">برای ورود، نام کاربری و رمز عبور خود را وارد کنید.</p>
-
       <form id="login-form">
         <div class="login-field">
           <label for="loginUser">نام کاربری</label>
@@ -33,45 +28,34 @@
             <option value="arash-baba">آرش بابا</option>
           </select>
         </div>
-
         <div class="login-field">
           <label for="loginPass">رمز عبور</label>
-          <input id="loginPass" name="password" type="password"
-                 placeholder="رمز عبور را وارد کنید" autocomplete="current-password" required>
+          <input id="loginPass" name="password" type="password" placeholder="رمز عبور را وارد کنید" autocomplete="current-password" required>
         </div>
-
         <button type="submit" class="btn btn-primary login-submit">ورود به سامانه</button>
         <p id="login-error" class="login-error" role="status" aria-live="polite"></p>
       </form>
-
-      <div class="login-footer">APW · سامانه داخلی مدیریت اطلاعات</div>
+      <div class="login-footer">APW · سامانه مدیریت نفرات واحد تولید</div>
     </div>
   </section>
-
-  <!-- Main application -->
   <main id="app-page" class="app-page" style="display:none">
     <div class="container">
-
       <header class="app-header">
         <div class="header-brand">
           <div class="brand-mark small">APW</div>
           <div>
-            <h1>مدیریت نفرات و خطاها</h1>
-            <p class="subtitle">سامانه ثبت، پیگیری و گزارش خطاهای کاری</p>
+            <h1>مدیریت نفرات واحد تولید</h1>
+            <p class="subtitle">سامانه مدیریت نفرات واحد تولید</p>
           </div>
         </div>
-
         <div class="header-top">
           <div class="user-info">
             <span class="user-dot"></span>
             <span id="current-user-name">کاربر</span>
           </div>
-          <button type="button" id="logout-btn" class="btn btn-secondary btn-sm">
-            خروج از حساب
-          </button>
+          <button type="button" id="logout-btn" class="btn btn-secondary btn-sm">خروج از حساب</button>
         </div>
       </header>
-
       <section class="form-section">
         <div class="section-heading">
           <div class="section-icon">＋</div>
@@ -80,25 +64,20 @@
             <p class="section-description">اطلاعات نفر و جزئیات گزارش را وارد کنید.</p>
           </div>
         </div>
-
         <form id="record-form">
           <div class="form-grid">
-
             <div class="form-group">
               <label for="personSelect">نام نفر <span class="required">*</span></label>
               <select id="personSelect" required></select>
             </div>
-
             <div class="form-group">
               <label for="personIdDisplay">کد نفر</label>
               <input id="personIdDisplay" type="text" readonly placeholder="پس از انتخاب نفر نمایش داده می‌شود">
             </div>
-
             <div class="form-group">
               <label for="workstation">ایستگاه کاری <span class="required">*</span></label>
               <select id="workstation" required></select>
             </div>
-
             <div class="form-group">
               <label for="warningType">نوع اخطار</label>
               <select id="warningType">
@@ -109,120 +88,82 @@
                 <option value="اخطار نهایی">اخطار نهایی</option>
               </select>
             </div>
-
             <div class="form-group">
               <label for="errorType">نوع خطا <span class="required">*</span></label>
               <select id="errorType" required></select>
             </div>
-
             <div class="form-group">
               <label for="reportDate">تاریخ گزارش</label>
               <input id="reportDate" type="text" placeholder="تاریخ گزارش">
             </div>
-
             <div class="form-group">
               <label for="occurrenceDate">تاریخ وقوع خطا</label>
               <input id="occurrenceDate" type="date">
             </div>
-
             <div class="form-group full-width">
               <label for="description">شرح و توضیحات</label>
               <textarea id="description" rows="3" placeholder="شرح کوتاهی از موضوع وارد کنید..."></textarea>
             </div>
-
           </div>
-
           <div class="form-actions">
             <button type="submit" id="submit-btn" class="btn btn-primary">ذخیره رکورد</button>
             <button type="button" id="cancel-btn" class="btn btn-secondary" style="display:none">لغو ویرایش</button>
           </div>
         </form>
       </section>
-
       <div class="records-toolbar">
         <div class="records-toolbar-text">
           <h2>سوابق ثبت‌شده</h2>
           <p>برای مشاهده جدول و تهیه خروجی، از دکمه زیر استفاده کنید.</p>
         </div>
-
-        <button type="button" id="toggle-records-btn" class="btn btn-primary"
-                aria-expanded="false" aria-controls="records-panel">
-          <span class="button-symbol">▤</span>
-          مشاهده رکوردها
+        <button type="button" id="toggle-records-btn" class="btn btn-primary" aria-expanded="false" aria-controls="records-panel">
+          <span class="button-symbol">▤</span> مشاهده رکوردها
         </button>
       </div>
-
       <section class="table-section" id="records-panel" hidden>
         <div class="table-header">
           <div>
             <h2>جدول رکوردها</h2>
             <p class="section-description">جست‌وجو، بررسی و دریافت خروجی اطلاعات</p>
           </div>
-
           <div class="table-tools">
             <div class="search-box">
-              <input id="search-input" type="search"
-                     placeholder="جست‌وجوی نام، کد، خطا یا ایستگاه...">
+              <input id="search-input" type="search" placeholder="جست‌وجوی نام، کد، خطا یا ایستگاه...">
             </div>
-
-            <button type="button" id="export-records-btn" class="btn btn-secondary">
-              ↓ خروجی اکسل
-            </button>
+            <button type="button" id="export-records-btn" class="btn btn-secondary">↓ خروجی اکسل</button>
           </div>
         </div>
-
         <div id="filter-summary" class="filter-summary" style="display:none"></div>
-
         <div class="table-wrapper">
           <table id="records-table">
             <thead>
               <tr>
-                <th>ردیف</th>
-                <th>کد نفر</th>
-                <th>نام نفر</th>
-                <th>ایستگاه کاری</th>
-                <th>نوع اخطار</th>
-                <th>نوع خطا</th>
-                <th>تاریخ گزارش</th>
-                <th>تاریخ وقوع</th>
-                <th>شرح</th>
-                <th>ثبت‌کننده</th>
-                <th>عملیات</th>
+                <th>ردیف</th><th>کد نفر</th><th>نام نفر</th><th>ایستگاه کاری</th><th>نوع اخطار</th><th>نوع خطا</th><th>تاریخ گزارش</th><th>تاریخ وقوع</th><th>شرح</th><th>ثبت‌کننده</th><th>عملیات</th>
               </tr>
             </thead>
             <tbody id="records-body"></tbody>
           </table>
-
-          <div id="empty-message" class="empty-message">
-            هنوز هیچ رکوردی ثبت نشده است.
-          </div>
+          <div id="empty-message" class="empty-message">هنوز هیچ رکوردی ثبت نشده است.</div>
         </div>
-
         <div class="table-footer">
-          <span>سامانه مدیریت نفرات APW</span>
+          <span>سامانه مدیریت نفرات واحد تولید</span>
           <span>خروجی اکسل بر اساس نتایج جست‌وجوی فعلی تهیه می‌شود.</span>
         </div>
       </section>
-
-      <footer class="app-footer">APW · People Management</footer>
+      <footer class="app-footer">APW · سامانه مدیریت نفرات واحد تولید</footer>
     </div>
   </main>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../script.js?v=6"></script>
-
+  <script src="../script.js?v=7"></script>
   <script>
     (() => {
       const panel = document.getElementById("records-panel");
       const toggle = document.getElementById("toggle-records-btn");
       const exportButton = document.getElementById("export-records-btn");
       const tableBody = document.getElementById("records-body");
-
       if (!panel || !toggle || !exportButton) return;
-
       panel.hidden = true;
       toggle.setAttribute("aria-expanded", "false");
-
       toggle.addEventListener("click", () => {
         const willOpen = panel.hidden;
         panel.hidden = !willOpen;
@@ -230,46 +171,25 @@
         toggle.innerHTML = willOpen
           ? '<span class="button-symbol">×</span> بستن رکوردها'
           : '<span class="button-symbol">▤</span> مشاهده رکوردها';
-
-        if (willOpen) {
-          panel.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        if (willOpen) panel.scrollIntoView({ behavior: "smooth", block: "start" });
       });
-
       function csvCell(value) {
         let text = String(value ?? "");
-        if (/^[\s\u0000-\u001f]*[=+\-@]/.test(text)) {
-          text = "'" + text;
-        }
+        if (/^[\s\u0000-\u001f]*[=+\-@]/.test(text)) text = "'" + text;
         return '"' + text.replace(/"/g, '""') + '"';
       }
-
       exportButton.addEventListener("click", () => {
         const rows = Array.from(tableBody.querySelectorAll("tr"));
-        if (rows.length === 0) {
-          alert("رکوردی برای خروجی گرفتن وجود ندارد.");
-          return;
-        }
-        const headers = [
-          "ردیف", "کد نفر", "نام نفر", "ایستگاه کاری",
-          "نوع اخطار", "نوع خطا", "تاریخ گزارش",
-          "تاریخ وقوع", "شرح", "ثبت‌کننده"
-        ];
-        const dataRows = rows.map((tr) => {
-          const cells = Array.from(tr.querySelectorAll("td"));
-          return cells.slice(0, 10).map(td => td.textContent.trim());
-        });
-        const csv = [headers, ...dataRows]
-          .map(row => row.map(csvCell).join(","))
-          .join("\r\n");
+        if (rows.length === 0) { alert("رکوردی برای خروجی گرفتن وجود ندارد."); return; }
+        const headers = ["ردیف","کد نفر","نام نفر","ایستگاه کاری","نوع اخطار","نوع خطا","تاریخ گزارش","تاریخ وقوع","شرح","ثبت‌کننده"];
+        const dataRows = rows.map((tr) => Array.from(tr.querySelectorAll("td")).slice(0, 10).map(td => td.textContent.trim()));
+        const csv = [headers, ...dataRows].map(row => row.map(csvCell).join(",")).join("\r\n");
         const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
         link.download = "APW_Records_" + new Date().toISOString().slice(0, 10) + ".csv";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+        document.body.appendChild(link); link.click(); link.remove();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       });
     })();
