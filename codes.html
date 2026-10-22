@@ -43,11 +43,6 @@
       display: block; margin-top: 12px; font-size: .72rem;
       color: #f5c56a; word-break: break-all; text-decoration: none;
     }
-    .token {
-      margin-top: 10px; font-family: monospace; font-size: .85rem;
-      background: #1a1610; border: 1px solid #3d3428;
-      border-radius: 8px; padding: 8px; color: #fcd34d;
-    }
     .warn {
       max-width: 980px; margin: 28px auto 0;
       background: #2a2214; border: 1px solid #5a4020;
@@ -60,7 +55,7 @@
       .warn { border-color: #ccc; color: #333; background: #f7f7f7; }
       .card { break-inside: avoid; border-color: #ddd; background: #fff; }
       .card h2 { color: #b45309; }
-      .card a, .token { color: #333; }
+      .card a { color: #333; }
     }
   </style>
 </head>
@@ -71,11 +66,8 @@
   <div class="grid" id="grid"></div>
 
   <div class="warn">
-    <strong>فعال‌سازی یک‌بار (مهم):</strong><br>
-    ۱) برو به Supabase → Authentication → Users<br>
-    ۲) برای هر کاربر، رمز عبور را دقیقاً برابر «کد توکن» همان نفر بگذار<br>
-    ۳) بعد از آن با اسکن بارکد مستقیم وارد می‌شود<br>
-    ۴) این صفحه را به افراد غیرضروری نشان نده — هرکس بارکد را داشته باشد وارد همان حساب می‌شود
+    <strong>نکته امنیتی:</strong> این بارکدها را فقط به خود همان نفر بدهید. هرکس بارکد را داشته باشد وارد همان حساب می‌شود.<br>
+    آرش بابا هنوز اضافه نشده — بعد از پیدا شدن رمز فعال می‌شود.
   </div>
 
   <script>
@@ -83,8 +75,7 @@
     const people = [
       { name: "مهدی سلطانی", token: "apw-ms-k8v2n4", role: "دسترسی قبلی خودش" },
       { name: "مسعود کاظمی", token: "apw-mk-p3w9x1", role: "دسترسی قبلی خودش" },
-      { name: "مهدی افشار", token: "apw-ma-h5t7q2", role: "دسترسی قبلی خودش" },
-      { name: "آرش بابا", token: "apw-ab-r6y4m8", role: "دسترسی قبلی خودش" }
+      { name: "مهدی افشار", token: "apw-ma-h5t7q2", role: "دسترسی قبلی خودش" }
     ];
 
     const grid = document.getElementById("grid");
@@ -97,7 +88,6 @@
         "<h2>" + p.name + "</h2>" +
         "<div class=\"role\">" + p.role + "</div>" +
         "<img src=\"" + qr + "\" alt=\"QR " + p.name + "">" +
-        "<div class=\"token\">" + p.token + "</div>" +
         "<a href=\"" + url + "\">" + url + "</a>";
       grid.appendChild(card);
     });
