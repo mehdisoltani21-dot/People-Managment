@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بارکد ورود مستقیم | APW</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Vazirmatn, Tahoma, sans-serif;
+      background: #14110c;
+      color: #f5f0e8;
+      min-height: 100vh;
+      padding: 24px 16px 40px;
+    }
+    h1 { text-align: center; font-size: 1.5rem; margin-bottom: 8px; }
+    .note {
+      text-align: center; color: #a89a86; font-size: .9rem;
+      max-width: 640px; margin: 0 auto 28px; line-height: 1.7;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .card {
+      background: linear-gradient(145deg, #2a2318, #1a1610);
+      border: 1px solid #3d3428;
+      border-radius: 16px;
+      padding: 22px 18px;
+      text-align: center;
+    }
+    .card h2 { font-size: 1.15rem; margin-bottom: 6px; color: #f5a623; }
+    .card .role { font-size: .82rem; color: #a89a86; margin-bottom: 14px; }
+    .card img {
+      width: 200px; height: 200px;
+      background: #fff; border-radius: 12px; padding: 10px;
+    }
+    .card a {
+      display: block; margin-top: 12px; font-size: .72rem;
+      color: #f5c56a; word-break: break-all; text-decoration: none;
+    }
+    .token {
+      margin-top: 10px; font-family: monospace; font-size: .85rem;
+      background: #1a1610; border: 1px solid #3d3428;
+      border-radius: 8px; padding: 8px; color: #fcd34d;
+    }
+    .warn {
+      max-width: 980px; margin: 28px auto 0;
+      background: #2a2214; border: 1px solid #5a4020;
+      border-radius: 12px; padding: 16px 18px; font-size: .88rem; line-height: 1.8;
+      color: #f5e6c8;
+    }
+    .warn strong { color: #f5a623; }
+    @media print {
+      body { background: #fff; color: #111; }
+      .warn { border-color: #ccc; color: #333; background: #f7f7f7; }
+      .card { break-inside: avoid; border-color: #ddd; background: #fff; }
+      .card h2 { color: #b45309; }
+      .card a, .token { color: #333; }
+    }
+  </style>
+</head>
+<body>
+  <h1>بارکد ورود مستقیم — APW ایرانیان</h1>
+  <p class="note">هر نفر با اسکن بارکد خودش مستقیم وارد حساب خودش می‌شود. این صفحه را چاپ کنید و کنار دستگاه بگذارید.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="warn">
+    <strong>فعال‌سازی یک‌بار (مهم):</strong><br>
+    ۱) برو به Supabase → Authentication → Users<br>
+    ۲) برای هر کاربر، رمز عبور را دقیقاً برابر «کد توکن» همان نفر بگذار<br>
+    ۳) بعد از آن با اسکن بارکد مستقیم وارد می‌شود<br>
+    ۴) این صفحه را به افراد غیرضروری نشان نده — هرکس بارکد را داشته باشد وارد همان حساب می‌شود
+  </div>
+
+  <script>
+    const BASE = location.origin + location.pathname.replace(/codes\.html$/, "") + "panel/";
+    const people = [
+      { name: "مهدی سلطانی", token: "apw-ms-k8v2n4", role: "دسترسی قبلی خودش" },
+      { name: "مسعود کاظمی", token: "apw-mk-p3w9x1", role: "دسترسی قبلی خودش" },
+      { name: "مهدی افشار", token: "apw-ma-h5t7q2", role: "دسترسی قبلی خودش" },
+      { name: "آرش بابا", token: "apw-ab-r6y4m8", role: "دسترسی قبلی خودش" }
+    ];
+
+    const grid = document.getElementById("grid");
+    people.forEach((p) => {
+      const url = BASE + "?t=" + encodeURIComponent(p.token);
+      const qr = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=" + encodeURIComponent(url);
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML =
+        "<h2>" + p.name + "</h2>" +
+        "<div class=\"role\">" + p.role + "</div>" +
+        "<img src=\"" + qr + "\" alt=\"QR " + p.name + "">" +
+        "<div class=\"token\">" + p.token + "</div>" +
+        "<a href=\"" + url + "\">" + url + "</a>";
+      grid.appendChild(card);
+    });
+  </script>
+</body>
+</html>
