@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5a623">
+  <title>گزارش‌ها و سوابق | APW ایرانیان</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Vazirmatn, Tahoma, sans-serif;
+      background: #14110c;
+      color: #f5f0e8;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* Top bar */
+    .site-header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(20, 17, 12, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #3d3428;
+      padding: 12px 18px;
+    }
+    .site-header-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logo-box {
+      background: #fff; border-radius: 10px; padding: 6px 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-text {
+      font-family: Arial Black, Arial, sans-serif;
+      font-size: 1.35rem; font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+    }
+    .logo-text .a { color: #f5a623; }
+    .logo-text .pw { color: #3d3d3d; }
+    .brand-titles h1 {
+      font-size: 1.05rem; font-weight: 800; color: #f5f0e8;
+    }
+    .brand-titles p {
+      font-size: .78rem; color: #a89a86;
+    }
+    .header-actions {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .user-chip {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 12px; border-radius: 10px;
+      background: #1e1a14; border: 1px solid #3d3428;
+      font-size: .85rem; color: #f5e6c8;
+    }
+    .user-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 8px #22c55e66;
+    }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 9px 14px; border-radius: 10px; border: 1px solid transparent;
+      font-family: inherit; font-size: .88rem; font-weight: 700; cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary { background: #f5a623; color: #1a1208; }
+    .btn-secondary { background: #3a3226; border-color: #4a4034; color: #ebe3d4; }
+    .btn-secondary:hover { background: #4a4034; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 22px 16px 40px; }
+
+    /* Login */
+    .login-screen {
+      min-height: calc(100vh - 70px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px 16px;
+    }
+    .login-card {
+      width: 100%; max-width: 420px;
+      background: linear-gradient(145deg, #2a2318, #1a1610);
+      border: 1px solid #3d3428; border-radius: 18px;
+      padding: 28px 22px; text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+    .login-card h2 { font-size: 1.25rem; margin: 14px 0 6px; }
+    .login-card .sub { color: #a89a86; font-size: .9rem; margin-bottom: 20px; }
+    .login-field { text-align: right; margin-bottom: 12px; }
+    .login-field label { display: block; font-size: .88rem; color: #d4c8b0; margin-bottom: 5px; }
+    .login-field select, .login-field input {
+      width: 100%; padding: 11px 12px; border-radius: 10px;
+      border: 1px solid #3d3428; background: #1a1610; color: #f5f0e8;
+      font-family: inherit; font-size: .92rem;
+    }
+    .login-error { min-height: 22px; margin-top: 10px; color: #fca5a5; font-size: .85rem; }
+
+    /* Data panel */
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      padding: 16px 18px;
+      background: linear-gradient(145deg, #241e14, #1c1812);
+      border: 1px solid #3d3428; border-radius: 14px;
+    }
+    .toolbar h2 { font-size: 1.1rem; }
+    .toolbar p { font-size: .82rem; color: #a89a86; margin-top: 2px; }
+    .tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .search-input {
+      min-width: 220px; flex: 1;
+      padding: 10px 12px; border-radius: 10px;
+      border: 1px solid #4a4030; background: #1a1610; color: #f5f0e8;
+      font-family: inherit; font-size: .88rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px; margin-bottom: 18px;
+    }
+    .stat-card {
+      background: #1e1a14; border: 1px solid #3d3428;
+      border-radius: 12px; padding: 14px 16px;
+    }
+    .stat-card .label { font-size: .78rem; color: #a89a86; }
+    .stat-card .value { font-size: 1.4rem; font-weight: 800; color: #f5a623; margin-top: 2px; }
+
+    .table-card {
+      background: linear-gradient(145deg, #241e14, #1c1812);
+      border: 1px solid #3d3428; border-radius: 14px;
+      overflow: hidden;
+    }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table {
+      width: 100%; min-width: 980px;
+      border-collapse: separate; border-spacing: 0;
+    }
+    thead th {
+      position: sticky; top: 0;
+      background: #332b20; color: #ebe3d4;
+      text-align: right; padding: 12px 11px;
+      font-size: .82rem; font-weight: 700;
+      border-bottom: 1px solid #4a4034; white-space: nowrap;
+    }
+    tbody td {
+      padding: 11px; border-bottom: 1px solid #3a3226;
+      font-size: .84rem; color: #e8dfd0; vertical-align: top;
+    }
+    tbody tr:hover { background: #2c2418; }
+    .empty {
+      text-align: center; padding: 40px 16px; color: #a89a86;
+    }
+    .site-footer {
+      text-align: center; padding: 18px 12px 8px;
+      color: #8a7a68; font-size: .78rem;
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (max-width: 600px) {
+      .brand-titles h1 { font-size: .95rem; }
+      .search-input { min-width: 0; width: 100%; }
+      .tools { width: 100%; }
+      .tools .btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <div class="logo-box">
+          <div class="logo-text"><span class="a">A</span><span class="pw">PW</span></div>
+        </div>
+        <div class="brand-titles">
+          <h1>APW ایرانیان</h1>
+          <p>گزارش‌ها و سوابق واحد تولید</p>
+        </div>
+      </div>
+      <div class="header-actions" id="header-actions" hidden>
+        <div class="user-chip">
+          <span class="user-dot"></span>
+          <span id="user-name">کاربر</span>
+        </div>
+        <a class="btn btn-secondary" href="../panel/">ثبت رکورد</a>
+        <button type="button" class="btn btn-secondary" id="logout-btn">خروج</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login -->
+  <section id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="logo-box" style="margin:0 auto;width:fit-content">
+        <div class="logo-text"><span class="a">A</span><span class="pw">PW</span></div>
+      </div>
+      <h2>مشاهده گزارش‌ها</h2>
+      <p class="sub">برای دیدن داده‌های ثبت‌شده وارد شوید</p>
+      <form id="login-form">
+        <div class="login-field">
+          <label for="loginUser">نام کاربری</label>
+          <select id="loginUser" required>
+            <option value="">-- انتخاب کاربر --</option>
+            <option value="mehdi-soltani">مهدی سلطانی</option>
+            <option value="masoud-kazemi">مسعود کاظمی</option>
+            <option value="mehdi-afshar">مهدی افشار</option>
+            <option value="arash-baba">آرش بابا</option>
+          </select>
+        </div>
+        <div class="login-field">
+          <label for="loginPass">رمز عبور</label>
+          <input id="loginPass" type="password" placeholder="رمز عبور" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;padding:12px">ورود به گزارش‌ها</button>
+        <p id="login-error" class="login-error"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Data -->
+  <main id="data-screen" hidden>
+    <div class="wrap">
+      <div class="toolbar">
+        <div>
+          <h2>سوابق ثبت‌شده</h2>
+          <p>جست‌وجو، بررسی و خروجی اکسل</p>
+        </div>
+        <div class="tools">
+          <input id="search" class="search-input" type="search" placeholder="جست‌وجوی نام، کد، خطا، ایستگاه...">
+          <button type="button" class="btn btn-secondary" id="export-btn">↓ خروجی اکسل</button>
+          <button type="button" class="btn btn-primary" id="refresh-btn">بروزرسانی</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card"><div class="label">کل رکوردها</div><div class="value" id="stat-total">0</div></div>
+        <div class="stat-card"><div class="label">نتیجه فیلتر</div><div class="value" id="stat-filtered">0</div></div>
+        <div class="stat-card"><div class="label">نفرات یکتا</div><div class="value" id="stat-people">0</div></div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ردیف</th>
+                <th>کد نفر</th>
+                <th>نام نفر</th>
+                <th>ایستگاه</th>
+                <th>نوع اخطار</th>
+                <th>نوع خطا</th>
+                <th>تاریخ گزارش</th>
+                <th>تاریخ وقوع</th>
+                <th>شرح</th>
+                <th>ثبت‌کننده</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div id="empty" class="empty" hidden>رکوردی یافت نشد.</div>
+      </div>
+
+      <footer class="site-footer">APW ایرانیان · سامانه مدیریت نفرات واحد تولید</footer>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const ACCESS_LINKS = {
+      "apw-ms-k8v2n4": { usernames: ["mahdi-soltani", "mehdi-soltani"], password: "Ms136810" },
+      "apw-mk-p3w9x1": { usernames: ["masoud-kazemi"], password: "Mk133320" },
+      "apw-ma-h5t7q2": { usernames: ["mahdi-afshar", "mehdi-afshar"], password: "Ma123456" },
+      "apw-ab-r6y4m8": { usernames: ["arash-baba"], password: "Ab144420" }
+    };
+
+    function normalizeUsername(v) {
+      const u = String(v || "").trim().toLowerCase();
+      const aliases = { "mehdi-soltani": "mahdi-soltani", "mehdi-afshar": "mahdi-afshar" };
+      return aliases[u] || u;
+    }
+
+    const loginScreen = document.getElementById("login-screen");
+    const dataScreen = document.getElementById("data-screen");
+    const headerActions = document.getElementById("header-actions");
+    const userNameEl = document.getElementById("user-name");
+    const loginError = document.getElementById("login-error");
+    const tbody = document.getElementById("tbody");
+    const empty = document.getElementById("empty");
+    const searchInput = document.getElementById("search");
+
+    let records = [];
+    let currentUser = null;
+
+    function showLogin() {
+      loginScreen.hidden = false;
+      dataScreen.hidden = true;
+      headerActions.hidden = true;
+    }
+
+    function showData() {
+      loginScreen.hidden = true;
+      dataScreen.hidden = false;
+      headerActions.hidden = false;
+      userNameEl.textContent = currentUser?.full_name || currentUser?.name || "کاربر";
+    }
+
+    async function loadProfile(authUser) {
+      const { data, error } = await supabaseClient
+        .from("user_profiles")
+        .select("id, username, full_name, role")
+        .eq("id", authUser.id)
+        .maybeSingle();
+      if (error || !data) throw new Error("پروفایل کاربر پیدا نشد.");
+      currentUser = {
+        id: authUser.id,
+        username: data.username,
+        name: data.full_name,
+        full_name: data.full_name,
+        role: data.role
+      };
+    }
+
+    async function signIn(email, password) {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error || !data?.user) return null;
+      return data.user;
+    }
+
+    async function enterApp(authUser) {
+      await loadProfile(authUser);
+      showData();
+      await loadRecords();
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loginError.textContent = "در حال ورود...";
+      const username = normalizeUsername(document.getElementById("loginUser").value);
+      const password = document.getElementById("loginPass").value || "";
+      const email = username + "@people-manager.invalid";
+      try {
+        const user = await signIn(email, password);
+        if (!user) {
+          loginError.textContent = "نام کاربری یا رمز عبور اشتباه است.";
+          return;
+        }
+        await enterApp(user);
+      } catch (err) {
+        loginError.textContent = err.message || "ورود ناموفق بود.";
+      }
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      currentUser = null;
+      records = [];
+      showLogin();
+    });
+
+    function formatDate(iso) {
+      if (!iso) return "-";
+      try {
+        return new Date(iso + "T00:00:00").toLocaleDateString("fa-IR");
+      } catch { return iso; }
+    }
+
+    async function loadRecords() {
+      tbody.innerHTML = "";
+      empty.hidden = false;
+      empty.textContent = "در حال دریافت اطلاعات...";
+
+      const { data, error } = await supabaseClient
+        .from("people_error_records")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        empty.textContent = "خطا در دریافت داده: " + error.message;
+        return;
+      }
+
+      records = (data || []).map((r) => ({
+        personId: String(r.person_id ?? ""),
+        fullName: r.full_name ?? "",
+        workstation: r.workstation ?? "",
+        warningType: r.warning_type ?? "",
+        errorType: r.error_type ?? "",
+        reportDate: r.report_date ?? "",
+        occurrenceDate: r.occurrence_date ?? "",
+        description: r.description ?? "",
+        createdBy: r.created_by_name ?? "-"
+      }));
+
+      renderTable(searchInput.value);
+    }
+
+    function renderTable(filter) {
+      const q = String(filter || "").trim().toLowerCase();
+      const filtered = records.filter((r) => {
+        if (!q) return true;
+        return [r.personId, r.fullName, r.workstation, r.warningType, r.errorType, r.reportDate, r.occurrenceDate, r.description, r.createdBy]
+          .some((v) => String(v).toLowerCase().includes(q));
+      });
+
+      document.getElementById("stat-total").textContent = String(records.length);
+      document.getElementById("stat-filtered").textContent = String(filtered.length);
+      const uniquePeople = new Set(filtered.map((r) => r.personId + "|" + r.fullName));
+      document.getElementById("stat-people").textContent = String(uniquePeople.size);
+
+      tbody.innerHTML = "";
+      if (filtered.length === 0) {
+        empty.hidden = false;
+        empty.textContent = q ? "نتیجه‌ای یافت نشد." : "هنوز رکوردی ثبت نشده است.";
+        return;
+      }
+      empty.hidden = true;
+
+      filtered.forEach((r, i) => {
+        const tr = document.createElement("tr");
+        const cells = [
+          i + 1, r.personId, r.fullName, r.workstation,
+          r.warningType || "-", r.errorType,
+          r.reportDate || "-", formatDate(r.occurrenceDate),
+          r.description || "-", r.createdBy
+        ];
+        cells.forEach((val) => {
+          const td = document.createElement("td");
+          td.textContent = String(val);
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    searchInput.addEventListener("input", () => renderTable(searchInput.value));
+    document.getElementById("refresh-btn").addEventListener("click", loadRecords);
+
+    document.getElementById("export-btn").addEventListener("click", () => {
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      if (!rows.length) { alert("رکوردی برای خروجی نیست."); return; }
+      const headers = ["ردیف","کد نفر","نام نفر","ایستگاه","نوع اخطار","نوع خطا","تاریخ گزارش","تاریخ وقوع","شرح","ثبت‌کننده"];
+      function cell(v) {
+        let t = String(v ?? "");
+        if (/^[\s]*[=+\-@]/.test(t)) t = "'" + t;
+        return '"' + t.replace(/"/g, '""') + '"';
+      }
+      const dataRows = rows.map((tr) => Array.from(tr.querySelectorAll("td")).map((td) => td.textContent.trim()));
+      const csv = [headers, ...dataRows].map((row) => row.map(cell).join(",")).join("\r\n");
+      const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "APW_Reports_" + new Date().toISOString().slice(0, 10) + ".csv";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 800);
+    });
+
+    async function tryTokenLogin() {
+      const token = new URLSearchParams(location.search).get("t") || new URLSearchParams(location.search).get("token") || "";
+      const entry = ACCESS_LINKS[token.trim()];
+      if (!entry) return false;
+      loginError.textContent = "ورود مستقیم...";
+      for (const name of entry.usernames) {
+        const email = normalizeUsername(name) + "@people-manager.invalid";
+        const user = await signIn(email, entry.password);
+        if (user) {
+          try { history.replaceState({}, document.title, location.pathname); } catch (e) {}
+          await enterApp(user);
+          return true;
+        }
+      }
+      loginError.textContent = "ورود مستقیم ناموفق بود.";
+      return false;
+    }
+
+    (async function init() {
+      try {
+        if (await tryTokenLogin()) return;
+        const { data } = await supabaseClient.auth.getSession();
+        if (data.session?.user) {
+          await enterApp(data.session.user);
+        } else {
+          showLogin();
+        }
+      } catch (err) {
+        console.error(err);
+        showLogin();
+      }
+    })();
+  </script>
+</body>
+</html>
