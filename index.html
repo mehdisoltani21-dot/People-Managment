@@ -38,22 +38,47 @@
     }
     .menu{display:flex;flex-direction:column;gap:12px}
     .menu a{
-      display:block;text-decoration:none;color:#f5f0e8;
-      background:linear-gradient(145deg,#3a3226,#2a2418);
+      position:relative;overflow:hidden;
+      display:flex;align-items:center;gap:14px;text-align:right;
+      text-decoration:none;color:#f5f0e8;
+      background:linear-gradient(145deg,rgba(58,50,38,.95),rgba(36,30,22,.95));
       border:1px solid #4a4030;
-      border-radius:14px;
-      padding:1.05rem 1.15rem;
-      font-size:1.05rem;font-weight:700;
-      transition:transform .15s,border-color .15s,box-shadow .15s;
+      border-radius:16px;
+      padding:.95rem 1rem;
+      transition:transform .2s,border-color .2s,box-shadow .2s,background .2s;
+    }
+    .menu a::before{
+      content:"";position:absolute;top:0;bottom:0;right:0;width:4px;
+      background:linear-gradient(180deg,#f5a623,#d97706);opacity:.85;
     }
     .menu a:hover{
       transform:translateY(-2px);
       border-color:#f5a623;
-      box-shadow:0 10px 28px rgba(245,166,35,.2);
+      background:linear-gradient(145deg,rgba(70,58,40,.97),rgba(40,33,23,.97));
+      box-shadow:0 12px 30px rgba(245,166,35,.22);
     }
+    .menu .ic{
+      flex-shrink:0;width:52px;height:52px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#f7b543,#d97706);color:#1a1208;
+      box-shadow:0 8px 20px rgba(245,166,35,.3),inset 0 1px 0 rgba(255,255,255,.35);
+      transition:transform .2s;
+    }
+    .menu .ic svg{width:26px;height:26px}
+    .menu a:hover .ic{transform:scale(1.07) rotate(-4deg)}
+    .menu .txt{flex:1;min-width:0}
+    .menu .ttl{display:block;font-size:1.05rem;font-weight:800}
     .menu a .sub{display:block;margin-top:4px;font-size:.78rem;font-weight:500;color:#a89a86}
-    .menu a.soon{opacity:.72;cursor:default}
-    .menu a.soon:hover{transform:none;border-color:#4a4030;box-shadow:none}
+    .menu .arr{flex-shrink:0;color:#f5a623;opacity:.6;transition:transform .2s,opacity .2s}
+    .menu .arr svg{width:20px;height:20px;display:block}
+    .menu a:hover .arr{opacity:1;transform:translateX(-4px)}
+    .menu a.soon{cursor:default}
+    .menu a.soon::before{background:#6b5d48}
+    .menu a.soon .ic{background:linear-gradient(135deg,#5a4e3c,#3e3528);color:#c9b99c;box-shadow:none}
+    .menu a.soon .ttl{color:#c9bca6}
+    .menu a.soon .arr{display:none}
+    .menu a.soon:hover{transform:none;border-color:#4a4030;box-shadow:none;background:linear-gradient(145deg,rgba(58,50,38,.95),rgba(36,30,22,.95))}
+    .menu a.soon:hover .ic{transform:none}
     .badge{
       display:inline-block;margin-right:6px;
       background:rgba(245,166,35,.15);color:#f5c56a;
@@ -81,16 +106,18 @@
       <h1 class="panel-title">سامانه‌های مدیریت تولید</h1>
       <nav class="menu">
         <a href="./panel/">
-          مدیریت وقایع پرسنلی
-          <span class="sub">ثبت خطا، اخطار و سوابق نفرات</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <span class="txt"><span class="ttl">مدیریت وقایع پرسنلی</span><span class="sub">ثبت خطا، اخطار و سوابق نفرات</span></span>
+          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
         </a>
         <a class="soon" href="#" onclick="return false;">
-          مدیریت وقایع فرآیندی
-          <span class="sub"><span class="badge">به‌زودی</span> توقف خط، خرابی و فرآیند تولید</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+          <span class="txt"><span class="ttl">مدیریت وقایع فرآیندی</span><span class="sub"><span class="badge">به‌زودی</span> توقف خط، خرابی و فرآیند تولید</span></span>
         </a>
         <a href="./5s/">
-          مدیریت نظام آراستگی
-          <span class="sub">ارزیابی 5S + گزارش تحلیلی نفرات</span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <span class="txt"><span class="ttl">مدیریت نظام آراستگی</span><span class="sub">ارزیابی 5S + گزارش تحلیلی نفرات</span></span>
+          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
         </a>
       </nav>
     </div>
