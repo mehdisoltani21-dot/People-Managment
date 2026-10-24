@@ -9,6 +9,14 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Vazirmatn,Tahoma,sans-serif;background:#14110c;color:#f5f0e8;min-height:100vh;line-height:1.7}
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.login-box{width:100%;max-width:400px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:18px;padding:28px 22px}
+.login-box h1{font-size:1.2rem;margin:12px 0 6px;text-align:center}
+.login-box .sub{text-align:center;color:#a89a86;font-size:.9rem;margin-bottom:18px}
+.login-field{margin-bottom:12px}
+.login-field label{display:block;font-size:.85rem;color:#a89a86;margin-bottom:4px}
+.login-field select,.login-field input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit}
+.login-error{color:#f87171;font-size:.85rem;margin-top:10px;min-height:1.2em}
 .top{position:sticky;top:0;z-index:10;background:rgba(20,17,12,.94);border-bottom:1px solid #3d3428;padding:12px 16px}
 .top-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px}
@@ -16,6 +24,8 @@ body{font-family:Vazirmatn,Tahoma,sans-serif;background:#14110c;color:#f5f0e8;mi
 .logo .a{color:#f5a623}.logo .pw{color:#3d3d3d}
 .brand h1{font-size:1rem;font-weight:800}.brand p{font-size:.78rem;color:#a89a86}
 a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}
+.user-bar{display:flex;align-items:center;gap:10px;font-size:.85rem;color:#cbbfaa}
+.user-bar button{background:#3a3226;border:1px solid #4a4034;color:#ebe3d4;border-radius:8px;padding:6px 10px;font-family:inherit;cursor:pointer;font-size:.8rem}
 .wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
 .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:18px}
 .meta label{display:block;font-size:.8rem;color:#a89a86;margin-bottom:4px}
@@ -46,51 +56,69 @@ a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}
 .btn{border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-weight:700;font-size:.92rem;cursor:pointer}
 .btn-primary{background:#f5a623;color:#1a1208}.btn-secondary{background:#3a3226;color:#ebe3d4;border:1px solid #4a4034}
 .note{font-size:.82rem;color:#a89a86;margin-top:8px}
-.home-view{max-width:720px;margin:36px auto 16px;padding:0 4px}
+.home-view{max-width:720px;margin:36px auto 16px}
 .home-title{text-align:center;margin-bottom:26px}
 .home-title h2{font-size:1.3rem;font-weight:800;color:#f5f0e8;margin-bottom:6px}
 .home-title p{color:#a89a86;font-size:.9rem}
 .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:560px){.home-grid{grid-template-columns:1fr}}
 .home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:170px;padding:26px 16px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit;font-family:inherit}
-.home-card:hover{transform:translateY(-3px);border-color:#f5a623;box-shadow:0 14px 32px rgba(245,166,35,.18)}
+.home-card:hover{transform:translateY(-3px);border-color:#f5a623}
 .home-icon{width:70px;height:70px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208}
-.home-card h3{font-size:1.08rem;font-weight:800;color:#f5f0e8}.home-card span{font-size:.8rem;color:#a89a86}
-.view-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;background:#3a3226;border:1px solid #4a4034;color:#ebe3d4;font-family:inherit;font-size:.88rem;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer}
-.view-back:hover{background:#4a4034}
+.home-card h3{font-size:1.08rem;font-weight:800}.home-card span{font-size:.8rem;color:#a89a86}
+.view-back{display:inline-flex;margin-bottom:14px;background:#3a3226;border:1px solid #4a4034;color:#ebe3d4;font-family:inherit;font-size:.88rem;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer}
 .reports-list{display:flex;flex-direction:column;gap:12px}
-.report-card{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .15s,transform .15s}
-.report-card:hover{border-color:#f5a623;transform:translateY(-2px)}
+.report-card{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:12px;padding:14px 16px;cursor:pointer}
+.report-card:hover{border-color:#f5a623}
 .report-card h4{color:#f5a623;font-size:1rem;margin-bottom:6px}
 .report-card p{font-size:.85rem;color:#cbbfaa;line-height:1.7}
 .report-card .score{color:#fcd34d;font-weight:700}
 .report-num{display:inline-block;background:#f5a623;color:#1a1208;font-weight:800;font-size:.85rem;padding:2px 10px;border-radius:8px;margin-left:8px}
 .empty-reports{text-align:center;color:#a89a86;padding:40px 16px}
 .detail-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:16px}
-.detail-meta .lbl{font-size:.75rem;color:#a89a86}.detail-meta .val{font-size:.95rem;font-weight:600;color:#f5f0e8}
+.detail-meta .lbl{font-size:.75rem;color:#a89a86}.detail-meta .val{font-size:.95rem;font-weight:600}
 .detail-section{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:14px;margin-bottom:14px;overflow:hidden}
 .detail-section h3{padding:12px 16px;background:#2e261c;color:#f5a623;font-size:1rem;border-bottom:1px solid #3d3428}
 .detail-item{padding:12px 16px;border-bottom:1px solid #2f2920}
-.detail-item:last-child{border-bottom:none}
 .detail-item .q{font-size:.9rem;margin-bottom:6px}
-.detail-item .meta-row{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;color:#cbbfaa;margin-bottom:4px}
+.detail-item .meta-row{display:flex;flex-wrap:wrap;gap:10px;font-size:.82rem;color:#cbbfaa}
 .detail-item .badge{background:#3a3226;border-radius:6px;padding:2px 8px}
 .detail-item .note-t{color:#f5c56a;font-size:.85rem;margin-top:4px}
 .detail-item img{max-width:120px;border-radius:8px;margin-top:6px;border:1px solid #4a4030}
-@media(max-width:640px){.item{grid-template-columns:1fr;gap:8px}.item input[type=number]{width:100%}}
 </style>
 </head>
 <body>
-<header class="top"><div class="top-inner">
-<div class="brand"><div class="logo"><span class="a">A</span><span class="pw">PW</span></div><div><h1>مدیریت 5S</h1><p>چک‌لیست ارزیابی واحد تولید</p></div></div>
-<a class="back" href="../">← بازگشت</a>
+<section id="login-page" class="login-page">
+<div class="login-box">
+<div class="logo" style="display:block;text-align:center;margin:0 auto 8px;width:fit-content"><span class="a">A</span><span class="pw">PW</span></div>
+<h1>ورود به مدیریت 5S</h1>
+<p class="sub">با همان حساب سامانه نفرات وارد شوید</p>
+<form id="login-form">
+<div class="login-field"><label>نام کاربری</label>
+<select id="loginUser" required>
+<option value="">-- انتخاب کاربر --</option>
+<option value="mehdi-soltani">مهدی سلطانی</option>
+<option value="masoud-kazemi">مسعود کاظمی</option>
+<option value="mehdi-afshar">مهدی افشار</option>
+<option value="arash-baba">آرش بابا</option>
+</select></div>
+<div class="login-field"><label>رمز عبور</label>
+<input id="loginPass" type="password" required placeholder="رمز عبور" autocomplete="current-password"></div>
+<button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px">ورود</button>
+<p id="login-error" class="login-error"></p>
+</form>
+</div>
+</section>
+<header class="top" id="app-header" style="display:none"><div class="top-inner">
+<div class="brand"><div class="logo"><span class="a">A</span><span class="pw">PW</span></div><div><h1>مدیریت 5S</h1><p>ذخیره آنلاین در سرور</p></div></div>
+<div class="user-bar"><span id="current-user-label"></span><button type="button" id="logout-btn">خروج</button><a class="back" href="../">← بازگشت</a></div>
 </div></header>
-<main class="wrap">
+<main class="wrap" id="app-main" style="display:none">
 <section id="home-view" class="home-view">
 <div class="home-title"><h2>انتخاب عملیات</h2><p>یکی از گزینه‌های زیر را انتخاب کنید</p></div>
 <div class="home-grid">
 <button type="button" class="home-card" id="go-new-record"><div class="home-icon">＋</div><h3>رکورد جدید</h3><span>ثبت ارزیابی 5S</span></button>
-<button type="button" class="home-card" id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های ذخیره‌شده</span></button>
+<button type="button" class="home-card" id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های آنلاین</span></button>
 </div></section>
 <section id="form-view" hidden>
 <button type="button" class="view-back" id="back-from-form">→ بازگشت به منو</button>
@@ -111,23 +139,28 @@ a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}
 <div class="actions">
 <button type="button" class="btn btn-secondary" id="btn-reset">پاک کردن</button>
 <button type="button" class="btn btn-secondary" id="btn-export">خروجی</button>
-<button type="button" class="btn btn-primary" id="btn-save">ذخیره ارزیابی</button>
+<button type="button" class="btn btn-primary" id="btn-save">ذخیره آنلاین</button>
 </div></div>
-<p class="note">برای هر مورد تیک، نمره (۰ تا ۵)، توضیحات و در صورت نیاز فایل را وارد کنید.</p>
+<p class="note">پس از ذخیره، گزارش برای همه کاربران آنلاین قابل مشاهده است.</p>
 <p class="note" id="save-msg"></p>
 </section>
 <section id="records-view" hidden>
 <button type="button" class="view-back" id="back-from-records">→ بازگشت به منو</button>
 <div class="home-title" style="text-align:right;margin-bottom:16px"><h2>گزارش‌های 5S</h2><p>روی هر گزارش بزن تا جزئیات کامل را ببینی</p></div>
 <div id="reports-list" class="reports-list"></div>
-<div id="empty-reports" class="empty-reports" hidden>هنوز گزارشی ذخیره نشده است.</div>
+<div id="empty-reports" class="empty-reports" hidden>هنوز گزارشی ثبت نشده است.</div>
 </section>
 <section id="detail-view" hidden>
 <button type="button" class="view-back" id="back-from-detail">→ بازگشت به لیست گزارش‌ها</button>
 <div id="detail-content"></div>
 </section>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL="https://rtefjfvkjpatzitjjvwe.supabase.co";
+const SUPABASE_KEY="sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null,currentProfile=null,auditsCache=[];
 const WORKSTATIONS=["ورودی","روکش زیرین","سنباده پنل","روکش فوقانی","اوستا باشی پنل","اوستاباشی پروفیل","گزارشگیر","بسته بندی پنل","برش فویل","روکش پروفیل","سنباده پروفیل","فرزه","سلکو","پالت سازی"];
 const PEOPLE=[{id:"7020",name:"Arash Baba"},{id:"7021",name:"Daryoush Kazemkhanloo"},{id:"7022",name:"Mehdi Afashar Vangini"},{id:"7023",name:"Hossein Amandiha"},{id:"7065",name:"Alireza Zolghadr"},{id:"7071",name:"Rahim Ghalandari"},{id:"7083",name:"Mohammad Khalkhali"},{id:"7085",name:"Hossein Taghiloo"},{id:"7088",name:"Mohsen Mirasheh"},{id:"7089",name:"Mohammad Qazvini"},{id:"7092",name:"Saeid Rezaei"},{id:"7111",name:"Mohammadreza Esmaili"},{id:"7118",name:"Alireza Soleymani"},{id:"7152",name:"Amin Rastegar"},{id:"7154",name:"Keykhosro Gurani"},{id:"7196",name:"Hossein Dehghan Nejad"},{id:"7197",name:"Esmaeil Alian"},{id:"7216",name:"Farzin Shali"},{id:"7240",name:"Dariush Hazrati"}];
 const SECTIONS=[
@@ -142,7 +175,7 @@ const sectionsEl=document.getElementById("sections"),totalEl=document.getElement
 const homeView=document.getElementById("home-view"),formView=document.getElementById("form-view"),recordsView=document.getElementById("records-view"),detailView=document.getElementById("detail-view");
 function showHome(){homeView.hidden=false;formView.hidden=true;recordsView.hidden=true;detailView.hidden=true}
 function showForm(){homeView.hidden=true;formView.hidden=false;recordsView.hidden=true;detailView.hidden=true}
-function showRecords(){homeView.hidden=true;formView.hidden=true;recordsView.hidden=false;detailView.hidden=true;renderReports()}
+async function showRecords(){homeView.hidden=true;formView.hidden=true;recordsView.hidden=false;detailView.hidden=true;await renderReports()}
 function showDetail(idx){homeView.hidden=true;formView.hidden=true;recordsView.hidden=true;detailView.hidden=false;renderDetail(idx)}
 document.getElementById("go-new-record").onclick=showForm;
 document.getElementById("go-view-records").onclick=showRecords;
@@ -151,20 +184,28 @@ document.getElementById("back-from-records").onclick=showHome;
 document.getElementById("back-from-detail").onclick=showRecords;
 function fillSelect(sel){sel.innerHTML="";const e=document.createElement("option");e.value="";e.textContent="-- انتخاب کنید --";sel.appendChild(e);PEOPLE.forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=p.id+" — "+p.name;sel.appendChild(o)})}
 function selectedName(sel){const id=sel.value;if(!id)return"";const p=PEOPLE.find(x=>x.id===id);return p?(p.id+" — "+p.name):id}
-function handleFile(row,input){const file=input.files&&input.files[0],preview=row.querySelector("[data-preview]");if(!file){row._attachment=null;if(preview)preview.innerHTML="";return}if(file.size>MAX_FILE_BYTES){alert("حجم فایل بیشتر از ۱٫۵ مگابایت است.");input.value="";return}const reader=new FileReader();reader.onload=()=>{row._attachment={name:file.name,type:file.type||"application/octet-stream",size:file.size,dataUrl:reader.result};renderPreview(row)};reader.onerror=()=>{alert("خواندن فایل ناموفق بود.");input.value=""};reader.readAsDataURL(file)}
-function renderPreview(row){const preview=row.querySelector("[data-preview]");if(!preview)return;const att=row._attachment;if(!att){preview.innerHTML="";return}let h="";if(att.type&&att.type.startsWith("image/")&&att.dataUrl)h+='<img src="'+att.dataUrl+'" alt="پیش‌نمایش">';h+='<a href="'+(att.dataUrl||"#")+'" download="'+(att.name||"file")+'">'+(att.name||"فایل")+'</a>';h+='<button type="button" class="attach-clear" data-clear>حذف فایل</button>';preview.innerHTML=h;const b=preview.querySelector("[data-clear]");if(b)b.onclick=()=>{row._attachment=null;const fi=row.querySelector("[data-file]");if(fi)fi.value="";preview.innerHTML=""}}
-function build(){const wsSel=document.getElementById("workstation");if(wsSel&&wsSel.options.length<=1)WORKSTATIONS.forEach(w=>{const o=document.createElement("option");o.value=w;o.textContent=w;wsSel.appendChild(o)});fillSelect(document.getElementById("operator"));fillSelect(document.getElementById("assistant1"));fillSelect(document.getElementById("assistant2"));fillSelect(document.getElementById("assistant3"));sectionsEl.innerHTML="";let max=0;SECTIONS.forEach(sec=>{max+=sec.items.length*SCORE_MAX;const block=document.createElement("section");block.className="s-block";block.innerHTML='<div class="s-head"><div><h2>'+sec.title+'</h2><div class="sub">'+sec.subtitle+'</div></div><div class="s-score" data-sec-score>۰ / ۰</div></div>';sec.items.forEach((q,i)=>{const row=document.createElement("div");row.className="item";row.innerHTML='<div class="q">'+(i+1)+'- '+q+'</div><label class="check"><input type="checkbox" data-check> انجام شد</label><input type="number" min="0" max="'+SCORE_MAX+'" step="1" value="0" data-score><div class="note-field"><input type="text" data-note placeholder="توضیحات این مورد (اختیاری)"></div><div class="attach-field"><input type="file" data-file accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"><div class="attach-preview" data-preview></div></div>';row.querySelector("[data-file]").addEventListener("change",function(){handleFile(row,this)});block.appendChild(row)});sectionsEl.appendChild(block)});maxEl.textContent=String(max);sectionsEl.addEventListener("input",recalc);sectionsEl.addEventListener("change",recalc);recalc()}
-function recalc(){let total=0;document.querySelectorAll(".s-block").forEach(block=>{let sec=0,secMax=0;block.querySelectorAll("[data-score]").forEach(inp=>{let v=Number(inp.value);if(isNaN(v))v=0;if(v<0)v=0;if(v>SCORE_MAX)v=SCORE_MAX;inp.value=String(v);sec+=v;secMax+=SCORE_MAX});total+=sec;const label=block.querySelector("[data-sec-score]");if(label)label.textContent=sec+" / "+secMax});totalEl.textContent=String(total)}
-function collect(){const data={date:document.getElementById("audit-date").value,workstation:document.getElementById("workstation").value,auditor:document.getElementById("auditor").value,operator:selectedName(document.getElementById("operator")),operatorId:document.getElementById("operator").value,assistants:[selectedName(document.getElementById("assistant1")),selectedName(document.getElementById("assistant2")),selectedName(document.getElementById("assistant3"))].filter(Boolean),assistantIds:[document.getElementById("assistant1").value,document.getElementById("assistant2").value,document.getElementById("assistant3").value].filter(Boolean),total:Number(totalEl.textContent),max:Number(maxEl.textContent),sections:[]};document.querySelectorAll(".s-block").forEach((block,si)=>{const sec=SECTIONS[si],items=[];block.querySelectorAll(".item").forEach((row,ii)=>{const att=row._attachment||null;items.push({question:sec.items[ii],done:row.querySelector("[data-check]").checked,score:Number(row.querySelector("[data-score]").value)||0,note:(row.querySelector("[data-note]")||{}).value||"",fileName:att?att.name:"",fileType:att?att.type:"",fileData:att?att.dataUrl:""})});data.sections.push({key:sec.key,title:sec.title,items})});return data}
-function loadAudits(){try{return JSON.parse(localStorage.getItem("apw_5s_audits")||"[]")}catch(e){return[]}}
-function renderReports(){const listEl=document.getElementById("reports-list"),emptyEl=document.getElementById("empty-reports");listEl.innerHTML="";const list=loadAudits();if(!list.length){emptyEl.hidden=false;return}emptyEl.hidden=true;list.forEach((r,idx)=>{const num=r.reportNo||(list.length-idx);const card=document.createElement("div");card.className="report-card";card.innerHTML='<h4><span class="report-num">شماره '+num+'</span> '+(r.date||"-")+'</h4><p>ایستگاه: '+(r.workstation||"-")+'<br>ارزیاب: '+(r.auditor||"-")+'<br>اپراتور: '+(r.operator||"-")+'<br><span class="score">امتیاز: '+(r.total!=null?r.total:"-")+" از "+(r.max!=null?r.max:"-")+'</span></p><p style="color:#f5a623;font-size:.8rem;margin-top:6px">برای مشاهده کامل بزن ←</p>';card.onclick=function(){showDetail(idx)};listEl.appendChild(card)})}
-function esc(s){return String(s??"").replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">").replace(/"/g,""")}
-function renderDetail(idx){const list=loadAudits();const r=list[idx];const box=document.getElementById("detail-content");if(!r){box.innerHTML="<p>گزارش پیدا نشد.</p>";return}const num=r.reportNo||(list.length-idx);let h='<div class="home-title" style="text-align:right;margin-bottom:12px"><h2>گزارش شماره '+num+'</h2><p>جزئیات کامل ارزیابی</p></div>';h+='<div class="detail-meta">';h+='<div><div class="lbl">شماره گزارش</div><div class="val">'+num+'</div></div>';h+='<div><div class="lbl">تاریخ</div><div class="val">'+esc(r.date||"-")+'</div></div>';h+='<div><div class="lbl">ایستگاه کاری</div><div class="val">'+esc(r.workstation||"-")+'</div></div>';h+='<div><div class="lbl">ارزیاب</div><div class="val">'+esc(r.auditor||"-")+'</div></div>';h+='<div><div class="lbl">اپراتور</div><div class="val">'+esc(r.operator||"-")+'</div></div>';h+='<div><div class="lbl">کمک‌اپراتورها</div><div class="val">'+esc((r.assistants||[]).join("، ")||"-")+'</div></div>';h+='<div><div class="lbl">امتیاز کل</div><div class="val" style="color:#fcd34d">'+(r.total!=null?r.total:"-")+' از '+(r.max!=null?r.max:"-")+'</div></div>';h+='</div>';(r.sections||[]).forEach(function(sec){h+='<div class="detail-section"><h3>'+esc(sec.title||"")+'</h3>';(sec.items||[]).forEach(function(it,i){h+='<div class="detail-item"><div class="q">'+(i+1)+'- '+esc(it.question||"")+'</div>';h+='<div class="meta-row"><span class="badge">'+(it.done?"انجام شد":"انجام نشد")+'</span><span class="badge">نمره: '+(it.score!=null?it.score:"-")+'</span></div>';if(it.note)h+='<div class="note-t">توضیحات: '+esc(it.note)+'</div>';if(it.fileData){if(it.fileType&&it.fileType.startsWith("image/"))h+='<div><img src="'+it.fileData+'" alt="پیوست"></div>';h+='<div style="margin-top:6px"><a style="color:#f5a623" href="'+it.fileData+'" download="'+esc(it.fileName||"file")+'">دانلود فایل: '+esc(it.fileName||"فایل")+'</a></div>'}else if(it.fileName){h+='<div class="note-t">فایل: '+esc(it.fileName)+'</div>'}h+='</div>'});h+='</div>'});box.innerHTML=h}
-document.getElementById("btn-save").onclick=function(){try{const data=collect();data.savedAt=new Date().toISOString();const list=JSON.parse(localStorage.getItem("apw_5s_audits")||"[]");const maxNo=list.reduce(function(m,x){return Math.max(m,Number(x.reportNo)||0)},0);data.reportNo=maxNo+1;list.unshift(data);localStorage.setItem("apw_5s_audits",JSON.stringify(list.slice(0,20)));localStorage.setItem("apw_5s_last",JSON.stringify(data));saveMsg.textContent="ارزیابی ذخیره شد — شماره گزارش: "+data.reportNo;setTimeout(showHome,700)}catch(err){alert("ذخیره ناموفق بود.");console.error(err)}};
-document.getElementById("btn-reset").onclick=function(){if(!confirm("همه نمره‌ها، تیک‌ها و فایل‌ها پاک شود؟"))return;document.querySelectorAll("[data-check]").forEach(function(c){c.checked=false});document.querySelectorAll("[data-score]").forEach(function(s){s.value="0"});document.querySelectorAll("[data-note]").forEach(function(n){n.value=""});document.querySelectorAll("[data-file]").forEach(function(f){f.value=""});document.querySelectorAll(".item").forEach(function(row){row._attachment=null;renderPreview(row)});document.getElementById("workstation").value="";document.getElementById("auditor").value="";["operator","assistant1","assistant2","assistant3"].forEach(function(id){document.getElementById(id).value=""});saveMsg.textContent="";recalc()};
-document.getElementById("btn-export").onclick=function(){const data=collect();const lines=[["شماره",data.reportNo||""],["تاریخ",data.date],["ایستگاه کاری",data.workstation||""],["ارزیاب",data.auditor],["اپراتور",data.operator],["جمع امتیاز",data.total+" از "+data.max],[]];data.sections.forEach(function(sec){lines.push([sec.title]);sec.items.forEach(function(it,i){lines.push([(i+1)+"- "+it.question,it.done?"انجام شد":"—",it.score,it.note||"",it.fileName||""])});lines.push([])});const csv=lines.map(function(r){return r.map(function(c){return '"'+String(c==null?"":c).replace(/"/g,'""')+'"'}).join(",")}).join("\r\n");const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="APW_5S_"+(data.date||"audit")+".csv";document.body.appendChild(a);a.click();a.remove()};
+function handleFile(row,input){const file=input.files&&input.files[0],preview=row.querySelector("[data-preview]");if(!file){row._attachment=null;if(preview)preview.innerHTML="";return}if(file.size>MAX_FILE_BYTES){alert("حجم فایل بیشتر از ۱٫۵ مگابایت است.");input.value="";return}const reader=new FileReader();reader.onload=()=>{row._attachment={name:file.name,type:file.type||"application/octet-stream",size:file.size,dataUrl:reader.result};renderPreview(row)};reader.readAsDataURL(file)}
+function renderPreview(row){const preview=row.querySelector("[data-preview]");if(!preview)return;const att=row._attachment;if(!att){preview.innerHTML="";return}let h="";if(att.type&&att.type.startsWith("image/")&&att.dataUrl)h+='<img src="'+att.dataUrl+'" alt="">' ;h+='<a href="'+(att.dataUrl||"#")+'" download="'+(att.name||"file")+'">'+(att.name||"فایل")+'</a>';h+='<button type="button" class="attach-clear" data-clear>حذف</button>';preview.innerHTML=h;const b=preview.querySelector("[data-clear]");if(b)b.onclick=()=>{row._attachment=null;const fi=row.querySelector("[data-file]");if(fi)fi.value="";preview.innerHTML=""}}
+function build(){const wsSel=document.getElementById("workstation");if(wsSel&&wsSel.options.length<=1)WORKSTATIONS.forEach(w=>{const o=document.createElement("option");o.value=w;o.textContent=w;wsSel.appendChild(o)});fillSelect(document.getElementById("operator"));fillSelect(document.getElementById("assistant1"));fillSelect(document.getElementById("assistant2"));fillSelect(document.getElementById("assistant3"));sectionsEl.innerHTML="";let max=0;SECTIONS.forEach(sec=>{max+=sec.items.length*SCORE_MAX;const block=document.createElement("section");block.className="s-block";block.innerHTML='<div class="s-head"><div><h2>'+sec.title+'</h2><div class="sub">'+sec.subtitle+'</div></div><div class="s-score" data-sec-score>۰ / ۰</div></div>';sec.items.forEach((q,i)=>{const row=document.createElement("div");row.className="item";row.innerHTML='<div class="q">'+(i+1)+'- '+q+'</div><label class="check"><input type="checkbox" data-check> انجام شد</label><input type="number" min="0" max="'+SCORE_MAX+'" value="0" data-score><div class="note-field"><input type="text" data-note placeholder="توضیحات (اختیاری)"></div><div class="attach-field"><input type="file" data-file accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"><div class="attach-preview" data-preview></div></div>';row.querySelector("[data-file]").onchange=function(){handleFile(row,this)};block.appendChild(row)});sectionsEl.appendChild(block)});maxEl.textContent=String(max);sectionsEl.oninput=recalc;sectionsEl.onchange=recalc;recalc()}
+function recalc(){let total=0;document.querySelectorAll(".s-block").forEach(block=>{let sec=0,secMax=0;block.querySelectorAll("[data-score]").forEach(inp=>{let v=Number(inp.value)||0;if(v<0)v=0;if(v>SCORE_MAX)v=SCORE_MAX;inp.value=String(v);sec+=v;secMax+=SCORE_MAX});total+=sec;const label=block.querySelector("[data-sec-score]");if(label)label.textContent=sec+" / "+secMax});totalEl.textContent=String(total)}
+function collect(){const data={date:document.getElementById("audit-date").value,workstation:document.getElementById("workstation").value,auditor:document.getElementById("auditor").value,operator:selectedName(document.getElementById("operator")),operatorId:document.getElementById("operator").value,assistants:[selectedName(document.getElementById("assistant1")),selectedName(document.getElementById("assistant2")),selectedName(document.getElementById("assistant3"))].filter(Boolean),total:Number(totalEl.textContent),max:Number(maxEl.textContent),sections:[]};document.querySelectorAll(".s-block").forEach((block,si)=>{const sec=SECTIONS[si],items=[];block.querySelectorAll(".item").forEach((row,ii)=>{const att=row._attachment||null;items.push({question:sec.items[ii],done:row.querySelector("[data-check]").checked,score:Number(row.querySelector("[data-score]").value)||0,note:(row.querySelector("[data-note]")||{}).value||"",fileName:att?att.name:"",fileType:att?att.type:"",fileData:att?att.dataUrl:""})});data.sections.push({key:sec.key,title:sec.title,items})});return data}
+function mapRow(row){const d=row.details||{};return{id:row.id,reportNo:row.report_no,date:row.audit_date,workstation:row.area||"",auditor:row.auditor||"",operator:row.operator_name||"",assistants:[row.assistant1_name,row.assistant2_name,row.assistant3_name].filter(Boolean),total:row.total_score,max:row.max_score,sections:d.sections||[],createdByName:row.created_by_name||""}}
+async function loadAudits(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(100);if(error){console.error(error);alert("خطا در خواندن: "+error.message+"\nجدول five_s_audits را با فایل 5s/setup.sql در SQL Editor بسازید.");return[]}auditsCache=(data||[]).map(mapRow);return auditsCache}
+async function renderReports(){const listEl=document.getElementById("reports-list"),emptyEl=document.getElementById("empty-reports");listEl.innerHTML="<p style=\"color:#a89a86\">در حال بارگذاری...</p>";const list=await loadAudits();listEl.innerHTML="";if(!list.length){emptyEl.hidden=false;return}emptyEl.hidden=true;list.forEach((r,idx)=>{const num=r.reportNo||(list.length-idx);const card=document.createElement("div");card.className="report-card";card.innerHTML='<h4><span class="report-num">شماره '+num+'</span> '+(r.date||"-")+'</h4><p>ایستگاه: '+(r.workstation||"-")+'<br>ارزیاب: '+(r.auditor||"-")+'<br>اپراتور: '+(r.operator||"-")+'<br><span class="score">امتیاز: '+(r.total!=null?r.total:"-")+' از '+(r.max!=null?r.max:"-")+'</span></p><p style="color:#f5a623;font-size:.8rem;margin-top:6px">مشاهده کامل ←</p>';card.onclick=function(){showDetail(idx)};listEl.appendChild(card)})}
+function esc(s){return String(s??"").replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">")}
+function renderDetail(idx){const r=auditsCache[idx];const box=document.getElementById("detail-content");if(!r){box.innerHTML="<p>یافت نشد</p>";return}const num=r.reportNo||"-";let h='<div class="home-title" style="text-align:right;margin-bottom:12px"><h2>گزارش شماره '+num+'</h2></div><div class="detail-meta">';h+='<div><div class="lbl">شماره</div><div class="val">'+num+'</div></div>';h+='<div><div class="lbl">تاریخ</div><div class="val">'+esc(r.date)+'</div></div>';h+='<div><div class="lbl">ایستگاه</div><div class="val">'+esc(r.workstation)+'</div></div>';h+='<div><div class="lbl">ارزیاب</div><div class="val">'+esc(r.auditor)+'</div></div>';h+='<div><div class="lbl">اپراتور</div><div class="val">'+esc(r.operator)+'</div></div>';h+='<div><div class="lbl">کمک‌اپراتور</div><div class="val">'+esc((r.assistants||[]).join("، ")||"-")+'</div></div>';h+='<div><div class="lbl">امتیاز</div><div class="val" style="color:#fcd34d">'+r.total+' از '+r.max+'</div></div></div>';(r.sections||[]).forEach(function(sec){h+='<div class="detail-section"><h3>'+esc(sec.title)+'</h3>';(sec.items||[]).forEach(function(it,i){h+='<div class="detail-item"><div class="q">'+(i+1)+'- '+esc(it.question)+'</div><div class="meta-row"><span class="badge">'+(it.done?"انجام شد":"انجام نشد")+'</span><span class="badge">نمره: '+(it.score??"-")+'</span></div>';if(it.note)h+='<div class="note-t">'+esc(it.note)+'</div>';if(it.fileData){if(it.fileType&&it.fileType.indexOf("image")===0)h+='<div><img src="'+it.fileData+'"></div>';h+='<div><a style="color:#f5a623" href="'+it.fileData+'" download="'+esc(it.fileName||"file")+'">دانلود: '+esc(it.fileName||"فایل")+'</a></div>'}h+='</div>'});h+='</div>'});box.innerHTML=h}
+document.getElementById("btn-save").onclick=async function(){if(!currentUser){alert("وارد شوید");return}try{const data=collect();saveMsg.textContent="در حال ذخیره آنلاین...";const {data:maxRows}=await supabaseClient.from("five_s_audits").select("report_no").order("report_no",{ascending:false}).limit(1);const nextNo=((maxRows&&maxRows[0]&&maxRows[0].report_no)||0)+1;const asstIds=[document.getElementById("assistant1").value,document.getElementById("assistant2").value,document.getElementById("assistant3").value];const asstNames=[selectedName(document.getElementById("assistant1")),selectedName(document.getElementById("assistant2")),selectedName(document.getElementById("assistant3"))];const row={report_no:nextNo,audit_date:data.date||null,area:data.workstation||null,auditor:data.auditor||null,operator_id:data.operatorId||null,operator_name:data.operator||null,assistant1_id:asstIds[0]||null,assistant1_name:asstNames[0]||null,assistant2_id:asstIds[1]||null,assistant2_name:asstNames[1]||null,assistant3_id:asstIds[2]||null,assistant3_name:asstNames[2]||null,total_score:data.total||0,max_score:data.max||0,details:{sections:data.sections},created_by:currentUser.id,created_by_name:(currentProfile&&(currentProfile.full_name||currentProfile.username))||""};const {error}=await supabaseClient.from("five_s_audits").insert(row);if(error)throw error;saveMsg.textContent="ذخیره آنلاین شد — شماره: "+nextNo;setTimeout(showHome,700)}catch(err){console.error(err);alert("ذخیره ناموفق: "+(err.message||err)+"\nsetup.sql را در Supabase اجرا کنید.");saveMsg.textContent=""}};
+document.getElementById("btn-reset").onclick=function(){if(!confirm("پاک شود؟"))return;document.querySelectorAll("[data-check]").forEach(c=>c.checked=false);document.querySelectorAll("[data-score]").forEach(s=>s.value="0");document.querySelectorAll("[data-note]").forEach(n=>n.value="");document.querySelectorAll("[data-file]").forEach(f=>f.value="");document.querySelectorAll(".item").forEach(row=>{row._attachment=null;renderPreview(row)});document.getElementById("workstation").value="";document.getElementById("auditor").value="";["operator","assistant1","assistant2","assistant3"].forEach(id=>document.getElementById(id).value="");saveMsg.textContent="";recalc()};
+document.getElementById("btn-export").onclick=function(){const data=collect();const lines=[["تاریخ",data.date],["ایستگاه",data.workstation],["ارزیاب",data.auditor],["اپراتور",data.operator],["امتیاز",data.total+"/"+data.max],[]];data.sections.forEach(sec=>{lines.push([sec.title]);sec.items.forEach((it,i)=>lines.push([(i+1)+" "+it.question,it.score,it.note||""]));lines.push([])});const csv=lines.map(r=>r.map(c=>'"'+String(c??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\uFEFF",csv],{type:"text/csv"}));a.download="APW_5S.csv";a.click()};
+function normalizeUsername(v){v=String(v||"").trim().toLowerCase();return ({'mehdi-soltani':'mahdi-soltani','mehdi-afshar':'mahdi-afshar'})[v]||v}
+async function loadProfile(user){const {data}=await supabaseClient.from("user_profiles").select("*").eq("id",user.id).maybeSingle();currentProfile=data;const label=document.getElementById("current-user-label");if(label)label.textContent=(data&&(data.full_name||data.username))||user.email||"کاربر"}
+function showApp(){document.getElementById("login-page").style.display="none";document.getElementById("app-header").style.display="";document.getElementById("app-main").style.display=""}
+function showLogin(){document.getElementById("login-page").style.display="";document.getElementById("app-header").style.display="none";document.getElementById("app-main").style.display="none"}
+document.getElementById("login-form").onsubmit=async function(e){e.preventDefault();const errEl=document.getElementById("login-error");errEl.textContent="";const username=normalizeUsername(document.getElementById("loginUser").value);const password=document.getElementById("loginPass").value;try{const {data,error}=await supabaseClient.auth.signInWithPassword({email:username+"@people-manager.invalid",password});if(error)throw error;currentUser=data.user;await loadProfile(currentUser);showApp()}catch(err){errEl.textContent="ورود ناموفق: "+(err.message||"خطا")}};
+document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();currentUser=null;showLogin()};
 document.getElementById("audit-date").value=new Date().toISOString().slice(0,10);
 build();
+(async function(){const {data:{session}}=await supabaseClient.auth.getSession();if(session&&session.user){currentUser=session.user;await loadProfile(currentUser);showApp()}else showLogin()})();
 </script>
 </body>
 </html>
