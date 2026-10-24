@@ -29,12 +29,14 @@
     .s-head h2{font-size:1.05rem;color:#f5a623}
     .s-head .sub{font-size:.8rem;color:#a89a86;width:100%}
     .s-score{font-size:.9rem;font-weight:700;color:#fcd34d}
-    .item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid #2f2920}
+    .item{display:grid;grid-template-columns:1fr auto auto;gap:8px 10px;align-items:center;padding:12px 16px;border-bottom:1px solid #2f2920}
     .item:last-child{border-bottom:none}
     .item .q{font-size:.9rem}
     .item label.check{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#cbbfaa;white-space:nowrap}
     .item input[type=checkbox]{width:18px;height:18px;accent-color:#f5a623}
     .item input[type=number]{width:72px;padding:8px;border-radius:8px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;text-align:center}
+    .item .note-field{grid-column:1 / -1}
+    .item .note-field input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #4a4030;background:#16120e;color:#f5f0e8;font-family:inherit;font-size:.85rem}
     .summary{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:#1e1a14;border:1px solid #3d3428;border-radius:12px;padding:14px 16px;margin:18px 0}
     .summary strong{color:#f5a623;font-size:1.15rem}
     .actions{display:flex;flex-wrap:wrap;gap:10px}
@@ -42,7 +44,7 @@
     .btn-primary{background:#f5a623;color:#1a1208}
     .btn-secondary{background:#3a3226;color:#ebe3d4;border:1px solid #4a4034}
     .note{font-size:.82rem;color:#a89a86;margin-top:8px}
-    @media(max-width:640px){.item{grid-template-columns:1fr;gap:8px}.item input[type=number]{width:100%}}
+    @media(max-width:640px){.item{grid-template-columns:1fr;gap:8px}.item input[type=number]{width:100%}.item .note-field{grid-column:1}}
   </style>
 </head>
 <body>
@@ -73,22 +75,10 @@
     <div class="people-box">
       <h3>نفرات حاضر در ارزیابی</h3>
       <div class="people-grid">
-        <div>
-          <label>اپراتور (۱ نفر)</label>
-          <select id="operator"></select>
-        </div>
-        <div>
-          <label>کمک‌اپراتور ۱</label>
-          <select id="assistant1"></select>
-        </div>
-        <div>
-          <label>کمک‌اپراتور ۲</label>
-          <select id="assistant2"></select>
-        </div>
-        <div>
-          <label>کمک‌اپراتور ۳</label>
-          <select id="assistant3"></select>
-        </div>
+        <div><label>اپراتور (۱ نفر)</label><select id="operator"></select></div>
+        <div><label>کمک‌اپراتور ۱</label><select id="assistant1"></select></div>
+        <div><label>کمک‌اپراتور ۲</label><select id="assistant2"></select></div>
+        <div><label>کمک‌اپراتور ۳</label><select id="assistant3"></select></div>
       </div>
     </div>
 
@@ -101,7 +91,7 @@
         <button type="button" class="btn btn-primary" id="btn-save">ذخیره ارزیابی</button>
       </div>
     </div>
-    <p class="note">برای هر مورد تیک وضعیت و نمره (۰ تا ۵) را وارد کنید.</p>
+    <p class="note">برای هر مورد تیک، نمره (۰ تا ۵) و در صورت نیاز توضیحات را وارد کنید.</p>
     <p class="note" id="save-msg"></p>
   </main>
   <script>
@@ -149,20 +139,17 @@
     function fillSelect(sel) {
       sel.innerHTML = "";
       const empty = document.createElement("option");
-      empty.value = "";
-      empty.textContent = "-- انتخاب کنید --";
+      empty.value = ""; empty.textContent = "-- انتخاب کنید --";
       sel.appendChild(empty);
       PEOPLE.forEach((p) => {
         const o = document.createElement("option");
-        o.value = p.id;
-        o.textContent = p.id + " — " + p.name;
+        o.value = p.id; o.textContent = p.id + " — " + p.name;
         sel.appendChild(o);
       });
     }
 
     function selectedName(sel) {
-      const id = sel.value;
-      if (!id) return "";
+      const id = sel.value; if (!id) return "";
       const p = PEOPLE.find((x) => x.id === id);
       return p ? (p.id + " — " + p.name) : id;
     }
@@ -172,7 +159,6 @@
       fillSelect(document.getElementById("assistant1"));
       fillSelect(document.getElementById("assistant2"));
       fillSelect(document.getElementById("assistant3"));
-
       sectionsEl.innerHTML = "";
       let max = 0;
       SECTIONS.forEach((sec) => {
@@ -183,7 +169,7 @@
         sec.items.forEach((q, i) => {
           const row = document.createElement("div");
           row.className = "item";
-          row.innerHTML = '<div class="q">' + (i+1) + '- ' + q + '</div><label class="check"><input type="checkbox" data-check> انجام شد</label><input type="number" min="0" max="' + SCORE_MAX + '" step="1" value="0" data-score>';
+          row.innerHTML = '<div class="q">' + (i+1) + '- ' + q + '</div><label class="check"><input type="checkbox" data-check> انجام شد</label><input type="number" min="0" max="' + SCORE_MAX + '" step="1" value="0" data-score><div class="note-field"><input type="text" data-note placeholder="توضیحات این مورد (اختیاری)"></div>';
           block.appendChild(row);
         });
         sectionsEl.appendChild(block);
@@ -216,16 +202,8 @@
         auditor: document.getElementById("auditor").value,
         operator: selectedName(document.getElementById("operator")),
         operatorId: document.getElementById("operator").value,
-        assistants: [
-          selectedName(document.getElementById("assistant1")),
-          selectedName(document.getElementById("assistant2")),
-          selectedName(document.getElementById("assistant3"))
-        ].filter(Boolean),
-        assistantIds: [
-          document.getElementById("assistant1").value,
-          document.getElementById("assistant2").value,
-          document.getElementById("assistant3").value
-        ].filter(Boolean),
+        assistants: [selectedName(document.getElementById("assistant1")), selectedName(document.getElementById("assistant2")), selectedName(document.getElementById("assistant3"))].filter(Boolean),
+        assistantIds: [document.getElementById("assistant1").value, document.getElementById("assistant2").value, document.getElementById("assistant3").value].filter(Boolean),
         total: Number(totalEl.textContent),
         max: Number(maxEl.textContent),
         sections: []
@@ -233,7 +211,12 @@
       document.querySelectorAll(".s-block").forEach((block, si) => {
         const sec = SECTIONS[si]; const items = [];
         block.querySelectorAll(".item").forEach((row, ii) => {
-          items.push({ question: sec.items[ii], done: row.querySelector("[data-check]").checked, score: Number(row.querySelector("[data-score]").value) || 0 });
+          items.push({
+            question: sec.items[ii],
+            done: row.querySelector("[data-check]").checked,
+            score: Number(row.querySelector("[data-score]").value) || 0,
+            note: (row.querySelector("[data-note]") || {}).value || ""
+          });
         });
         data.sections.push({ key: sec.key, title: sec.title, items });
       });
@@ -253,6 +236,7 @@
       if (!confirm("همه نمره‌ها و تیک‌ها پاک شود؟")) return;
       document.querySelectorAll("[data-check]").forEach((c) => { c.checked = false; });
       document.querySelectorAll("[data-score]").forEach((s) => { s.value = "0"; });
+      document.querySelectorAll("[data-note]").forEach((n) => { n.value = ""; });
       document.getElementById("area").value = "";
       document.getElementById("auditor").value = "";
       ["operator","assistant1","assistant2","assistant3"].forEach((id) => { document.getElementById(id).value = ""; });
@@ -272,7 +256,9 @@
       ];
       data.sections.forEach((sec) => {
         lines.push([sec.title]);
-        sec.items.forEach((it, i) => { lines.push([(i+1) + "- " + it.question, it.done ? "انجام شد" : "—", it.score]); });
+        sec.items.forEach((it, i) => {
+          lines.push([(i+1) + "- " + it.question, it.done ? "انجام شد" : "—", it.score, it.note || ""]);
+        });
         lines.push([]);
       });
       const csv = lines.map((r) => r.map((c) => '"' + String(c ?? "").replace(/"/g, '""') + '"').join(",")).join("\r\n");
@@ -302,6 +288,8 @@
             const row = block.querySelectorAll(".item")[ii]; if (!row) return;
             row.querySelector("[data-check]").checked = !!it.done;
             row.querySelector("[data-score]").value = String(it.score ?? 0);
+            const noteEl = row.querySelector("[data-note]");
+            if (noteEl) noteEl.value = it.note || "";
           });
         });
         recalc();
