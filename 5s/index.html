@@ -40,6 +40,20 @@
     html = html.replace('a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}',
       'a.back,.view-back{display:inline-flex!important;align-items:center;gap:8px;background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;font-size:.95rem!important;padding:11px 18px!important;border-radius:12px!important;border:none!important;text-decoration:none!important;box-shadow:0 8px 22px rgba(245,166,35,.35)!important}');
     html = html.replace('>← بازگشت</a>', '>← صفحه اصلی</a>');
+    // کارت گزارش تحلیلی در منوی اصلی 5S
+    if (html.indexOf("analytics.html") === -1) {
+      html = html.replace(
+        'id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های آنلاین</span></button>\n</div></section>',
+        'id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های آنلاین</span></button>\n<a class="home-card" href="analytics.html" style="text-decoration:none"><div class="home-icon">📊</div><h3>گزارش تحلیلی</h3><span>آنالیز نفرات و ایستگاه‌ها</span></a>\n</div></section>'
+      );
+      // اگر الگوی بالا جور نبود، الگوی ساده‌تر
+      if (html.indexOf("analytics.html") === -1) {
+        html = html.replace(
+          "</div></section>\n<section id=\"form-view\"",
+          '<a class="home-card" href="analytics.html" style="text-decoration:none"><div class="home-icon">📊</div><h3>گزارش تحلیلی</h3><span>آنالیز نفرات و ایستگاه‌ها</span></a></div></section>\n<section id="form-view"'
+        );
+      }
+    }
     document.open();
     document.write(html);
     document.close();
