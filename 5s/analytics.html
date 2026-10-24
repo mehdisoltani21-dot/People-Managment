@@ -230,5 +230,6 @@ document.getElementById("btn-export-ws").onclick=function(){const map={};filtere
 document.getElementById("btn-export-raw").onclick=function(){if(!filtered.length){alert("داده‌ای نیست");return}downloadCsv("5S_Reports_"+new Date().toISOString().slice(0,10)+".csv",["شماره","تاریخ","ایستگاه","ارزیاب","اپراتور","کمک‌ها","امتیاز","حداکثر","درصد"],filtered.map(function(r){return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,(r.assistants||[]).join(" | "),r.total,r.max,r.percent]}))};
 (async function(){const {data}=await supabaseClient.auth.getSession();if(data.session&&data.session.user){const email=data.session.user.email||"";const u=email.replace("@people-manager.invalid","");currentUser={id:data.session.user.id,name:NAMES[u]||u,username:u};showApp();await loadData()}else showLogin()})();
 </script>
+<script src="./analytics-template.js"></script>
 </body>
 </html>
