@@ -20,7 +20,10 @@
     .wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
     .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:18px}
     .meta label{display:block;font-size:.8rem;color:#a89a86;margin-bottom:4px}
-    .meta input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;font-size:.92rem}
+    .meta input,.meta select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;font-size:.92rem}
+    .people-box{background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:18px}
+    .people-box h3{font-size:1rem;color:#f5a623;margin-bottom:12px}
+    .people-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
     .s-block{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:14px;margin-bottom:16px;overflow:hidden}
     .s-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 16px;background:#2e261c;border-bottom:1px solid #3d3428}
     .s-head h2{font-size:1.05rem;color:#f5a623}
@@ -58,6 +61,29 @@
       <div><label>منطقه / ایستگاه</label><input type="text" id="area" placeholder="مثلاً خط برش / انبار"></div>
       <div><label>ارزیاب</label><input type="text" id="auditor" placeholder="نام ارزیاب"></div>
     </div>
+
+    <div class="people-box">
+      <h3>نفرات حاضر در ارزیابی</h3>
+      <div class="people-grid">
+        <div>
+          <label>اپراتور (۱ نفر)</label>
+          <select id="operator"></select>
+        </div>
+        <div>
+          <label>کمک‌اپراتور ۱</label>
+          <select id="assistant1"></select>
+        </div>
+        <div>
+          <label>کمک‌اپراتور ۲</label>
+          <select id="assistant2"></select>
+        </div>
+        <div>
+          <label>کمک‌اپراتور ۳</label>
+          <select id="assistant3"></select>
+        </div>
+      </div>
+    </div>
+
     <div id="sections"></div>
     <div class="summary">
       <div>جمع امتیاز: <strong id="total-score">0</strong> از <span id="max-score">0</span></div>
@@ -71,6 +97,29 @@
     <p class="note" id="save-msg"></p>
   </main>
   <script>
+    // همان لیست نفرات سامانه مدیریت نفرات
+    const PEOPLE = [
+      { id: "7020", name: "Arash Baba" },
+      { id: "7021", name: "Daryoush Kazemkhanloo" },
+      { id: "7022", name: "Mehdi Afashar Vangini" },
+      { id: "7023", name: "Hossein Amandiha" },
+      { id: "7065", name: "Alireza Zolghadr" },
+      { id: "7071", name: "Rahim Ghalandari" },
+      { id: "7083", name: "Mohammad Khalkhali" },
+      { id: "7085", name: "Hossein Taghiloo" },
+      { id: "7088", name: "Mohsen Mirasheh" },
+      { id: "7089", name: "Mohammad Qazvini" },
+      { id: "7092", name: "Saeid Rezaei" },
+      { id: "7111", name: "Mohammadreza Esmaili" },
+      { id: "7118", name: "Alireza Soleymani" },
+      { id: "7152", name: "Amin Rastegar" },
+      { id: "7154", name: "Keykhosro Gurani" },
+      { id: "7196", name: "Hossein Dehghan Nejad" },
+      { id: "7197", name: "Esmaeil Alian" },
+      { id: "7216", name: "Farzin Shali" },
+      { id: "7240", name: "Dariush Hazrati" }
+    ];
+
     const SECTIONS = [
       { key:"seiri", title:"۱) جداسازی (Seiri)", subtitle:"تشخیص موارد ضروری و غیر ضروری — مرتب‌سازی و دور ریختن موارد غیر ضروری",
         items:["آیا تجهیزات غیر ضروری وجود دارد؟","آیا مستندات غیرضروری در دیوارها / محیط کاری و غیره وجود دارد؟","آیا لوازم، قطعات یا مواد غیرضروری وجود دارد؟ (کش‌ها / کابینت‌ها / سطوح کار / محل‌های ذخیره‌سازی)"] },
@@ -83,13 +132,40 @@
       { key:"shitsuke", title:"۵) انضباط (Shitsuke)", subtitle:"پایبندی به قوانین (انضباط شخصی) — برنامه‌های پایداری برای اطمینان از اجرای 5S",
         items:["همه درگیر فعالیت‌های بهسازی هستند؟","روش‌های استاندارد تمیز کردن رعایت و نگهداری می‌شود؟"] }
     ];
+
     const SCORE_MAX = 5;
     const sectionsEl = document.getElementById("sections");
     const totalEl = document.getElementById("total-score");
     const maxEl = document.getElementById("max-score");
     const saveMsg = document.getElementById("save-msg");
 
+    function fillSelect(sel, optional) {
+      sel.innerHTML = "";
+      const empty = document.createElement("option");
+      empty.value = "";
+      empty.textContent = optional ? "-- انتخاب کنید --" : "-- انتخاب کنید --";
+      sel.appendChild(empty);
+      PEOPLE.forEach((p) => {
+        const o = document.createElement("option");
+        o.value = p.id;
+        o.textContent = p.id + " — " + p.name;
+        sel.appendChild(o);
+      });
+    }
+
+    function selectedName(sel) {
+      const id = sel.value;
+      if (!id) return "";
+      const p = PEOPLE.find((x) => x.id === id);
+      return p ? (p.id + " — " + p.name) : id;
+    }
+
     function build() {
+      fillSelect(document.getElementById("operator"), true);
+      fillSelect(document.getElementById("assistant1"), true);
+      fillSelect(document.getElementById("assistant2"), true);
+      fillSelect(document.getElementById("assistant3"), true);
+
       sectionsEl.innerHTML = "";
       let max = 0;
       SECTIONS.forEach((sec) => {
@@ -127,7 +203,26 @@
     }
 
     function collect() {
-      const data = { date: document.getElementById("audit-date").value, area: document.getElementById("area").value.trim(), auditor: document.getElementById("auditor").value.trim(), total: Number(totalEl.textContent), max: Number(maxEl.textContent), sections: [] };
+      const data = {
+        date: document.getElementById("audit-date").value,
+        area: document.getElementById("area").value.trim(),
+        auditor: document.getElementById("auditor").value.trim(),
+        operator: selectedName(document.getElementById("operator")),
+        operatorId: document.getElementById("operator").value,
+        assistants: [
+          selectedName(document.getElementById("assistant1")),
+          selectedName(document.getElementById("assistant2")),
+          selectedName(document.getElementById("assistant3"))
+        ].filter(Boolean),
+        assistantIds: [
+          document.getElementById("assistant1").value,
+          document.getElementById("assistant2").value,
+          document.getElementById("assistant3").value
+        ].filter(Boolean),
+        total: Number(totalEl.textContent),
+        max: Number(maxEl.textContent),
+        sections: []
+      };
       document.querySelectorAll(".s-block").forEach((block, si) => {
         const sec = SECTIONS[si]; const items = [];
         block.querySelectorAll(".item").forEach((row, ii) => {
@@ -153,13 +248,24 @@
       document.querySelectorAll("[data-score]").forEach((s) => { s.value = "0"; });
       document.getElementById("area").value = "";
       document.getElementById("auditor").value = "";
+      ["operator","assistant1","assistant2","assistant3"].forEach((id) => { document.getElementById(id).value = ""; });
       saveMsg.textContent = "";
       recalc();
     });
 
     document.getElementById("btn-export").addEventListener("click", () => {
       const data = collect();
-      const lines = [["تاریخ", data.date],["منطقه", data.area],["ارزیاب", data.auditor],["جمع امتیاز", data.total + " از " + data.max],[ ]];
+      const lines = [
+        ["تاریخ", data.date],
+        ["منطقه", data.area],
+        ["ارزیاب", data.auditor],
+        ["اپراتور", data.operator],
+        ["کمک‌اپراتور ۱", data.assistants[0] || ""],
+        ["کمک‌اپراتور ۲", data.assistants[1] || ""],
+        ["کمک‌اپراتور ۳", data.assistants[2] || ""],
+        ["جمع امتیاز", data.total + " از " + data.max],
+        []
+      ];
       data.sections.forEach((sec) => {
         lines.push([sec.title]);
         sec.items.forEach((it, i) => { lines.push([(i+1) + "- " + it.question, it.done ? "انجام شد" : "—", it.score]); });
@@ -175,20 +281,28 @@
 
     document.getElementById("audit-date").value = new Date().toISOString().slice(0, 10);
     build();
-    try { const last = JSON.parse(localStorage.getItem("apw_5s_last") || "null"); if (last) {
-      if (last.date) document.getElementById("audit-date").value = last.date;
-      if (last.area) document.getElementById("area").value = last.area;
-      if (last.auditor) document.getElementById("auditor").value = last.auditor;
-      (last.sections || []).forEach((sec, si) => {
-        const block = document.querySelectorAll(".s-block")[si]; if (!block) return;
-        (sec.items || []).forEach((it, ii) => {
-          const row = block.querySelectorAll(".item")[ii]; if (!row) return;
-          row.querySelector("[data-check]").checked = !!it.done;
-          row.querySelector("[data-score]").value = String(it.score ?? 0);
+    try {
+      const last = JSON.parse(localStorage.getItem("apw_5s_last") || "null");
+      if (last) {
+        if (last.date) document.getElementById("audit-date").value = last.date;
+        if (last.area) document.getElementById("area").value = last.area;
+        if (last.auditor) document.getElementById("auditor").value = last.auditor;
+        if (last.operatorId) document.getElementById("operator").value = last.operatorId;
+        (last.assistantIds || []).forEach((id, i) => {
+          const el = document.getElementById("assistant" + (i + 1));
+          if (el && id) el.value = id;
         });
-      });
-      recalc();
-    }} catch (e) {}
+        (last.sections || []).forEach((sec, si) => {
+          const block = document.querySelectorAll(".s-block")[si]; if (!block) return;
+          (sec.items || []).forEach((it, ii) => {
+            const row = block.querySelectorAll(".item")[ii]; if (!row) return;
+            row.querySelector("[data-check]").checked = !!it.done;
+            row.querySelector("[data-score]").value = String(it.score ?? 0);
+          });
+        });
+        recalc();
+      }
+    } catch (e) {}
   </script>
 </body>
 </html>
