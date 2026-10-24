@@ -35,8 +35,11 @@
     );
     html = html.split("const r=auditsCache[idx]").join("const r=window.auditsCache[idx]");
     if (html.indexOf("report-view.js") === -1) {
-      html = html.replace("</body>", '<script src="report-view.js?v=3"></' + 'script></body>');
+      html = html.replace("</body>", '<script src="report-view.js?v=4"></' + 'script></body>');
     }
+    html = html.replace('a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}',
+      'a.back,.view-back{display:inline-flex!important;align-items:center;gap:8px;background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;font-size:.95rem!important;padding:11px 18px!important;border-radius:12px!important;border:none!important;text-decoration:none!important;box-shadow:0 8px 22px rgba(245,166,35,.35)!important}');
+    html = html.replace('>← بازگشت</a>', '>← صفحه اصلی</a>');
     document.open();
     document.write(html);
     document.close();
