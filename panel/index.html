@@ -204,7 +204,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../script.js?v=12"></script>
+  <script src="../script.js?v=13"></script>
   <script src="../access.js?v=5"></script>
   <script>
     (() => {
@@ -233,6 +233,14 @@
         if (formView) formView.hidden = true;
         if (panel) panel.hidden = false;
       }
+
+      // با زدن ویرایش، فرم را باز کن
+      document.addEventListener("click", (e) => {
+        const t = e.target;
+        if (t && (t.classList.contains("btn-edit") || (t.closest && t.closest(".btn-edit")))) {
+          setTimeout(() => { showForm(); }, 30);
+        }
+      });
 
       goNew && goNew.addEventListener("click", showForm);
       goView && goView.addEventListener("click", showRecords);
