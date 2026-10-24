@@ -1,1 +1,34 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5a623">
+<title>مدیریت 5S | APW</title>
+</head>
+<body style="font-family:Tahoma,sans-serif;background:#14110c;color:#f5f0e8;display:flex;align-items:center;justify-content:center;min-height:100vh">
+<p>در حال بارگذاری سامانه 5S...</p>
+<script>
+(async function () {
+  try {
+    var url = "https://cdn.jsdelivr.net/gh/mehdisoltani21-dot/People-Managment@81561232a3838886ce9be1846dad0b2660c8aef2/5s/index.html";
+    var res = await fetch(url);
+    var html = await res.text();
+    html = html.replace(/let currentUser=null,currentProfile=null,auditsCache=\[\];/,
+      "let currentUser=null,currentProfile=null;window.auditsCache=[];");
+    html = html.replace(/auditsCache=\(data\|\|\[\]\)\.map\(mapRow\);return auditsCache/,
+      "window.auditsCache=(data||[]).map(mapRow);return window.auditsCache");
+    html = html.replace(/const r=auditsCache\[idx\]/g, "const r=window.auditsCache[idx]");
+    if (html.indexOf("report-view.js") === -1) {
+      html = html.replace("</body>", "<script src=\"report-view.js?v=2\"><\\/script></body>");
+    }
+    document.open();
+    document.write(html);
+    document.close();
+  } catch (e) {
+    document.body.innerHTML = "<p style=\"color:#f87171\">خطا در بارگذاری. صفحه را رفرش کنید.</p><pre>" + e + "</pre>";
+  }
+})();
+</script>
+</body>
+</html>
