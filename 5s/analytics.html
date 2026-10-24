@@ -57,6 +57,7 @@ tbody tr:hover{background:#2c2418}
 .empty{text-align:center;padding:40px 16px;color:#a89a86}
 .hint{font-size:.82rem;color:#a89a86;margin-top:8px}
 </style>
+<script src="../gate.js?v=1"></script>
 </head>
 <body>
 <section id="login-page" class="login-page">
@@ -189,12 +190,11 @@ tbody tr:hover{background:#2c2418}
 const SUPABASE_URL="https://rtefjfvkjpatzitjjvwe.supabase.co";
 const SUPABASE_KEY="sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const PASSWORDS={"mehdi-soltani":"Ms136810","masoud-kazemi":"Mk133320","mehdi-afshar":"Ma123456","arash-baba":"Ab144420"};
 const NAMES={"mehdi-soltani":"مهدی سلطانی","masoud-kazemi":"مسعود کاظمی","mehdi-afshar":"مهدی افشار","arash-baba":"آرش بابا"};
 let currentUser=null,allRows=[],filtered=[];
 function showLogin(){document.getElementById("login-page").style.display="";document.getElementById("app-header").style.display="none";document.getElementById("app-main").style.display="none"}
 function showApp(){document.getElementById("login-page").style.display="none";document.getElementById("app-header").style.display="";document.getElementById("app-main").style.display="";document.getElementById("current-user-label").textContent=currentUser&&currentUser.name||"کاربر"}
-document.getElementById("login-form").onsubmit=async function(e){e.preventDefault();const err=document.getElementById("login-error");err.textContent="در حال ورود...";const u=document.getElementById("loginUser").value;const p=document.getElementById("loginPass").value;const pass=PASSWORDS[u];if(!pass||p!==pass){err.textContent="نام کاربری یا رمز اشتباه است.";return}const email=u+"@people-manager.invalid";const {data,error}=await supabaseClient.auth.signInWithPassword({email:email,password:pass});if(error||!data.user){err.textContent="ورود ناموفق: "+(error&&error.message||"");return}currentUser={id:data.user.id,name:NAMES[u]||u,username:u};showApp();await loadData()};
+document.getElementById("login-form").onsubmit=async function(e){e.preventDefault();const err=document.getElementById("login-error");err.textContent="در حال ورود...";const u=document.getElementById("loginUser").value;const p=document.getElementById("loginPass").value;const pass=p;const email=u+"@people-manager.invalid";const {data,error}=await supabaseClient.auth.signInWithPassword({email:email,password:pass});if(error||!data.user){err.textContent="ورود ناموفق: "+(error&&error.message||"");return}currentUser={id:data.user.id,name:NAMES[u]||u,username:u};showApp();await loadData()};
 document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();currentUser=null;allRows=[];filtered=[];showLogin()};
 function pct(total,max){if(!max)return 0;return Math.round((Number(total)/Number(max))*1000)/10}
 function scoreClass(p){if(p>=80)return "score-good";if(p>=60)return "score-mid";return "score-low"}

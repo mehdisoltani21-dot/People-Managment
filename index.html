@@ -92,6 +92,26 @@
     }
     .install-btn.show{display:inline-flex}
     footer{position:absolute;bottom:1.1rem;left:0;right:0;text-align:center;font-size:.78rem;color:rgba(255,255,255,.35)}
+    .login-form{display:flex;flex-direction:column;gap:12px;text-align:right}
+    .login-form label{font-size:.85rem;color:#d4c8b0;margin-bottom:-4px}
+    .login-form select,.login-form input{
+      width:100%;font-family:inherit;font-size:1rem;color:#f5f0e8;
+      background:#16120e;border:1px solid #4a4030;border-radius:12px;padding:.8rem .9rem;outline:none
+    }
+    .login-form select:focus,.login-form input:focus{border-color:#f5a623;box-shadow:0 0 0 3px rgba(245,166,35,.18)}
+    .login-btn{
+      margin-top:6px;font-family:inherit;font-size:1rem;font-weight:800;color:#1a1208;cursor:pointer;
+      background:linear-gradient(135deg,#f7b543,#e8910f);border:none;border-radius:12px;padding:.85rem;
+      box-shadow:0 10px 24px rgba(245,166,35,.3)
+    }
+    .login-btn:disabled{opacity:.6;cursor:wait}
+    .login-msg{min-height:1.2em;font-size:.85rem;color:#f5a623;text-align:center}
+    .user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-.35rem 0 1rem;padding:.6rem .8rem;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid #3d3428}
+    .user-row .who{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:8px}
+    .user-row .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
+    .user-row .role{font-size:.72rem;font-weight:700;color:#f5c56a;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);border-radius:999px;padding:2px 8px}
+    .logout{font-family:inherit;font-size:.8rem;font-weight:700;color:#f5a623;background:transparent;border:1px solid rgba(245,166,35,.45);border-radius:9px;padding:.4rem .8rem;cursor:pointer}
+    [hidden]{display:none!important}
   </style>
 </head>
 <body>
@@ -104,7 +124,25 @@
 
     <div class="panel">
       <h1 class="panel-title">سامانه‌های مدیریت تولید</h1>
-      <nav class="menu">
+      <form id="login-form" class="login-form" hidden>
+        <label for="loginUser">نام کاربری</label>
+        <select id="loginUser" required>
+          <option value="">-- انتخاب کاربر --</option>
+          <option value="mehdi-soltani">مهدی سلطانی</option>
+          <option value="masoud-kazemi">مسعود کاظمی</option>
+          <option value="mehdi-afshar">مهدی افشار</option>
+          <option value="arash-baba">آرش بابا</option>
+        </select>
+        <label for="loginPass">رمز عبور</label>
+        <input id="loginPass" type="password" placeholder="رمز عبور را وارد کنید" autocomplete="current-password" required>
+        <button type="submit" class="login-btn" id="login-btn">ورود به سامانه</button>
+        <p class="login-msg" id="login-msg" role="status" aria-live="polite"></p>
+      </form>
+      <div id="user-row" class="user-row" hidden>
+        <span class="who"><span class="dot"></span><span id="user-name">کاربر</span><span class="role" id="user-role"></span></span>
+        <button type="button" class="logout" id="logout-btn">خروج</button>
+      </div>
+      <nav class="menu" id="main-menu" hidden>
         <a href="./panel/">
           <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
           <span class="txt"><span class="ttl">مدیریت وقایع پرسنلی</span><span class="sub">ثبت خطا، اخطار و سوابق نفرات</span></span>
@@ -147,6 +185,81 @@
     window.addEventListener("appinstalled", function () {
       installBtn.classList.remove("show");
     });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    (function () {
+      var SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
+      var SUPABASE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+      var NAMES = { "mehdi-soltani": "مهدی سلطانی", "mahdi-soltani": "مهدی سلطانی", "masoud-kazemi": "مسعود کاظمی", "mehdi-afshar": "مهدی افشار", "mahdi-afshar": "مهدی افشار", "arash-baba": "آرش بابا" };
+      var ALIASES = { "mehdi-soltani": ["mahdi-soltani", "mehdi-soltani"], "mehdi-afshar": ["mahdi-afshar", "mehdi-afshar"] };
+      var form = document.getElementById("login-form");
+      var menu = document.getElementById("main-menu");
+      var userRow = document.getElementById("user-row");
+      var msg = document.getElementById("login-msg");
+      var btn = document.getElementById("login-btn");
+
+      function safeNext() {
+        var n = new URLSearchParams(location.search).get("next") || "";
+        return /^\/People-Managment\/[^\/]/.test(n) && n.indexOf("//") === -1 ? n : "";
+      }
+      function showLogin() { form.hidden = false; menu.hidden = true; userRow.hidden = true; }
+      function showMenu(name, role) {
+        form.hidden = true; menu.hidden = false; userRow.hidden = false;
+        document.getElementById("user-name").textContent = name || "کاربر";
+        document.getElementById("user-role").textContent = role === "admin" ? "دسترسی کامل" : "ثبت و مشاهده";
+      }
+
+      if (!window.supabase || !window.supabase.createClient) {
+        showLogin(); msg.textContent = "اتصال به سرور برقرار نشد. صفحه را دوباره بارگذاری کنید."; return;
+      }
+      var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      async function enter(user) {
+        var res = await client.from("user_profiles").select("username, full_name, role").eq("id", user.id).maybeSingle();
+        var p = res.data;
+        if (res.error || !p || ["admin", "operator"].indexOf(p.role) === -1) {
+          await client.auth.signOut();
+          showLogin();
+          msg.textContent = "پروفایل یا سطح دسترسی این کاربر تعریف نشده است.";
+          return;
+        }
+        var next = safeNext();
+        if (next) { location.replace(next); return; }
+        var u = String(user.email || "").replace("@people-manager.invalid", "");
+        showMenu(p.full_name || NAMES[u] || p.username, p.role);
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        var u = document.getElementById("loginUser").value;
+        var pass = document.getElementById("loginPass").value;
+        if (!u || !pass) return;
+        btn.disabled = true; msg.textContent = "در حال بررسی...";
+        var names = ALIASES[u] || [u], user = null;
+        for (var i = 0; i < names.length && !user; i++) {
+          try {
+            var r = await client.auth.signInWithPassword({ email: names[i] + "@people-manager.invalid", password: pass });
+            if (!r.error && r.data && r.data.user) user = r.data.user;
+          } catch (err) {}
+        }
+        btn.disabled = false;
+        if (!user) { msg.textContent = "نام کاربری یا رمز عبور اشتباه است."; return; }
+        msg.textContent = "";
+        document.getElementById("loginPass").value = "";
+        await enter(user);
+      });
+
+      document.getElementById("logout-btn").addEventListener("click", async function () {
+        try { await client.auth.signOut(); } catch (e) {}
+        showLogin();
+      });
+
+      client.auth.getSession().then(function (r) {
+        var s = r && r.data && r.data.session;
+        if (s && s.user) enter(s.user); else showLogin();
+      }).catch(showLogin);
+    })();
   </script>
 </body>
 </html>

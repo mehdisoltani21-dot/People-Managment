@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+<script src="../gate.js?v=1"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f5a623">
@@ -54,6 +55,8 @@
         );
       }
     }
+    html = html.replace("<head>", '<head><script src="../gate.js?v=1"></' + 'script>');
+    html = html.replace(/document\.getElementById\("logout-btn"\)\.onclick=async function\(\)\{await supabaseClient\.auth\.signOut\(\);currentUser=null;showLogin\(\)\};/, 'document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();location.replace("../")};');
     document.open();
     document.write(html);
     document.close();
