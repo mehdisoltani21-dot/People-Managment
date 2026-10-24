@@ -66,8 +66,14 @@
   <main class="wrap">
     <div class="meta">
       <div><label>تاریخ ارزیابی</label><input type="date" id="audit-date"></div>
-      <div><label>منطقه / ایستگاه</label><input type="text" id="area" placeholder="مثلاً خط برش / انبار"></div>
-      <div><label>ارزیاب</label>
+      <div>
+        <label>ایستگاه کاری</label>
+        <select id="workstation">
+          <option value="">-- انتخاب ایستگاه --</option>
+        </select>
+      </div>
+      <div>
+        <label>ارزیاب</label>
         <select id="auditor">
           <option value="">-- انتخاب ارزیاب --</option>
           <option value="Mahdi Soltani">Mahdi Soltani</option>
@@ -99,6 +105,12 @@
     <p class="note" id="save-msg"></p>
   </main>
   <script>
+    const WORKSTATIONS = [
+      "ورودی", "روکش زیرین", "سنباده پنل", "روکش فوقانی",
+      "اوستا باشی پنل", "اوستاباشی پروفیل", "گزارشگیر",
+      "بسته بندی پنل", "برش فویل", "روکش پروفیل",
+      "سنباده پروفیل", "فرزه", "سلکو", "پالت سازی"
+    ];
     const PEOPLE = [
       { id: "7020", name: "Arash Baba" },
       { id: "7021", name: "Daryoush Kazemkhanloo" },
@@ -190,6 +202,14 @@
     }
 
     function build() {
+      const wsSel = document.getElementById("workstation");
+      if (wsSel && wsSel.options.length <= 1) {
+        WORKSTATIONS.forEach((w) => {
+          const o = document.createElement("option");
+          o.value = w; o.textContent = w;
+          wsSel.appendChild(o);
+        });
+      }
       fillSelect(document.getElementById("operator"));
       fillSelect(document.getElementById("assistant1"));
       fillSelect(document.getElementById("assistant2"));
@@ -234,7 +254,7 @@
     function collect() {
       const data = {
         date: document.getElementById("audit-date").value,
-        area: document.getElementById("area").value.trim(),
+        workstation: document.getElementById("workstation").value,
         auditor: document.getElementById("auditor").value,
         operator: selectedName(document.getElementById("operator")),
         operatorId: document.getElementById("operator").value,
@@ -284,7 +304,7 @@
       document.querySelectorAll("[data-note]").forEach((n) => { n.value = ""; });
       document.querySelectorAll("[data-file]").forEach((f) => { f.value = ""; });
       document.querySelectorAll(".item").forEach((row) => { row._attachment = null; renderPreview(row); });
-      document.getElementById("area").value = "";
+      document.getElementById("workstation").value = "";
       document.getElementById("auditor").value = "";
       ["operator","assistant1","assistant2","assistant3"].forEach((id) => { document.getElementById(id).value = ""; });
       saveMsg.textContent = "";
@@ -294,7 +314,7 @@
     document.getElementById("btn-export").addEventListener("click", () => {
       const data = collect();
       const lines = [
-        ["تاریخ", data.date],["منطقه", data.area],["ارزیاب", data.auditor],
+        ["تاریخ", data.date],["ایستگاه کاری", data.workstation || ""],["ارزیاب", data.auditor],
         ["اپراتور", data.operator],
         ["کمک‌اپراتور ۱", data.assistants[0] || ""],
         ["کمک‌اپراتور ۲", data.assistants[1] || ""],
@@ -322,7 +342,8 @@
       const last = JSON.parse(localStorage.getItem("apw_5s_last") || "null");
       if (last) {
         if (last.date) document.getElementById("audit-date").value = last.date;
-        if (last.area) document.getElementById("area").value = last.area;
+        if (last.workstation) document.getElementById("workstation").value = last.workstation;
+        else if (last.area) document.getElementById("workstation").value = last.area;
         if (last.auditor) document.getElementById("auditor").value = last.auditor;
         if (last.operatorId) document.getElementById("operator").value = last.operatorId;
         (last.assistantIds || []).forEach((id, i) => {
