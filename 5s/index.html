@@ -1,1 +1,154 @@
-FILE_FROM_DISK
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5a623">
+<title>مدیریت 5S | APW</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Vazirmatn,Tahoma,sans-serif;background:#14110c;color:#f5f0e8;min-height:100vh;line-height:1.7}
+.top{position:sticky;top:0;z-index:10;background:rgba(20,17,12,.94);border-bottom:1px solid #3d3428;padding:12px 16px}
+.top-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{background:#fff;border-radius:10px;padding:6px 12px;font-family:Arial Black,Arial,sans-serif;font-size:1.25rem;font-weight:900;line-height:1}
+.logo .a{color:#f5a623}.logo .pw{color:#3d3d3d}
+.brand h1{font-size:1rem;font-weight:800}.brand p{font-size:.78rem;color:#a89a86}
+a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:18px}
+.meta label{display:block;font-size:.8rem;color:#a89a86;margin-bottom:4px}
+.meta input,.meta select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;font-size:.92rem}
+.people-box{background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:18px}
+.people-box h3{font-size:1rem;color:#f5a623;margin-bottom:12px}
+.people-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.s-block{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:14px;margin-bottom:16px;overflow:hidden}
+.s-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 16px;background:#2e261c;border-bottom:1px solid #3d3428}
+.s-head h2{font-size:1.05rem;color:#f5a623}.s-head .sub{font-size:.8rem;color:#a89a86;width:100%}
+.s-score{font-size:.9rem;font-weight:700;color:#fcd34d}
+.item{display:grid;grid-template-columns:1fr auto auto;gap:8px 10px;align-items:center;padding:12px 16px;border-bottom:1px solid #2f2920}
+.item:last-child{border-bottom:none}.item .q{font-size:.9rem}
+.item label.check{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#cbbfaa;white-space:nowrap}
+.item input[type=checkbox]{width:18px;height:18px;accent-color:#f5a623}
+.item input[type=number]{width:72px;padding:8px;border-radius:8px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;text-align:center}
+.item .note-field{grid-column:1/-1}
+.item .note-field input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #4a4030;background:#16120e;color:#f5f0e8;font-family:inherit;font-size:.85rem}
+.item .attach-field{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.item .attach-field input[type=file]{font-size:.8rem;color:#cbbfaa;max-width:100%}
+.item .attach-preview{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.8rem;color:#f5c56a}
+.item .attach-preview img{width:56px;height:56px;object-fit:cover;border-radius:8px;border:1px solid #4a4030;background:#fff}
+.item .attach-preview a{color:#f5a623;text-decoration:none}
+.item .attach-clear{border:1px solid #5a4030;background:#2a2214;color:#f5c56a;border-radius:8px;padding:4px 10px;font-size:.75rem;cursor:pointer;font-family:inherit}
+.summary{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:#1e1a14;border:1px solid #3d3428;border-radius:12px;padding:14px 16px;margin:18px 0}
+.summary strong{color:#f5a623;font-size:1.15rem}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-weight:700;font-size:.92rem;cursor:pointer}
+.btn-primary{background:#f5a623;color:#1a1208}.btn-secondary{background:#3a3226;color:#ebe3d4;border:1px solid #4a4034}
+.note{font-size:.82rem;color:#a89a86;margin-top:8px}
+.home-view{max-width:720px;margin:36px auto 16px;padding:0 4px}
+.home-title{text-align:center;margin-bottom:26px}
+.home-title h2{font-size:1.3rem;font-weight:800;color:#f5f0e8;margin-bottom:6px}
+.home-title p{color:#a89a86;font-size:.9rem}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.home-grid{grid-template-columns:1fr}}
+.home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:170px;padding:26px 16px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit;font-family:inherit}
+.home-card:hover{transform:translateY(-3px);border-color:#f5a623;box-shadow:0 14px 32px rgba(245,166,35,.18)}
+.home-icon{width:70px;height:70px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208}
+.home-card h3{font-size:1.08rem;font-weight:800;color:#f5f0e8}.home-card span{font-size:.8rem;color:#a89a86}
+.view-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;background:#3a3226;border:1px solid #4a4034;color:#ebe3d4;font-family:inherit;font-size:.88rem;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer}
+.view-back:hover{background:#4a4034}
+.reports-list{display:flex;flex-direction:column;gap:12px}
+.report-card{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:12px;padding:14px 16px}
+.report-card h4{color:#f5a623;font-size:1rem;margin-bottom:6px}
+.report-card p{font-size:.85rem;color:#cbbfaa;line-height:1.7}
+.report-card .score{color:#fcd34d;font-weight:700}
+.empty-reports{text-align:center;color:#a89a86;padding:40px 16px}
+@media(max-width:640px){.item{grid-template-columns:1fr;gap:8px}.item input[type=number]{width:100%}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-inner">
+<div class="brand"><div class="logo"><span class="a">A</span><span class="pw">PW</span></div><div><h1>مدیریت 5S</h1><p>چک‌لیست ارزیابی واحد تولید</p></div></div>
+<a class="back" href="../">← بازگشت</a>
+</div></header>
+<main class="wrap">
+<section id="home-view" class="home-view">
+<div class="home-title"><h2>انتخاب عملیات</h2><p>یکی از گزینه‌های زیر را انتخاب کنید</p></div>
+<div class="home-grid">
+<button type="button" class="home-card" id="go-new-record"><div class="home-icon">＋</div><h3>رکورد جدید</h3><span>ثبت ارزیابی 5S</span></button>
+<button type="button" class="home-card" id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های ذخیره‌شده</span></button>
+</div></section>
+<section id="form-view" hidden>
+<button type="button" class="view-back" id="back-from-form">→ بازگشت به منو</button>
+<div class="meta">
+<div><label>تاریخ ارزیابی</label><input type="date" id="audit-date"></div>
+<div><label>ایستگاه کاری</label><select id="workstation"><option value="">-- انتخاب ایستگاه --</option></select></div>
+<div><label>ارزیاب</label><select id="auditor"><option value="">-- انتخاب ارزیاب --</option><option value="Mahdi Soltani">Mahdi Soltani</option><option value="Masoud Kazemi">Masoud Kazemi</option><option value="Arash Baba">Arash Baba</option><option value="Mahdi Afshar">Mahdi Afshar</option></select></div>
+</div>
+<div class="people-box"><h3>نفرات حاضر در ارزیابی</h3>
+<div class="people-grid">
+<div><label>اپراتور (۱ نفر)</label><select id="operator"></select></div>
+<div><label>کمک‌اپراتور ۱</label><select id="assistant1"></select></div>
+<div><label>کمک‌اپراتور ۲</label><select id="assistant2"></select></div>
+<div><label>کمک‌اپراتور ۳</label><select id="assistant3"></select></div>
+</div></div>
+<div id="sections"></div>
+<div class="summary"><div>جمع امتیاز: <strong id="total-score">0</strong> از <span id="max-score">0</span></div>
+<div class="actions">
+<button type="button" class="btn btn-secondary" id="btn-reset">پاک کردن</button>
+<button type="button" class="btn btn-secondary" id="btn-export">خروجی</button>
+<button type="button" class="btn btn-primary" id="btn-save">ذخیره ارزیابی</button>
+</div></div>
+<p class="note">برای هر مورد تیک، نمره (۰ تا ۵)، توضیحات و در صورت نیاز فایل (حداکثر ۱٫۵ مگابایت) را وارد کنید.</p>
+<p class="note" id="save-msg"></p>
+</section>
+<section id="records-view" hidden>
+<button type="button" class="view-back" id="back-from-records">→ بازگشت به منو</button>
+<div class="home-title" style="text-align:right;margin-bottom:16px"><h2>گزارش‌های 5S</h2><p>ارزیابی‌های ذخیره‌شده روی این دستگاه</p></div>
+<div id="reports-list" class="reports-list"></div>
+<div id="empty-reports" class="empty-reports" hidden>هنوز گزارشی ذخیره نشده است.</div>
+</section>
+</main>
+<script>
+const WORKSTATIONS=["ورودی","روکش زیرین","سنباده پنل","روکش فوقانی","اوستا باشی پنل","اوستاباشی پروفیل","گزارشگیر","بسته بندی پنل","برش فویل","روکش پروفیل","سنباده پروفیل","فرزه","سلکو","پالت سازی"];
+const PEOPLE=[{id:"7020",name:"Arash Baba"},{id:"7021",name:"Daryoush Kazemkhanloo"},{id:"7022",name:"Mehdi Afashar Vangini"},{id:"7023",name:"Hossein Amandiha"},{id:"7065",name:"Alireza Zolghadr"},{id:"7071",name:"Rahim Ghalandari"},{id:"7083",name:"Mohammad Khalkhali"},{id:"7085",name:"Hossein Taghiloo"},{id:"7088",name:"Mohsen Mirasheh"},{id:"7089",name:"Mohammad Qazvini"},{id:"7092",name:"Saeid Rezaei"},{id:"7111",name:"Mohammadreza Esmaili"},{id:"7118",name:"Alireza Soleymani"},{id:"7152",name:"Amin Rastegar"},{id:"7154",name:"Keykhosro Gurani"},{id:"7196",name:"Hossein Dehghan Nejad"},{id:"7197",name:"Esmaeil Alian"},{id:"7216",name:"Farzin Shali"},{id:"7240",name:"Dariush Hazrati"}];
+const SECTIONS=[
+{key:"seiri",title:"۱) جداسازی (Seiri)",subtitle:"تشخیص موارد ضروری و غیر ضروری",
+items:["آیا تجهیزات غیر ضروری وجود دارد؟","آیا مستندات غیرضروری در دیوارها / محیط کاری و غیره وجود دارد؟","آیا لوازم، قطعات یا مواد غیرضروری وجود دارد؟"]},
+{key:"seiton",title:"۲) نظم و ترتیب (Seiton)",subtitle:"جایی برای همه چیز و همه چیز در جای خود",
+items:["تجهیزات در محل مشخص‌شده قرار دارند؟","مواد اولیه در محل مشخص‌شده قرار دارند؟","مواد مصرفی در محل مشخص‌شده قرار دارند؟","محصولات در محل مشخص‌شده قرار دارند؟","همه موارد در مکان مناسب قرار می‌گیرند؟"]},
+{key:"seiso",title:"۳) پاکیزگی (Seiso)",subtitle:"حفظ محل کار تمیز و منظم",
+items:["محیط کار و محل‌های ذخیره‌سازی تمیز هستند؟","تجهیزات و ماشین‌آلات تمیز هستند؟","زباله‌ها و مواد قابل بازیافت به‌درستی جمع‌آوری و دفع می‌شوند؟","مناطق مشترک به‌طور منظم تمیز و نگهداری می‌شوند؟"]},
+{key:"seiketsu",title:"۴) استانداردسازی (Seiketsu)",subtitle:"جلوگیری از شرایط عملیاتی غیرعادی",
+items:["وظایف نظافت و سازماندهی ویژه‌ای برای منطقه کار ایجاد و تعیین شده است؟","جداسازی، نظم و ترتیب و پاکیزگی به‌صورت مداوم در حال اجراست؟"]},
+{key:"shitsuke",title:"۵) انضباط (Shitsuke)",subtitle:"پایبندی به قوانین",
+items:["همه درگیر فعالیت‌های بهسازی هستند؟","روش‌های استاندارد تمیز کردن رعایت و نگهداری می‌شود؟"]}
+];
+const SCORE_MAX=5,MAX_FILE_BYTES=1.5*1024*1024;
+const sectionsEl=document.getElementById("sections"),totalEl=document.getElementById("total-score"),maxEl=document.getElementById("max-score"),saveMsg=document.getElementById("save-msg");
+const homeView=document.getElementById("home-view"),formView=document.getElementById("form-view"),recordsView=document.getElementById("records-view");
+function showHome(){homeView.hidden=false;formView.hidden=true;recordsView.hidden=true}
+function showForm(){homeView.hidden=true;formView.hidden=false;recordsView.hidden=true}
+function showRecords(){homeView.hidden=true;formView.hidden=true;recordsView.hidden=false;renderReports()}
+document.getElementById("go-new-record").onclick=showForm;
+document.getElementById("go-view-records").onclick=showRecords;
+document.getElementById("back-from-form").onclick=showHome;
+document.getElementById("back-from-records").onclick=showHome;
+function fillSelect(sel){sel.innerHTML="";const e=document.createElement("option");e.value="";e.textContent="-- انتخاب کنید --";sel.appendChild(e);PEOPLE.forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=p.id+" — "+p.name;sel.appendChild(o)})}
+function selectedName(sel){const id=sel.value;if(!id)return"";const p=PEOPLE.find(x=>x.id===id);return p?(p.id+" — "+p.name):id}
+function handleFile(row,input){const file=input.files&&input.files[0],preview=row.querySelector("[data-preview]");if(!file){row._attachment=null;if(preview)preview.innerHTML="";return}if(file.size>MAX_FILE_BYTES){alert("حجم فایل بیشتر از ۱٫۵ مگابایت است.");input.value="";return}const reader=new FileReader();reader.onload=()=>{row._attachment={name:file.name,type:file.type||"application/octet-stream",size:file.size,dataUrl:reader.result};renderPreview(row)};reader.onerror=()=>{alert("خواندن فایل ناموفق بود.");input.value=""};reader.readAsDataURL(file)}
+function renderPreview(row){const preview=row.querySelector("[data-preview]");if(!preview)return;const att=row._attachment;if(!att){preview.innerHTML="";return}let h="";if(att.type&&att.type.startsWith("image/")&&att.dataUrl)h+='<img src="'+att.dataUrl+'" alt="پیش‌نمایش">';h+='<a href="'+(att.dataUrl||"#")+'" download="'+(att.name||"file")+'">'+(att.name||"فایل")+'</a>';h+='<button type="button" class="attach-clear" data-clear>حذف فایل</button>';preview.innerHTML=h;const b=preview.querySelector("[data-clear]");if(b)b.onclick=()=>{row._attachment=null;const fi=row.querySelector("[data-file]");if(fi)fi.value="";preview.innerHTML=""}}
+function build(){const wsSel=document.getElementById("workstation");if(wsSel&&wsSel.options.length<=1)WORKSTATIONS.forEach(w=>{const o=document.createElement("option");o.value=w;o.textContent=w;wsSel.appendChild(o)});fillSelect(document.getElementById("operator"));fillSelect(document.getElementById("assistant1"));fillSelect(document.getElementById("assistant2"));fillSelect(document.getElementById("assistant3"));sectionsEl.innerHTML="";let max=0;SECTIONS.forEach(sec=>{max+=sec.items.length*SCORE_MAX;const block=document.createElement("section");block.className="s-block";block.innerHTML='<div class="s-head"><div><h2>'+sec.title+'</h2><div class="sub">'+sec.subtitle+'</div></div><div class="s-score" data-sec-score>۰ / ۰</div></div>';sec.items.forEach((q,i)=>{const row=document.createElement("div");row.className="item";row.innerHTML='<div class="q">'+(i+1)+'- '+q+'</div><label class="check"><input type="checkbox" data-check> انجام شد</label><input type="number" min="0" max="'+SCORE_MAX+'" step="1" value="0" data-score><div class="note-field"><input type="text" data-note placeholder="توضیحات این مورد (اختیاری)"></div><div class="attach-field"><input type="file" data-file accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"><div class="attach-preview" data-preview></div></div>';row.querySelector("[data-file]").addEventListener("change",function(){handleFile(row,this)});block.appendChild(row)});sectionsEl.appendChild(block)});maxEl.textContent=String(max);sectionsEl.addEventListener("input",recalc);sectionsEl.addEventListener("change",recalc);recalc()}
+function recalc(){let total=0;document.querySelectorAll(".s-block").forEach(block=>{let sec=0,secMax=0;block.querySelectorAll("[data-score]").forEach(inp=>{let v=Number(inp.value);if(isNaN(v))v=0;if(v<0)v=0;if(v>SCORE_MAX)v=SCORE_MAX;inp.value=String(v);sec+=v;secMax+=SCORE_MAX});total+=sec;const label=block.querySelector("[data-sec-score]");if(label)label.textContent=sec+" / "+secMax});totalEl.textContent=String(total)}
+function collect(){const data={date:document.getElementById("audit-date").value,workstation:document.getElementById("workstation").value,auditor:document.getElementById("auditor").value,operator:selectedName(document.getElementById("operator")),operatorId:document.getElementById("operator").value,assistants:[selectedName(document.getElementById("assistant1")),selectedName(document.getElementById("assistant2")),selectedName(document.getElementById("assistant3"))].filter(Boolean),assistantIds:[document.getElementById("assistant1").value,document.getElementById("assistant2").value,document.getElementById("assistant3").value].filter(Boolean),total:Number(totalEl.textContent),max:Number(maxEl.textContent),sections:[]};document.querySelectorAll(".s-block").forEach((block,si)=>{const sec=SECTIONS[si],items=[];block.querySelectorAll(".item").forEach((row,ii)=>{const att=row._attachment||null;items.push({question:sec.items[ii],done:row.querySelector("[data-check]").checked,score:Number(row.querySelector("[data-score]").value)||0,note:(row.querySelector("[data-note]")||{}).value||"",fileName:att?att.name:"",fileType:att?att.type:"",fileData:att?att.dataUrl:""})});data.sections.push({key:sec.key,title:sec.title,items})});return data}
+function renderReports(){const listEl=document.getElementById("reports-list"),emptyEl=document.getElementById("empty-reports");listEl.innerHTML="";let list=[];try{list=JSON.parse(localStorage.getItem("apw_5s_audits")||"[]")}catch(e){list=[]}if(!list.length){emptyEl.hidden=false;return}emptyEl.hidden=true;list.forEach((r,idx)=>{const card=document.createElement("div");card.className="report-card";card.innerHTML="<h4>ارزیابی "+(idx+1)+" — "+(r.date||"-")+"</h4><p>ایستگاه: "+(r.workstation||"-")+"<br>ارزیاب: "+(r.auditor||"-")+"<br>اپراتور: "+(r.operator||"-")+"<br><span class=\"score\">امتیاز: "+(r.total!=null?r.total:"-")+" از "+(r.max!=null?r.max:"-")+"</span></p>";listEl.appendChild(card)})}
+document.getElementById("btn-save").onclick=()=>{try{const data=collect();data.savedAt=new Date().toISOString();const list=JSON.parse(localStorage.getItem("apw_5s_audits")||"[]");list.unshift(data);localStorage.setItem("apw_5s_audits",JSON.stringify(list.slice(0,20)));localStorage.setItem("apw_5s_last",JSON.stringify(data));saveMsg.textContent="ارزیابی ذخیره شد (روی این دستگاه).";setTimeout(showHome,600)}catch(err){alert("ذخیره ناموفق بود. فایل‌های کوچک‌تر استفاده کنید.");console.error(err)}};
+document.getElementById("btn-reset").onclick=()=>{if(!confirm("همه نمره‌ها، تیک‌ها و فایل‌ها پاک شود؟"))return;document.querySelectorAll("[data-check]").forEach(c=>c.checked=false);document.querySelectorAll("[data-score]").forEach(s=>s.value="0");document.querySelectorAll("[data-note]").forEach(n=>n.value="");document.querySelectorAll("[data-file]").forEach(f=>f.value="");document.querySelectorAll(".item").forEach(row=>{row._attachment=null;renderPreview(row)});document.getElementById("workstation").value="";document.getElementById("auditor").value="";["operator","assistant1","assistant2","assistant3"].forEach(id=>document.getElementById(id).value="");saveMsg.textContent="";recalc()};
+document.getElementById("btn-export").onclick=()=>{const data=collect();const lines=[["تاریخ",data.date],["ایستگاه کاری",data.workstation||""],["ارزیاب",data.auditor],["اپراتور",data.operator],["کمک‌اپراتور ۱",data.assistants[0]||""],["کمک‌اپراتور ۲",data.assistants[1]||""],["کمک‌اپراتور ۳",data.assistants[2]||""],["جمع امتیاز",data.total+" از "+data.max],[]];data.sections.forEach(sec=>{lines.push([sec.title]);sec.items.forEach((it,i)=>lines.push([(i+1)+"- "+it.question,it.done?"انجام شد":"—",it.score,it.note||"",it.fileName||""]));lines.push([])});const csv=lines.map(r=>r.map(c=>'"'+String(c??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="APW_5S_"+(data.date||"audit")+".csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),800)};
+document.getElementById("audit-date").value=new Date().toISOString().slice(0,10);
+build();
+try{const last=JSON.parse(localStorage.getItem("apw_5s_last")||"null");if(last){if(last.date)document.getElementById("audit-date").value=last.date;if(last.workstation)document.getElementById("workstation").value=last.workstation;if(last.auditor)document.getElementById("auditor").value=last.auditor;if(last.operatorId)document.getElementById("operator").value=last.operatorId;(last.assistantIds||[]).forEach((id,i)=>{const el=document.getElementById("assistant"+(i+1));if(el&&id)el.value=id});(last.sections||[]).forEach((sec,si)=>{const block=document.querySelectorAll(".s-block")[si];if(!block)return;(sec.items||[]).forEach((it,ii)=>{const row=block.querySelectorAll(".item")[ii];if(!row)return;row.querySelector("[data-check]").checked=!!it.done;row.querySelector("[data-score]").value=String(it.score??0);const noteEl=row.querySelector("[data-note]");if(noteEl)noteEl.value=it.note||"";if(it.fileData){row._attachment={name:it.fileName||"file",type:it.fileType||"",size:0,dataUrl:it.fileData};renderPreview(row)}})});recalc()}}catch(e){}
+</script>
+</body>
+</html>
