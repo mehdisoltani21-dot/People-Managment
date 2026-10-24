@@ -5,41 +5,190 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f5a623">
   <title>مدیریت 5S | APW</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:Vazirmatn,Tahoma,sans-serif;
-      min-height:100vh;background:#14110c;color:#f5f0e8;
-      display:flex;align-items:center;justify-content:center;
-      padding:24px 16px;text-align:center;
-    }
-    .card{
-      width:100%;max-width:420px;
-      background:linear-gradient(145deg,#2a2318,#1a1610);
-      border:1px solid #3d3428;border-radius:18px;padding:32px 24px;
-    }
-    .logo{
-      display:inline-block;background:#fff;border-radius:12px;
-      padding:10px 18px;margin-bottom:18px;
-      font-family:Arial Black,Arial,sans-serif;font-size:1.8rem;font-weight:900;
-    }
-    .logo .a{color:#f5a623}
-    .logo .pw{color:#3d3d3d}
-    h1{font-size:1.35rem;margin-bottom:8px}
-    p{color:#a89a86;font-size:.95rem;line-height:1.8;margin-bottom:22px}
-    a{
-      display:inline-block;background:#f5a623;color:#1a1208;
-      font-weight:700;text-decoration:none;padding:12px 22px;border-radius:12px;
-    }
+    body{font-family:Vazirmatn,Tahoma,sans-serif;background:#14110c;color:#f5f0e8;min-height:100vh;line-height:1.7}
+    .top{position:sticky;top:0;z-index:10;background:rgba(20,17,12,.94);backdrop-filter:blur(8px);border-bottom:1px solid #3d3428;padding:12px 16px}
+    .top-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{background:#fff;border-radius:10px;padding:6px 12px;font-family:Arial Black,Arial,sans-serif;font-size:1.25rem;font-weight:900;line-height:1}
+    .logo .a{color:#f5a623}.logo .pw{color:#3d3d3d}
+    .brand h1{font-size:1rem;font-weight:800}
+    .brand p{font-size:.78rem;color:#a89a86}
+    a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}
+    .wrap{max-width:960px;margin:0 auto;padding:20px 16px 48px}
+    .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:16px;margin-bottom:18px}
+    .meta label{display:block;font-size:.8rem;color:#a89a86;margin-bottom:4px}
+    .meta input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;font-size:.92rem}
+    .s-block{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:14px;margin-bottom:16px;overflow:hidden}
+    .s-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px 16px;background:#2e261c;border-bottom:1px solid #3d3428}
+    .s-head h2{font-size:1.05rem;color:#f5a623}
+    .s-head .sub{font-size:.8rem;color:#a89a86;width:100%}
+    .s-score{font-size:.9rem;font-weight:700;color:#fcd34d}
+    .item{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid #2f2920}
+    .item:last-child{border-bottom:none}
+    .item .q{font-size:.9rem}
+    .item label.check{display:flex;align-items:center;gap:6px;font-size:.8rem;color:#cbbfaa;white-space:nowrap}
+    .item input[type=checkbox]{width:18px;height:18px;accent-color:#f5a623}
+    .item input[type=number]{width:72px;padding:8px;border-radius:8px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;text-align:center}
+    .summary{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;background:#1e1a14;border:1px solid #3d3428;border-radius:12px;padding:14px 16px;margin:18px 0}
+    .summary strong{color:#f5a623;font-size:1.15rem}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-weight:700;font-size:.92rem;cursor:pointer}
+    .btn-primary{background:#f5a623;color:#1a1208}
+    .btn-secondary{background:#3a3226;color:#ebe3d4;border:1px solid #4a4034}
+    .note{font-size:.82rem;color:#a89a86;margin-top:8px}
+    @media(max-width:640px){.item{grid-template-columns:1fr;gap:8px}.item input[type=number]{width:100%}}
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="logo"><span class="a">A</span><span class="pw">PW</span></div>
-    <h1>مدیریت 5S</h1>
-    <p>این بخش به‌زودی آماده می‌شود.<br>در صورت نیاز جزئیات و فرم‌های 5S را بفرستید تا کامل پیاده‌سازی شود.</p>
-    <a href="../">بازگشت به صفحه اصلی</a>
-  </div>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <div class="logo"><span class="a">A</span><span class="pw">PW</span></div>
+        <div><h1>مدیریت 5S</h1><p>چک‌لیست ارزیابی واحد تولید</p></div>
+      </div>
+      <a class="back" href="../">← بازگشت</a>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="meta">
+      <div><label>تاریخ ارزیابی</label><input type="date" id="audit-date"></div>
+      <div><label>منطقه / ایستگاه</label><input type="text" id="area" placeholder="مثلاً خط برش / انبار"></div>
+      <div><label>ارزیاب</label><input type="text" id="auditor" placeholder="نام ارزیاب"></div>
+    </div>
+    <div id="sections"></div>
+    <div class="summary">
+      <div>جمع امتیاز: <strong id="total-score">0</strong> از <span id="max-score">0</span></div>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" id="btn-reset">پاک کردن</button>
+        <button type="button" class="btn btn-secondary" id="btn-export">خروجی</button>
+        <button type="button" class="btn btn-primary" id="btn-save">ذخیره ارزیابی</button>
+      </div>
+    </div>
+    <p class="note">برای هر مورد تیک وضعیت و نمره (۰ تا ۵) را وارد کنید.</p>
+    <p class="note" id="save-msg"></p>
+  </main>
+  <script>
+    const SECTIONS = [
+      { key:"seiri", title:"۱) جداسازی (Seiri)", subtitle:"تشخیص موارد ضروری و غیر ضروری — مرتب‌سازی و دور ریختن موارد غیر ضروری",
+        items:["آیا تجهیزات غیر ضروری وجود دارد؟","آیا مستندات غیرضروری در دیوارها / محیط کاری و غیره وجود دارد؟","آیا لوازم، قطعات یا مواد غیرضروری وجود دارد؟ (کش‌ها / کابینت‌ها / سطوح کار / محل‌های ذخیره‌سازی)"] },
+      { key:"seiton", title:"۲) نظم و ترتیب (Seiton)", subtitle:"جایی برای همه چیز و همه چیز در جای خود — استفاده از برچسب، خطوط، علائم و رنگ‌ها",
+        items:["تجهیزات در محل مشخص‌شده قرار دارند؟","مواد اولیه در محل مشخص‌شده قرار دارند؟","مواد مصرفی در محل مشخص‌شده قرار دارند؟","محصولات در محل مشخص‌شده قرار دارند؟","همه موارد در مکان مناسب قرار می‌گیرند؟"] },
+      { key:"seiso", title:"۳) پاکیزگی (Seiso)", subtitle:"حفظ محل کار تمیز و منظم — تمیز کردن یک روش بازرسی است",
+        items:["محیط کار و محل‌های ذخیره‌سازی تمیز هستند؟","تجهیزات و ماشین‌آلات تمیز هستند؟","زباله‌ها و مواد قابل بازیافت به‌درستی جمع‌آوری و دفع می‌شوند؟","مناطق مشترک به‌طور منظم تمیز و نگهداری می‌شوند؟"] },
+      { key:"seiketsu", title:"۴) استانداردسازی (Seiketsu)", subtitle:"جلوگیری از شرایط عملیاتی غیرعادی — قوانین را استاندارد کنید تا 5S عادت شود",
+        items:["وظایف نظافت و سازماندهی ویژه‌ای برای منطقه کار ایجاد و تعیین شده است؟","جداسازی، نظم و ترتیب و پاکیزگی به‌صورت مداوم در حال اجراست؟"] },
+      { key:"shitsuke", title:"۵) انضباط (Shitsuke)", subtitle:"پایبندی به قوانین (انضباط شخصی) — برنامه‌های پایداری برای اطمینان از اجرای 5S",
+        items:["همه درگیر فعالیت‌های بهسازی هستند؟","روش‌های استاندارد تمیز کردن رعایت و نگهداری می‌شود؟"] }
+    ];
+    const SCORE_MAX = 5;
+    const sectionsEl = document.getElementById("sections");
+    const totalEl = document.getElementById("total-score");
+    const maxEl = document.getElementById("max-score");
+    const saveMsg = document.getElementById("save-msg");
+
+    function build() {
+      sectionsEl.innerHTML = "";
+      let max = 0;
+      SECTIONS.forEach((sec) => {
+        max += sec.items.length * SCORE_MAX;
+        const block = document.createElement("section");
+        block.className = "s-block";
+        block.innerHTML = '<div class="s-head"><div><h2>' + sec.title + '</h2><div class="sub">' + sec.subtitle + '</div></div><div class="s-score" data-sec-score>۰ / ۰</div></div>';
+        sec.items.forEach((q, i) => {
+          const row = document.createElement("div");
+          row.className = "item";
+          row.innerHTML = '<div class="q">' + (i+1) + '- ' + q + '</div><label class="check"><input type="checkbox" data-check> انجام شد</label><input type="number" min="0" max="' + SCORE_MAX + '" step="1" value="0" data-score>';
+          block.appendChild(row);
+        });
+        sectionsEl.appendChild(block);
+      });
+      maxEl.textContent = String(max);
+      sectionsEl.addEventListener("input", recalc);
+      sectionsEl.addEventListener("change", recalc);
+      recalc();
+    }
+
+    function recalc() {
+      let total = 0;
+      document.querySelectorAll(".s-block").forEach((block) => {
+        let sec = 0, secMax = 0;
+        block.querySelectorAll("[data-score]").forEach((inp) => {
+          let v = Number(inp.value); if (isNaN(v)) v = 0; if (v < 0) v = 0; if (v > SCORE_MAX) v = SCORE_MAX;
+          inp.value = String(v); sec += v; secMax += SCORE_MAX;
+        });
+        total += sec;
+        const label = block.querySelector("[data-sec-score]");
+        if (label) label.textContent = sec + " / " + secMax;
+      });
+      totalEl.textContent = String(total);
+    }
+
+    function collect() {
+      const data = { date: document.getElementById("audit-date").value, area: document.getElementById("area").value.trim(), auditor: document.getElementById("auditor").value.trim(), total: Number(totalEl.textContent), max: Number(maxEl.textContent), sections: [] };
+      document.querySelectorAll(".s-block").forEach((block, si) => {
+        const sec = SECTIONS[si]; const items = [];
+        block.querySelectorAll(".item").forEach((row, ii) => {
+          items.push({ question: sec.items[ii], done: row.querySelector("[data-check]").checked, score: Number(row.querySelector("[data-score]").value) || 0 });
+        });
+        data.sections.push({ key: sec.key, title: sec.title, items });
+      });
+      return data;
+    }
+
+    document.getElementById("btn-save").addEventListener("click", () => {
+      const data = collect(); data.savedAt = new Date().toISOString();
+      const list = JSON.parse(localStorage.getItem("apw_5s_audits") || "[]");
+      list.unshift(data);
+      localStorage.setItem("apw_5s_audits", JSON.stringify(list.slice(0, 50)));
+      localStorage.setItem("apw_5s_last", JSON.stringify(data));
+      saveMsg.textContent = "ارزیابی ذخیره شد (روی این دستگاه).";
+    });
+
+    document.getElementById("btn-reset").addEventListener("click", () => {
+      if (!confirm("همه نمره‌ها و تیک‌ها پاک شود؟")) return;
+      document.querySelectorAll("[data-check]").forEach((c) => { c.checked = false; });
+      document.querySelectorAll("[data-score]").forEach((s) => { s.value = "0"; });
+      document.getElementById("area").value = "";
+      document.getElementById("auditor").value = "";
+      saveMsg.textContent = "";
+      recalc();
+    });
+
+    document.getElementById("btn-export").addEventListener("click", () => {
+      const data = collect();
+      const lines = [["تاریخ", data.date],["منطقه", data.area],["ارزیاب", data.auditor],["جمع امتیاز", data.total + " از " + data.max],[ ]];
+      data.sections.forEach((sec) => {
+        lines.push([sec.title]);
+        sec.items.forEach((it, i) => { lines.push([(i+1) + "- " + it.question, it.done ? "انجام شد" : "—", it.score]); });
+        lines.push([]);
+      });
+      const csv = lines.map((r) => r.map((c) => '"' + String(c ?? "").replace(/"/g, '""') + '"').join(",")).join("\r\n");
+      const blob = new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a"); a.href = url; a.download = "APW_5S_" + (data.date || "audit") + ".csv";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 800);
+    });
+
+    document.getElementById("audit-date").value = new Date().toISOString().slice(0, 10);
+    build();
+    try { const last = JSON.parse(localStorage.getItem("apw_5s_last") || "null"); if (last) {
+      if (last.date) document.getElementById("audit-date").value = last.date;
+      if (last.area) document.getElementById("area").value = last.area;
+      if (last.auditor) document.getElementById("auditor").value = last.auditor;
+      (last.sections || []).forEach((sec, si) => {
+        const block = document.querySelectorAll(".s-block")[si]; if (!block) return;
+        (sec.items || []).forEach((it, ii) => {
+          const row = block.querySelectorAll(".item")[ii]; if (!row) return;
+          row.querySelector("[data-check]").checked = !!it.done;
+          row.querySelector("[data-score]").value = String(it.score ?? 0);
+        });
+      });
+      recalc();
+    }} catch (e) {}
+  </script>
 </body>
 </html>
