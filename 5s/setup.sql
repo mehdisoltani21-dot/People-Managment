@@ -1,8 +1,8 @@
--- جدول گزارش‌های 5S
--- این کد را در Supabase → SQL Editor اجرا کنید
+-- جدول گزارش‌های 5S — در Supabase → SQL Editor این فایل را کامل اجرا کنید
 
 create table if not exists public.five_s_audits (
   id uuid primary key default gen_random_uuid(),
+  report_no integer,
   audit_date date,
   area text,
   auditor text,
@@ -22,26 +22,21 @@ create table if not exists public.five_s_audits (
   created_at timestamptz not null default now()
 );
 
+alter table public.five_s_audits add column if not exists report_no integer;
+
 alter table public.five_s_audits enable row level security;
 
--- همه کاربران واردشده می‌توانند ببینند و ثبت کنند
 drop policy if exists "five_s_select_authenticated" on public.five_s_audits;
 create policy "five_s_select_authenticated"
-  on public.five_s_audits for select
-  to authenticated
-  using (true);
+  on public.five_s_audits for select to authenticated using (true);
 
 drop policy if exists "five_s_insert_authenticated" on public.five_s_audits;
 create policy "five_s_insert_authenticated"
-  on public.five_s_audits for insert
-  to authenticated
-  with check (true);
+  on public.five_s_audits for insert to authenticated with check (true);
 
--- فقط مدیر می‌تواند حذف کند (نقش در user_profiles)
 drop policy if exists "five_s_delete_admin" on public.five_s_audits;
 create policy "five_s_delete_admin"
-  on public.five_s_audits for delete
-  to authenticated
+  on public.five_s_audits for delete to authenticated
   using (
     exists (
       select 1 from public.user_profiles p
@@ -50,4 +45,4 @@ create policy "five_s_delete_admin"
   );
 
 create index if not exists five_s_audits_created_at_idx on public.five_s_audits (created_at desc);
-create index if not exists five_s_audits_audit_date_idx on public.five_s_audits (audit_date desc);
+create index if not exists five_s_audits_report_no_idx on public.five_s_audits (report_no desc);
