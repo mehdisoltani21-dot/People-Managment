@@ -59,7 +59,15 @@
     <div class="meta">
       <div><label>تاریخ ارزیابی</label><input type="date" id="audit-date"></div>
       <div><label>منطقه / ایستگاه</label><input type="text" id="area" placeholder="مثلاً خط برش / انبار"></div>
-      <div><label>ارزیاب</label><input type="text" id="auditor" placeholder="نام ارزیاب"></div>
+      <div><label>ارزیاب</label>
+          <select id="auditor">
+            <option value="">-- انتخاب ارزیاب --</option>
+            <option value="Mahdi Soltani">Mahdi Soltani</option>
+            <option value="Masoud Kazemi">Masoud Kazemi</option>
+            <option value="Arash Baba">Arash Baba</option>
+            <option value="Mahdi Afshar">Mahdi Afshar</option>
+          </select>
+        </div>
     </div>
 
     <div class="people-box">
@@ -97,7 +105,6 @@
     <p class="note" id="save-msg"></p>
   </main>
   <script>
-    // همان لیست نفرات سامانه مدیریت نفرات
     const PEOPLE = [
       { id: "7020", name: "Arash Baba" },
       { id: "7021", name: "Daryoush Kazemkhanloo" },
@@ -139,11 +146,11 @@
     const maxEl = document.getElementById("max-score");
     const saveMsg = document.getElementById("save-msg");
 
-    function fillSelect(sel, optional) {
+    function fillSelect(sel) {
       sel.innerHTML = "";
       const empty = document.createElement("option");
       empty.value = "";
-      empty.textContent = optional ? "-- انتخاب کنید --" : "-- انتخاب کنید --";
+      empty.textContent = "-- انتخاب کنید --";
       sel.appendChild(empty);
       PEOPLE.forEach((p) => {
         const o = document.createElement("option");
@@ -161,10 +168,10 @@
     }
 
     function build() {
-      fillSelect(document.getElementById("operator"), true);
-      fillSelect(document.getElementById("assistant1"), true);
-      fillSelect(document.getElementById("assistant2"), true);
-      fillSelect(document.getElementById("assistant3"), true);
+      fillSelect(document.getElementById("operator"));
+      fillSelect(document.getElementById("assistant1"));
+      fillSelect(document.getElementById("assistant2"));
+      fillSelect(document.getElementById("assistant3"));
 
       sectionsEl.innerHTML = "";
       let max = 0;
@@ -206,7 +213,7 @@
       const data = {
         date: document.getElementById("audit-date").value,
         area: document.getElementById("area").value.trim(),
-        auditor: document.getElementById("auditor").value.trim(),
+        auditor: document.getElementById("auditor").value,
         operator: selectedName(document.getElementById("operator")),
         operatorId: document.getElementById("operator").value,
         assistants: [
@@ -256,15 +263,12 @@
     document.getElementById("btn-export").addEventListener("click", () => {
       const data = collect();
       const lines = [
-        ["تاریخ", data.date],
-        ["منطقه", data.area],
-        ["ارزیاب", data.auditor],
+        ["تاریخ", data.date],["منطقه", data.area],["ارزیاب", data.auditor],
         ["اپراتور", data.operator],
         ["کمک‌اپراتور ۱", data.assistants[0] || ""],
         ["کمک‌اپراتور ۲", data.assistants[1] || ""],
         ["کمک‌اپراتور ۳", data.assistants[2] || ""],
-        ["جمع امتیاز", data.total + " از " + data.max],
-        []
+        ["جمع امتیاز", data.total + " از " + data.max],[]
       ];
       data.sections.forEach((sec) => {
         lines.push([sec.title]);
