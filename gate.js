@@ -6,9 +6,9 @@
   var SUPABASE_REF = "rtefjfvkjpatzitjjvwe";
   var STORAGE_KEY = "sb-" + SUPABASE_REF + "-auth-token";
 
-  // مسیر صفحه اصلی نسبت به این فایل
+  // مسیر صفحه اصلی نسبت به این فایل (ریشه سایت روی Cloudflare یا GitHub Pages)
   var script = document.currentScript;
-  var HOME = script ? new URL("./", script.src).href : "/People-Managment/";
+  var HOME = script ? new URL("./", script.src).href : "/";
 
   // فرم‌های ورود صفحات داخلی هرگز نمایش داده نشوند
   var st = document.createElement("style");
@@ -17,7 +17,7 @@
 
   function goHome() {
     var next = location.pathname + location.search + location.hash;
-    location.replace(HOME + "?next=" + encodeURIComponent(next));
+    location.replace(HOME + (HOME.indexOf("?") >= 0 ? "&" : "?") + "next=" + encodeURIComponent(next));
   }
 
   // بررسی سریع نشست ذخیره‌شده (بدون انتظار برای بارگذاری کتابخانه)
