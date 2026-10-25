@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f5a623">
-<title>گزارش تحلیلی 5S | APW</title>
+<title>جدول گزارش‌های 5S | APW</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Vazirmatn,Tahoma,sans-serif;background:#14110c;color:#f5f0e8;min-height:100vh;line-height:1.7}
+body{font-family:Vazirmatn,Tahoma,sans-serif;background:#0f0d0a;color:#f5f0e8;min-height:100vh;line-height:1.7}
 .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
 .login-box{width:100%;max-width:400px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:18px;padding:28px 22px}
 .login-box h1{font-size:1.2rem;margin:12px 0 6px;text-align:center}
@@ -19,62 +19,58 @@ body{font-family:Vazirmatn,Tahoma,sans-serif;background:#14110c;color:#f5f0e8;mi
 .login-error{color:#f87171;font-size:.85rem;margin-top:10px;min-height:1.2em}
 .logo{background:#fff;border-radius:10px;padding:6px 12px;font-family:Arial Black,Arial,sans-serif;font-size:1.25rem;font-weight:900;line-height:1;display:inline-block}
 .logo .a{color:#f5a623}.logo .pw{color:#3d3d3d}
-.btn{border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-weight:700;font-size:.92rem;cursor:pointer}
-.btn-primary{background:#f5a623;color:#1a1208}.btn-secondary{background:#3a3226;color:#ebe3d4;border:1px solid #4a4034}
-.nav-home{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;font-size:.9rem!important;padding:10px 16px!important;border-radius:12px!important;text-decoration:none!important;box-shadow:0 6px 18px rgba(245,166,35,.3)}
-.top{position:sticky;top:0;z-index:10;background:rgba(20,17,12,.94);border-bottom:1px solid #3d3428;padding:12px 16px}
-.top-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.btn{border:none;border-radius:12px;padding:11px 18px;font-family:inherit;font-weight:700;font-size:.9rem;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208}
+.nav-home{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208!important;font-weight:800;font-size:.88rem;padding:10px 16px;border-radius:12px;text-decoration:none;box-shadow:0 6px 18px rgba(245,166,35,.3)}
+.top{position:sticky;top:0;z-index:10;background:rgba(15,13,10,.94);border-bottom:1px solid #3d3428;padding:12px 16px}
+.top-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px}
 .brand h1{font-size:1rem;font-weight:800}.brand p{font-size:.78rem;color:#a89a86}
 .user-bar{display:flex;align-items:center;gap:10px;font-size:.85rem;color:#cbbfaa;flex-wrap:wrap}
-.user-bar button{background:#3a3226;border:1px solid #4a4034;color:#ebe3d4;border-radius:8px;padding:6px 10px;font-family:inherit;cursor:pointer;font-size:.8rem}
-.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 48px}
-.page-title{margin-bottom:18px}
-.page-title h2{font-size:1.35rem;font-weight:800;color:#f5a623}
-.page-title p{color:#a89a86;font-size:.9rem;margin-top:4px}
-.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:14px;padding:14px}
-.filters label{font-size:.78rem;color:#a89a86;display:block;margin-bottom:4px}
-.filters select,.filters input{padding:9px 11px;border-radius:10px;border:1px solid #4a4030;background:#1a1610;color:#f5f0e8;font-family:inherit;font-size:.88rem;min-width:140px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
-.kpi{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:14px;padding:14px 16px}
-.kpi .lbl{font-size:.78rem;color:#a89a86}.kpi .val{font-size:1.45rem;font-weight:800;color:#f5a623;margin-top:2px}
-.kpi .sub{font-size:.75rem;color:#8a7a68;margin-top:2px}
-.card{background:linear-gradient(145deg,#241e14,#1c1812);border:1px solid #3d3428;border-radius:14px;margin-bottom:16px;overflow:hidden}
-.card-head{padding:14px 16px;background:#2e261c;border-bottom:1px solid #3d3428;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.card-head h3{font-size:1.05rem;color:#f5a623;font-weight:800}
-.card-body{padding:0}
-.table-wrap{width:100%;overflow-x:auto}
-table{width:100%;border-collapse:separate;border-spacing:0;min-width:640px;table-layout:auto}
-thead th{text-align:right;vertical-align:middle;padding:11px 12px;font-size:.82rem;background:#332b20;color:#ebe3d4;border-bottom:1px solid #4a4034;white-space:nowrap}
-table.tbl-personnel thead th:nth-child(1),table.tbl-personnel thead th:nth-child(4),table.tbl-personnel thead th:nth-child(5),table.tbl-personnel thead th:nth-child(7),table.tbl-personnel thead th:nth-child(8),table.tbl-personnel thead th:nth-child(9){width:96px}
-table.tbl-personnel thead th:nth-child(2){min-width:140px}
-table.tbl-stations thead th:nth-child(1),table.tbl-stations thead th:nth-child(4),table.tbl-stations thead th:nth-child(5),table.tbl-stations thead th:nth-child(6),table.tbl-stations thead th:nth-child(7){width:96px}
-table.tbl-stations thead th:nth-child(2){min-width:140px}
-table.tbl-auditor thead th:nth-child(1),table.tbl-auditor thead th:nth-child(3),table.tbl-auditor thead th:nth-child(4){width:110px}
-table.tbl-auditor thead th:nth-child(2){min-width:140px}
-table.tbl-raw thead th:nth-child(1){width:72px}
-table.tbl-raw thead th:nth-child(7),table.tbl-raw thead th:nth-child(8){width:110px}
-table.tbl-raw thead th:nth-child(2){min-width:110px;white-space:nowrap}
-table.tbl-raw thead th:nth-child(3),table.tbl-raw thead th:nth-child(4),table.tbl-raw thead th:nth-child(5),table.tbl-raw thead th:nth-child(6){min-width:110px}
-tbody td{padding:10px 12px;border-bottom:1px solid #2f2920;font-size:.88rem;color:#e8dfd0;text-align:right;vertical-align:middle;line-height:1.5}
-table.tbl-raw tbody td:nth-child(2){white-space:nowrap}
-.num{text-align:center!important;font-variant-numeric:tabular-nums}
-.score-ratio{white-space:nowrap}
+.user-bar button{background:#2a2418;border:1px solid #4a4034;color:#ebe3d4;border-radius:8px;padding:6px 10px;font-family:inherit;cursor:pointer;font-size:.8rem}
+.wrap{max-width:1200px;margin:0 auto;padding:20px 16px 48px}
+.panel{background:linear-gradient(160deg,#1e1a14,#16120e);border:1px solid #3d3428;border-radius:20px;padding:20px 18px 18px;box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.panel-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:16px}
+.panel-head h2{font-size:1.25rem;font-weight:800;color:#f5a623}
+.panel-head .sub{font-size:.82rem;color:#a89a86;margin-top:2px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.search-input{min-width:200px;flex:1;padding:11px 14px;border-radius:12px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;font-size:.9rem}
+.search-input::placeholder{color:#6b5f4e}
+.filter-select{padding:11px 14px;border-radius:12px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;font-size:.9rem;min-width:150px}
+.btn-excel{background:transparent;border:1px solid #f5a623;color:#f5a623;border-radius:12px;padding:11px 16px;font-family:inherit;font-weight:700;font-size:.9rem;cursor:pointer}
+.btn-excel:hover{background:rgba(245,166,35,.12)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:700px){.stats{grid-template-columns:1fr}}
+.stat{background:#14110c;border:1px solid #3d3428;border-radius:14px;padding:16px 14px;text-align:center}
+.stat .val{font-size:1.5rem;font-weight:800;color:#f5a623}
+.stat .lbl{font-size:.82rem;color:#a89a86;margin-top:4px}
+.table-wrap{width:100%;overflow-x:auto;border-radius:12px;border:1px solid #3d3428}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:980px}
+thead th{text-align:right;padding:12px 11px;font-size:.82rem;font-weight:700;background:#241e16;color:#f5a623;border-bottom:1px solid #3d3428;white-space:nowrap}
+tbody td{padding:12px 11px;border-bottom:1px solid #2a2418;font-size:.88rem;color:#e8dfd0;vertical-align:middle}
+tbody tr:hover{background:#1c1812}
+tbody tr:last-child td{border-bottom:none}
+.empty{text-align:center;padding:48px 16px;color:#a89a86;font-size:.95rem}
 .score-good{color:#4ade80;font-weight:700}
 .score-mid{color:#fcd34d;font-weight:700}
 .score-low{color:#f87171;font-weight:700}
-.bar{height:8px;background:#2a2418;border-radius:999px;overflow:hidden;min-width:80px}
-.bar > span{display:block;height:100%;background:linear-gradient(90deg,#f5a623,#e8910f);border-radius:999px}
-.actions-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
-.empty{text-align:center;padding:40px 16px;color:#a89a86}
-.hint{font-size:.82rem;color:#a89a86;margin-top:8px}
+.btn-view{background:#2a2418;border:1px solid #5a4030;color:#f5c56a;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
+.btn-view:hover{border-color:#f5a623}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal[hidden]{display:none!important}
+.modal-box{width:100%;max-width:720px;max-height:90vh;overflow:auto;background:linear-gradient(160deg,#1e1a14,#16120e);border:1px solid #3d3428;border-radius:18px;padding:20px}
+.modal-box h3{color:#f5a623;font-size:1.15rem;margin-bottom:12px}
+.modal-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.modal-meta .item{background:#14110c;border:1px solid #3d3428;border-radius:10px;padding:10px}
+.modal-meta .lbl{font-size:.75rem;color:#a89a86}.modal-meta .val{font-weight:700;font-size:.92rem}
+.modal-close{margin-top:14px}
 </style>
 </head>
 <body>
 <section id="login-page" class="login-page">
 <div class="login-box">
 <div class="logo" style="display:block;text-align:center;margin:0 auto 8px;width:fit-content"><span class="a">A</span><span class="pw">PW</span></div>
-<h1>گزارش تحلیلی 5S</h1>
+<h1>گزارش‌های 5S</h1>
 <p class="sub">با حساب سامانه وارد شوید</p>
 <form id="login-form">
 <div class="login-field"><label>نام کاربری</label>
@@ -93,11 +89,10 @@ table.tbl-raw tbody td:nth-child(2){white-space:nowrap}
 <p style="text-align:center;margin-top:14px"><a class="nav-home" href="../">← صفحه اصلی</a></p>
 </div>
 </section>
-
 <header class="top" id="app-header" style="display:none">
 <div class="top-inner">
 <div class="brand"><div class="logo"><span class="a">A</span><span class="pw">PW</span></div>
-<div><h1>گزارش تحلیلی 5S</h1><p>تحلیل یکپارچه نفرات و ایستگاه‌ها</p></div></div>
+<div><h1>نظام آراستگی 5S</h1><p>جدول گزارش‌ها</p></div></div>
 <div class="user-bar">
 <span id="current-user-label"></span>
 <a class="nav-home" href="./">← مدیریت 5S</a>
@@ -106,96 +101,47 @@ table.tbl-raw tbody td:nth-child(2){white-space:nowrap}
 </div>
 </div>
 </header>
-
 <main class="wrap" id="app-main" style="display:none">
-<div class="page-title">
-<h2>گزارش یکپارچه نظام آراستگی</h2>
-<p>بر اساس همه ارزیابی‌های ثبت‌شده — قابل فیلتر و خروجی اکسل برای آنالیز</p>
+<div class="panel">
+  <div class="panel-head">
+    <div>
+      <h2>جدول گزارش‌های 5S</h2>
+      <p class="sub">جست‌وجو، فیلتر و خروجی اکسل</p>
+    </div>
+    <div class="toolbar">
+      <input type="search" id="search" class="search-input" placeholder="جست‌وجوی ایستگاه، اپراتور، ارزیاب...">
+      <select id="filter-ws" class="filter-select"><option value="">همه ایستگاه‌ها</option></select>
+      <button type="button" class="btn-excel" id="btn-excel">↓ خروجی اکسل</button>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="val" id="stat-count">0</div><div class="lbl">تعداد رکورد</div></div>
+    <div class="stat"><div class="val" id="stat-avg">0%</div><div class="lbl">میانگین درصد</div></div>
+    <div class="stat"><div class="val" id="stat-top">—</div><div class="lbl">پرتکرارترین ایستگاه</div></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ردیف</th><th>شماره</th><th>تاریخ</th><th>ایستگاه کاری</th><th>ارزیاب</th>
+          <th>اپراتور</th><th>کمک ۱</th><th>کمک ۲</th><th>کمک ۳</th>
+          <th>امتیاز</th><th>درصد</th><th>ثبت‌کننده</th><th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty" class="empty">هنوز هیچ رکوردی ثبت نشده است.</div>
+  </div>
 </div>
-
-<div class="filters">
-<div><label>از تاریخ</label><input type="date" id="f-from"></div>
-<div><label>تا تاریخ</label><input type="date" id="f-to"></div>
-<div><label>ایستگاه</label><select id="f-ws"><option value="">همه ایستگاه‌ها</option></select></div>
-<div><label>ارزیاب</label><select id="f-auditor"><option value="">همه ارزیاب‌ها</option></select></div>
-<div style="display:flex;align-items:flex-end;gap:8px">
-<button type="button" class="btn btn-primary" id="btn-apply">اعمال فیلتر</button>
-<button type="button" class="btn btn-secondary" id="btn-reset-f">پاک کردن</button>
-</div>
-</div>
-
-<div class="actions-row">
-<button type="button" class="btn btn-primary" id="btn-export-people">↓ اکسل نفرات</button>
-<button type="button" class="btn btn-secondary" id="btn-export-ws">↓ اکسل ایستگاه‌ها</button>
-<button type="button" class="btn btn-secondary" id="btn-export-raw">↓ اکسل همه گزارش‌ها</button>
-<button type="button" class="btn btn-secondary" id="btn-refresh">بروزرسانی</button>
-</div>
-
-<div class="kpis" id="kpis"></div>
-
-<div class="card">
-<div class="card-head"><h3>تحلیل نفرات (اپراتور و کمک‌اپراتور)</h3><span class="hint" id="people-count"></span></div>
-<div class="card-body">
-<div class="table-wrap">
-<table class="tbl-personnel">
-<thead>
-<tr>
-<th>ردیف</th><th>نام نفر</th><th>تعداد حضور</th><th>به‌عنوان اپراتور</th><th>به‌عنوان کمک</th>
-<th>میانگین امتیاز</th><th>کمینه</th><th>بیشینه</th><th>درصد میانگین</th>
-</tr>
-</thead>
-<tbody id="tb-people"></tbody>
-</table>
-</div>
-<div id="empty-people" class="empty" hidden>داده‌ای برای نفرات نیست.</div>
-</div>
-</div>
-
-<div class="card">
-<div class="card-head"><h3>تحلیل ایستگاه کاری</h3></div>
-<div class="card-body">
-<div class="table-wrap">
-<table class="tbl-stations">
-<thead>
-<tr><th>ردیف</th><th>ایستگاه</th><th>تعداد ارزیابی</th><th>میانگین امتیاز</th><th>کمینه</th><th>بیشینه</th><th>درصد میانگین</th></tr>
-</thead>
-<tbody id="tb-ws"></tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div class="card">
-<div class="card-head"><h3>تحلیل ارزیاب</h3></div>
-<div class="card-body">
-<div class="table-wrap">
-<table class="tbl-auditor">
-<thead>
-<tr><th>ردیف</th><th>ارزیاب</th><th>تعداد گزارش</th><th>درصد میانگین</th></tr>
-</thead>
-<tbody id="tb-auditor"></tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div class="card">
-<div class="card-head"><h3>لیست گزارش‌ها (خلاصه)</h3></div>
-<div class="card-body">
-<div class="table-wrap">
-<table class="tbl-raw">
-<thead>
-<tr><th>شماره</th><th>تاریخ</th><th>ایستگاه</th><th>ارزیاب</th><th>اپراتور</th><th>کمک‌ها</th><th>امتیاز</th><th>درصد</th></tr>
-</thead>
-<tbody id="tb-raw"></tbody>
-</table>
-</div>
-</div>
-</div>
-
-<p class="hint">نکته: میانگین امتیاز هر نفر از گزارش‌هایی است که در آن‌ها به‌عنوان اپراتور یا کمک‌اپراتور حضور داشته است.</p>
 </main>
-
+<div id="modal" class="modal" hidden>
+  <div class="modal-box">
+    <h3 id="modal-title">جزئیات گزارش</h3>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div id="modal-body"></div>
+    <button type="button" class="btn btn-primary modal-close" id="modal-close">بستن</button>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL="https://rtefjfvkjpatzitjjvwe.supabase.co";
@@ -203,33 +149,26 @@ const SUPABASE_KEY="sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const PASSWORDS={"mehdi-soltani":"Ms136810","masoud-kazemi":"Mk133320","mehdi-afshar":"Ma123456","arash-baba":"Ab144420"};
 const NAMES={"mehdi-soltani":"مهدی سلطانی","masoud-kazemi":"مسعود کاظمی","mehdi-afshar":"مهدی افشار","arash-baba":"آرش بابا"};
-let currentUser=null,allRows=[],filtered=[];
+let currentUser=null,allRows=[],viewRows=[];
 function showLogin(){document.getElementById("login-page").style.display="";document.getElementById("app-header").style.display="none";document.getElementById("app-main").style.display="none"}
 function showApp(){document.getElementById("login-page").style.display="none";document.getElementById("app-header").style.display="";document.getElementById("app-main").style.display="";document.getElementById("current-user-label").textContent=currentUser&&currentUser.name||"کاربر"}
-document.getElementById("login-form").onsubmit=async function(e){e.preventDefault();const err=document.getElementById("login-error");err.textContent="در حال ورود...";const u=document.getElementById("loginUser").value;const p=document.getElementById("loginPass").value;const pass=PASSWORDS[u];if(!pass||p!==pass){err.textContent="نام کاربری یا رمز اشتباه است.";return}const email=u+"@people-manager.invalid";const {data,error}=await supabaseClient.auth.signInWithPassword({email:email,password:pass});if(error||!data.user){err.textContent="ورود ناموفق: "+(error&&error.message||"");return}currentUser={id:data.user.id,name:NAMES[u]||u,username:u};showApp();await loadData()};
-document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();currentUser=null;allRows=[];filtered=[];showLogin()};
-function pct(total,max){if(!max)return 0;return Math.round((Number(total)/Number(max))*1000)/10}
-function scoreClass(p){if(p>=80)return "score-good";if(p>=60)return "score-mid";return "score-low"}
-async function loadData(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(500);if(error){alert("خطا در خواندن داده: "+error.message);allRows=[];filtered=[];renderAll();return}allRows=(data||[]).map(function(r){const max=Number(r.max_score)||0;const total=Number(r.total_score)||0;return{id:r.id,reportNo:r.report_no,date:r.audit_date||"",workstation:r.area||"",auditor:r.auditor||"",operator:r.operator_name||"",assistants:[r.assistant1_name,r.assistant2_name,r.assistant3_name].filter(Boolean),total:total,max:max,percent:pct(total,max)}});fillFilterOptions();applyFilter()}
-function fillFilterOptions(){const ws=new Set(),aud=new Set();allRows.forEach(function(r){if(r.workstation)ws.add(r.workstation);if(r.auditor)aud.add(r.auditor)});const wsEl=document.getElementById("f-ws");const audEl=document.getElementById("f-auditor");const curWs=wsEl.value,curAud=audEl.value;wsEl.innerHTML='<option value="">همه ایستگاه‌ها</option>';audEl.innerHTML='<option value="">همه ارزیاب‌ها</option>';Array.from(ws).sort().forEach(function(v){const o=document.createElement("option");o.value=v;o.textContent=v;wsEl.appendChild(o)});Array.from(aud).sort().forEach(function(v){const o=document.createElement("option");o.value=v;o.textContent=v;audEl.appendChild(o)});wsEl.value=curWs;audEl.value=curAud}
-function applyFilter(){const from=document.getElementById("f-from").value;const to=document.getElementById("f-to").value;const ws=document.getElementById("f-ws").value;const aud=document.getElementById("f-auditor").value;filtered=allRows.filter(function(r){if(from&&r.date&&r.date<from)return false;if(to&&r.date&&r.date>to)return false;if(ws&&r.workstation!==ws)return false;if(aud&&r.auditor!==aud)return false;return true});renderAll()}
-document.getElementById("btn-apply").onclick=applyFilter;
-document.getElementById("btn-reset-f").onclick=function(){document.getElementById("f-from").value="";document.getElementById("f-to").value="";document.getElementById("f-ws").value="";document.getElementById("f-auditor").value="";applyFilter()};
-document.getElementById("btn-refresh").onclick=loadData;
-function renderAll(){renderKpis();renderPeople();renderWs();renderAuditor();renderRaw()}
-function renderKpis(){const box=document.getElementById("kpis");const n=filtered.length;let sumPct=0;filtered.forEach(function(r){sumPct+=r.percent});const avgPct=n?Math.round((sumPct/n)*10)/10:0;const people=new Set();filtered.forEach(function(r){if(r.operator)people.add(r.operator);(r.assistants||[]).forEach(function(a){if(a)people.add(a)})});const stations=new Set(filtered.map(function(r){return r.workstation}).filter(Boolean));box.innerHTML='<div class="kpi"><div class="lbl">تعداد گزارش</div><div class="val">'+n+'</div></div><div class="kpi"><div class="lbl">میانگین درصد</div><div class="val">'+avgPct+'%</div></div><div class="kpi"><div class="lbl">نفرات درگیر</div><div class="val">'+people.size+'</div><div class="sub">اپراتور + کمک</div></div><div class="kpi"><div class="lbl">ایستگاه‌های پوشش‌داده‌شده</div><div class="val">'+stations.size+'</div></div>'}
-function buildPeopleStats(){const map={};function touch(name,role,row){if(!name)return;if(!map[name])map[name]={name:name,count:0,asOp:0,asAs:0,scores:[],pcts:[]};const p=map[name];p.count++;if(role==="op")p.asOp++;else p.asAs++;p.scores.push(row.total);p.pcts.push(row.percent)}filtered.forEach(function(r){touch(r.operator,"op",r);(r.assistants||[]).forEach(function(a){touch(a,"as",r)})});return Object.values(map).map(function(p){const avgScore=p.scores.reduce(function(a,b){return a+b},0)/p.scores.length;const avgPct=p.pcts.reduce(function(a,b){return a+b},0)/p.pcts.length;return{name:p.name,count:p.count,asOp:p.asOp,asAs:p.asAs,avgScore:Math.round(avgScore*10)/10,avgPct:Math.round(avgPct*10)/10,min:Math.min.apply(null,p.scores),max:Math.max.apply(null,p.scores)}}).sort(function(a,b){return b.count-a.count||b.avgPct-a.avgPct})}
-function renderPeople(){const rows=buildPeopleStats();document.getElementById("people-count").textContent=rows.length+" نفر";const tb=document.getElementById("tb-people");const empty=document.getElementById("empty-people");tb.innerHTML="";if(!rows.length){empty.hidden=false;return}empty.hidden=true;rows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td class='num'>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td class='num'>"+r.count+"</td><td class='num'>"+r.asOp+"</td><td class='num'>"+r.asAs+"</td><td class='num'>"+r.avgScore+"</td><td class='num'>"+r.min+"</td><td class='num'>"+r.max+'</td><td class="num '+scoreClass(r.avgPct)+'">'+r.avgPct+'%<div class="bar"><span style="width:'+Math.min(100,r.avgPct)+'%"></span></div></td>';tb.appendChild(tr)})}
-function renderWs(){const map={};filtered.forEach(function(r){const k=r.workstation||"—";if(!map[k])map[k]={name:k,count:0,scores:[],pcts:[]};map[k].count++;map[k].scores.push(r.total);map[k].pcts.push(r.percent)});const rows=Object.values(map).map(function(p){return{name:p.name,count:p.count,avg:Math.round((p.scores.reduce(function(a,b){return a+b},0)/p.scores.length)*10)/10,min:Math.min.apply(null,p.scores),max:Math.max.apply(null,p.scores),avgPct:Math.round((p.pcts.reduce(function(a,b){return a+b},0)/p.pcts.length)*10)/10}}).sort(function(a,b){return b.count-a.count});const tb=document.getElementById("tb-ws");tb.innerHTML="";rows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td class='num'>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td class='num'>"+r.count+"</td><td class='num'>"+r.avg+"</td><td class='num'>"+r.min+"</td><td class='num'>"+r.max+'</td><td class="num '+scoreClass(r.avgPct)+'">'+r.avgPct+'%<div class="bar"><span style="width:'+Math.min(100,r.avgPct)+'%"></span></div></td>';tb.appendChild(tr)})}
-function renderAuditor(){const map={};filtered.forEach(function(r){const k=r.auditor||"—";if(!map[k])map[k]={name:k,count:0,pcts:[]};map[k].count++;map[k].pcts.push(r.percent)});const rows=Object.values(map).map(function(p){return{name:p.name,count:p.count,avgPct:Math.round((p.pcts.reduce(function(a,b){return a+b},0)/p.pcts.length)*10)/10}}).sort(function(a,b){return b.count-a.count});const tb=document.getElementById("tb-auditor");tb.innerHTML="";rows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td class='num'>"+(i+1)+"</td><td>"+esc(r.name)+"</td><td class='num'>"+r.count+'</td><td class="num '+scoreClass(r.avgPct)+'">'+r.avgPct+'%<div class="bar"><span style="width:'+Math.min(100,r.avgPct)+'%"></span></div></td>';tb.appendChild(tr)})}
-function renderRaw(){const tb=document.getElementById("tb-raw");tb.innerHTML="";filtered.forEach(function(r){const tr=document.createElement("tr");const scoreCell='<td class="num"><bdi dir="ltr" class="score-ratio">'+r.total+(r.max?" / "+r.max:"")+"</bdi></td>";tr.innerHTML="<td class='num'>"+(r.reportNo!=null?r.reportNo:"-")+"</td><td>"+esc(r.date||"-")+"</td><td>"+esc(r.workstation||"-")+"</td><td>"+esc(r.auditor||"-")+"</td><td>"+esc(r.operator||"-")+"</td><td>"+esc((r.assistants||[]).join("، ")||"-")+"</td>"+scoreCell+'<td class="num '+scoreClass(r.percent)+'">'+r.percent+'%</td>';tb.appendChild(tr)})}
+document.getElementById("login-form").onsubmit=async function(e){e.preventDefault();const err=document.getElementById("login-error");err.textContent="در حال ورود...";const u=document.getElementById("loginUser").value;const p=document.getElementById("loginPass").value;const pass=PASSWORDS[u];if(!pass||p!==pass){err.textContent="نام کاربری یا رمز اشتباه است.";return}const {data,error}=await supabaseClient.auth.signInWithPassword({email:u+"@people-manager.invalid",password:pass});if(error||!data.user){err.textContent="ورود ناموفق";return}currentUser={id:data.user.id,name:NAMES[u]||u,username:u};showApp();await loadData()};
+document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();currentUser=null;allRows=[];viewRows=[];showLogin()};
+function pct(t,m){if(!m)return 0;return Math.round((Number(t)/Number(m))*1000)/10}
+function scoreClass(p){if(p>=80)return"score-good";if(p>=60)return"score-mid";return"score-low"}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">")}
-function downloadCsv(filename,headers,rows){function cell(v){let t=String(v==null?"":v);if(/^[\s]*[=+\-@]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"'}const csv=[headers].concat(rows).map(function(r){return r.map(cell).join(",")}).join("\r\n");const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},800)}
-document.getElementById("btn-export-people").onclick=function(){const rows=buildPeopleStats();if(!rows.length){alert("داده‌ای نیست");return}downloadCsv("5S_People_"+new Date().toISOString().slice(0,10)+".csv",["نام","تعداد حضور","اپراتور","کمک","میانگین امتیاز","کمینه","بیشینه","درصد میانگین"],rows.map(function(r){return [r.name,r.count,r.asOp,r.asAs,r.avgScore,r.min,r.max,r.avgPct]}))};
-document.getElementById("btn-export-ws").onclick=function(){const map={};filtered.forEach(function(r){const k=r.workstation||"—";if(!map[k])map[k]={name:k,count:0,scores:[],pcts:[]};map[k].count++;map[k].scores.push(r.total);map[k].pcts.push(r.percent)});const rows=Object.values(map).map(function(p){return [p.name,p.count,Math.round((p.scores.reduce(function(a,b){return a+b},0)/p.scores.length)*10)/10,Math.min.apply(null,p.scores),Math.max.apply(null,p.scores),Math.round((p.pcts.reduce(function(a,b){return a+b},0)/p.pcts.length)*10)/10]});if(!rows.length){alert("داده‌ای نیست");return}downloadCsv("5S_Stations_"+new Date().toISOString().slice(0,10)+".csv",["ایستگاه","تعداد","میانگین","کمینه","بیشینه","درصد"],rows)};
-document.getElementById("btn-export-raw").onclick=function(){if(!filtered.length){alert("داده‌ای نیست");return}downloadCsv("5S_Reports_"+new Date().toISOString().slice(0,10)+".csv",["شماره","تاریخ","ایستگاه","ارزیاب","اپراتور","کمک‌ها","امتیاز","حداکثر","درصد"],filtered.map(function(r){return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,(r.assistants||[]).join(" | "),r.total,r.max,r.percent]}))};
+async function loadData(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(500);if(error){alert("خطا در خواندن: "+error.message);allRows=[];viewRows=[];render();return}allRows=(data||[]).map(function(r){const total=Number(r.total_score)||0;const max=Number(r.max_score)||0;const d=r.details||{};return{id:r.id,reportNo:r.report_no,date:r.audit_date||"",workstation:r.area||"",auditor:r.auditor||"",operator:r.operator_name||"",a1:r.assistant1_name||"",a2:r.assistant2_name||"",a3:r.assistant3_name||"",total:total,max:max,percent:pct(total,max),createdBy:r.created_by_name||"—",sections:(d.sections||d)||[]}});fillWs();applyFilter()}
+function fillWs(){const set=new Set();allRows.forEach(function(r){if(r.workstation)set.add(r.workstation)});const sel=document.getElementById("filter-ws");const cur=sel.value;sel.innerHTML='<option value="">همه ایستگاه‌ها</option>';Array.from(set).sort().forEach(function(v){const o=document.createElement("option");o.value=v;o.textContent=v;sel.appendChild(o)});sel.value=cur}
+function applyFilter(){const q=String(document.getElementById("search").value||"").trim().toLowerCase();const ws=document.getElementById("filter-ws").value;viewRows=allRows.filter(function(r){if(ws&&r.workstation!==ws)return false;if(!q)return true;return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.createdBy].some(function(v){return String(v).toLowerCase().includes(q)})});render()}
+document.getElementById("search").oninput=applyFilter;
+document.getElementById("filter-ws").onchange=applyFilter;
+function render(){document.getElementById("stat-count").textContent=String(viewRows.length);let sum=0;const wsCount={};viewRows.forEach(function(r){sum+=r.percent;const k=r.workstation||"—";wsCount[k]=(wsCount[k]||0)+1});document.getElementById("stat-avg").textContent=viewRows.length?(Math.round((sum/viewRows.length)*10)/10)+"%":"0%";let top="—",topN=0;Object.keys(wsCount).forEach(function(k){if(wsCount[k]>topN){topN=wsCount[k];top=k}});document.getElementById("stat-top").textContent=top;const tb=document.getElementById("tbody");const empty=document.getElementById("empty");tb.innerHTML="";if(!viewRows.length){empty.style.display="block";empty.textContent=allRows.length?"نتیجه‌ای یافت نشد.":"هنوز هیچ رکوردی ثبت نشده است.";return}empty.style.display="none";viewRows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td>"+(i+1)+"</td><td>"+(r.reportNo!=null?r.reportNo:"—")+"</td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.workstation||"—")+"</td><td>"+esc(r.auditor||"—")+"</td><td>"+esc(r.operator||"—")+"</td><td>"+esc(r.a1||"—")+"</td><td>"+esc(r.a2||"—")+"</td><td>"+esc(r.a3||"—")+"</td><td>"+r.total+(r.max?" / "+r.max:"")+'</td><td class="'+scoreClass(r.percent)+'">'+r.percent+'%</td><td>'+esc(r.createdBy)+'</td><td><button type="button" class="btn-view" data-i="'+i+'">مشاهده</button></td>';tb.appendChild(tr)});tb.querySelectorAll(".btn-view").forEach(function(btn){btn.onclick=function(){openDetail(viewRows[Number(btn.getAttribute("data-i"))])}})}
+function openDetail(r){if(!r)return;document.getElementById("modal-title").textContent="گزارش شماره "+(r.reportNo!=null?r.reportNo:"—");document.getElementById("modal-meta").innerHTML=meta("تاریخ",r.date)+meta("ایستگاه",r.workstation)+meta("ارزیاب",r.auditor)+meta("اپراتور",r.operator)+meta("امتیاز",r.total+" / "+r.max)+meta("درصد",r.percent+"%");let body="";const secs=Array.isArray(r.sections)?r.sections:[];secs.forEach(function(sec){body+='<div style="margin:12px 0 6px;color:#f5a623;font-weight:700">'+esc(sec.title||"")+'</div>';(sec.items||[]).forEach(function(it,ii){body+='<div style="padding:6px 0;border-bottom:1px solid #2a2418;font-size:.88rem">'+(ii+1)+'- '+esc(it.question||"")+' · نمره: <strong>'+(it.score!=null?it.score:"—")+'</strong>'+(it.note?' · '+esc(it.note):"")+'</div>'})});document.getElementById("modal-body").innerHTML=body||"<p style='color:#a89a86'>جزئیات بخش‌ها موجود نیست.</p>";document.getElementById("modal").hidden=false}
+function meta(l,v){return '<div class="item"><div class="lbl">'+esc(l)+'</div><div class="val">'+esc(v||"—")+'</div></div>'}
+document.getElementById("modal-close").onclick=function(){document.getElementById("modal").hidden=true};
+document.getElementById("modal").onclick=function(e){if(e.target.id==="modal")document.getElementById("modal").hidden=true};
+document.getElementById("btn-excel").onclick=function(){if(!viewRows.length){alert("رکوردی برای خروجی نیست.");return}function cell(v){let t=String(v==null?"":v);if(/^[\s]*[=+\-@]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"'}const headers=["ردیف","شماره","تاریخ","ایستگاه","ارزیاب","اپراتور","کمک1","کمک2","کمک3","امتیاز","حداکثر","درصد","ثبت‌کننده"];const rows=viewRows.map(function(r,i){return [i+1,r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.total,r.max,r.percent,r.createdBy]});const csv=[headers].concat(rows).map(function(r){return r.map(cell).join(",")}).join("\r\n");const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="5S_Reports_"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},800)};
 (async function(){const {data}=await supabaseClient.auth.getSession();if(data.session&&data.session.user){const email=data.session.user.email||"";const u=email.replace("@people-manager.invalid","");currentUser={id:data.session.user.id,name:NAMES[u]||u,username:u};showApp();await loadData()}else showLogin()})();
 </script>
-<script src="./analytics-template.js"></script>
 </body>
 </html>
