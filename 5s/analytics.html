@@ -34,6 +34,11 @@ body{font-family:Vazirmatn,Tahoma,sans-serif;background:#0f0d0a;color:#f5f0e8;mi
 .panel-head h2{font-size:1.25rem;font-weight:800;color:#f5a623}
 .panel-head .sub{font-size:.82rem;color:#a89a86;margin-top:2px}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.filters-row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:14px;padding-top:4px}
+.filters-row .f{display:flex;flex-direction:column;gap:4px}
+.filters-row .f label{font-size:.75rem;color:#a89a86}
+.filters-row input[type=date],.filters-row select{padding:10px 12px;border-radius:12px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;font-size:.88rem;min-width:140px}
+.btn-clear{background:#2a2418;border:1px solid #4a4034;color:#ebe3d4;border-radius:12px;padding:10px 14px;font-family:inherit;font-weight:600;font-size:.85rem;cursor:pointer}
 .search-input{min-width:200px;flex:1;padding:11px 14px;border-radius:12px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;font-size:.9rem}
 .search-input::placeholder{color:#6b5f4e}
 .filter-select{padding:11px 14px;border-radius:12px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;font-size:.9rem;min-width:150px}
@@ -110,9 +115,24 @@ tbody tr:last-child td{border-bottom:none}
     </div>
     <div class="toolbar">
       <input type="search" id="search" class="search-input" placeholder="جست‌وجوی ایستگاه، اپراتور، ارزیاب...">
-      <select id="filter-ws" class="filter-select"><option value="">همه ایستگاه‌ها</option></select>
       <button type="button" class="btn-excel" id="btn-excel">↓ خروجی اکسل</button>
     </div>
+  </div>
+  <div class="filters-row">
+    <div class="f"><label>از تاریخ</label><input type="date" id="f-from"></div>
+    <div class="f"><label>تا تاریخ</label><input type="date" id="f-to"></div>
+    <div class="f"><label>ایستگاه کاری</label><select id="filter-ws"><option value="">همه ایستگاه‌ها</option></select></div>
+    <div class="f"><label>ارزیاب</label><select id="filter-auditor"><option value="">همه ارزیاب‌ها</option></select></div>
+    <div class="f"><label>اپراتور</label><select id="filter-operator"><option value="">همه اپراتورها</option></select></div>
+    <div class="f"><label>حداقل درصد</label><select id="filter-minpct">
+      <option value="">همه</option>
+      <option value="50">۵۰٪ به بالا</option>
+      <option value="60">۶۰٪ به بالا</option>
+      <option value="70">۷۰٪ به بالا</option>
+      <option value="80">۸۰٪ به بالا</option>
+      <option value="90">۹۰٪ به بالا</option>
+    </select></div>
+    <button type="button" class="btn-clear" id="btn-clear-f">پاک کردن فیلترها</button>
   </div>
   <div class="stats">
     <div class="stat"><div class="val" id="stat-count">0</div><div class="lbl">تعداد رکورد</div></div>
@@ -156,12 +176,14 @@ document.getElementById("login-form").onsubmit=async function(e){e.preventDefaul
 document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();currentUser=null;allRows=[];viewRows=[];showLogin()};
 function pct(t,m){if(!m)return 0;return Math.round((Number(t)/Number(m))*1000)/10}
 function scoreClass(p){if(p>=80)return"score-good";if(p>=60)return"score-mid";return"score-low"}
-function esc(s){return String(s==null?"":s).replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">")}
-async function loadData(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(500);if(error){alert("خطا در خواندن: "+error.message);allRows=[];viewRows=[];render();return}allRows=(data||[]).map(function(r){const total=Number(r.total_score)||0;const max=Number(r.max_score)||0;const d=r.details||{};return{id:r.id,reportNo:r.report_no,date:r.audit_date||"",workstation:r.area||"",auditor:r.auditor||"",operator:r.operator_name||"",a1:r.assistant1_name||"",a2:r.assistant2_name||"",a3:r.assistant3_name||"",total:total,max:max,percent:pct(total,max),createdBy:r.created_by_name||"—",sections:(d.sections||d)||[]}});fillWs();applyFilter()}
-function fillWs(){const set=new Set();allRows.forEach(function(r){if(r.workstation)set.add(r.workstation)});const sel=document.getElementById("filter-ws");const cur=sel.value;sel.innerHTML='<option value="">همه ایستگاه‌ها</option>';Array.from(set).sort().forEach(function(v){const o=document.createElement("option");o.value=v;o.textContent=v;sel.appendChild(o)});sel.value=cur}
-function applyFilter(){const q=String(document.getElementById("search").value||"").trim().toLowerCase();const ws=document.getElementById("filter-ws").value;viewRows=allRows.filter(function(r){if(ws&&r.workstation!==ws)return false;if(!q)return true;return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.createdBy].some(function(v){return String(v).toLowerCase().includes(q)})});render()}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+async function loadData(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(500);if(error){alert("خطا در خواندن: "+error.message);allRows=[];viewRows=[];render();return}allRows=(data||[]).map(function(r){const total=Number(r.total_score)||0;const max=Number(r.max_score)||0;const d=r.details||{};return{id:r.id,reportNo:r.report_no,date:r.audit_date||"",workstation:r.area||"",auditor:r.auditor||"",operator:r.operator_name||"",a1:r.assistant1_name||"",a2:r.assistant2_name||"",a3:r.assistant3_name||"",total:total,max:max,percent:pct(total,max),createdBy:r.created_by_name||"—",sections:(d.sections||d)||[]}});fillFilters();applyFilter()}
+function fillSelect(id, values, allLabel){const sel=document.getElementById(id);const cur=sel.value;sel.innerHTML='<option value="">'+allLabel+'</option>';values.forEach(function(v){const o=document.createElement("option");o.value=v;o.textContent=v;sel.appendChild(o)});sel.value=cur}
+function fillFilters(){const ws=new Set(),aud=new Set(),ops=new Set();allRows.forEach(function(r){if(r.workstation)ws.add(r.workstation);if(r.auditor)aud.add(r.auditor);if(r.operator)ops.add(r.operator)});fillSelect("filter-ws", Array.from(ws).sort(), "همه ایستگاه‌ها");fillSelect("filter-auditor", Array.from(aud).sort(), "همه ارزیاب‌ها");fillSelect("filter-operator", Array.from(ops).sort(), "همه اپراتورها")}
+function applyFilter(){const q=String(document.getElementById("search").value||"").trim().toLowerCase();const ws=document.getElementById("filter-ws").value;const aud=document.getElementById("filter-auditor").value;const op=document.getElementById("filter-operator").value;const from=document.getElementById("f-from").value;const to=document.getElementById("f-to").value;const minPct=Number(document.getElementById("filter-minpct").value)||0;viewRows=allRows.filter(function(r){if(ws&&r.workstation!==ws)return false;if(aud&&r.auditor!==aud)return false;if(op&&r.operator!==op)return false;if(from&&r.date&&r.date<from)return false;if(to&&r.date&&r.date>to)return false;if(minPct&&r.percent<minPct)return false;if(!q)return true;return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.createdBy].some(function(v){return String(v).toLowerCase().includes(q)})});render()}
 document.getElementById("search").oninput=applyFilter;
-document.getElementById("filter-ws").onchange=applyFilter;
+["filter-ws","filter-auditor","filter-operator","filter-minpct","f-from","f-to"].forEach(function(id){document.getElementById(id).onchange=applyFilter;document.getElementById(id).oninput=applyFilter});
+document.getElementById("btn-clear-f").onclick=function(){document.getElementById("search").value="";document.getElementById("f-from").value="";document.getElementById("f-to").value="";document.getElementById("filter-ws").value="";document.getElementById("filter-auditor").value="";document.getElementById("filter-operator").value="";document.getElementById("filter-minpct").value="";applyFilter()};
 function render(){document.getElementById("stat-count").textContent=String(viewRows.length);let sum=0;const wsCount={};viewRows.forEach(function(r){sum+=r.percent;const k=r.workstation||"—";wsCount[k]=(wsCount[k]||0)+1});document.getElementById("stat-avg").textContent=viewRows.length?(Math.round((sum/viewRows.length)*10)/10)+"%":"0%";let top="—",topN=0;Object.keys(wsCount).forEach(function(k){if(wsCount[k]>topN){topN=wsCount[k];top=k}});document.getElementById("stat-top").textContent=top;const tb=document.getElementById("tbody");const empty=document.getElementById("empty");tb.innerHTML="";if(!viewRows.length){empty.style.display="block";empty.textContent=allRows.length?"نتیجه‌ای یافت نشد.":"هنوز هیچ رکوردی ثبت نشده است.";return}empty.style.display="none";viewRows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td>"+(i+1)+"</td><td>"+(r.reportNo!=null?r.reportNo:"—")+"</td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.workstation||"—")+"</td><td>"+esc(r.auditor||"—")+"</td><td>"+esc(r.operator||"—")+"</td><td>"+esc(r.a1||"—")+"</td><td>"+esc(r.a2||"—")+"</td><td>"+esc(r.a3||"—")+"</td><td>"+r.total+(r.max?" / "+r.max:"")+'</td><td class="'+scoreClass(r.percent)+'">'+r.percent+'%</td><td>'+esc(r.createdBy)+'</td><td><button type="button" class="btn-view" data-i="'+i+'">مشاهده</button></td>';tb.appendChild(tr)});tb.querySelectorAll(".btn-view").forEach(function(btn){btn.onclick=function(){openDetail(viewRows[Number(btn.getAttribute("data-i"))])}})}
 function openDetail(r){if(!r)return;document.getElementById("modal-title").textContent="گزارش شماره "+(r.reportNo!=null?r.reportNo:"—");document.getElementById("modal-meta").innerHTML=meta("تاریخ",r.date)+meta("ایستگاه",r.workstation)+meta("ارزیاب",r.auditor)+meta("اپراتور",r.operator)+meta("امتیاز",r.total+" / "+r.max)+meta("درصد",r.percent+"%");let body="";const secs=Array.isArray(r.sections)?r.sections:[];secs.forEach(function(sec){body+='<div style="margin:12px 0 6px;color:#f5a623;font-weight:700">'+esc(sec.title||"")+'</div>';(sec.items||[]).forEach(function(it,ii){body+='<div style="padding:6px 0;border-bottom:1px solid #2a2418;font-size:.88rem">'+(ii+1)+'- '+esc(it.question||"")+' · نمره: <strong>'+(it.score!=null?it.score:"—")+'</strong>'+(it.note?' · '+esc(it.note):"")+'</div>'})});document.getElementById("modal-body").innerHTML=body||"<p style='color:#a89a86'>جزئیات بخش‌ها موجود نیست.</p>";document.getElementById("modal").hidden=false}
 function meta(l,v){return '<div class="item"><div class="lbl">'+esc(l)+'</div><div class="val">'+esc(v||"—")+'</div></div>'}
