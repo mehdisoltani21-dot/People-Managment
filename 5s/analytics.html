@@ -60,14 +60,23 @@ tbody tr:last-child td{border-bottom:none}
 .score-low{color:#f87171;font-weight:700}
 .btn-view{background:#2a2418;border:1px solid #5a4030;color:#f5c56a;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer}
 .btn-view:hover{border-color:#f5a623}
+.btn-edit{background:#2a2418;border:1px solid #3d8f5a;color:#86efac;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;margin-right:6px}
+.btn-edit:hover{border-color:#4ade80}
+.ops{display:flex;gap:6px;flex-wrap:wrap}
+.edit-field{margin-bottom:10px}
+.edit-field label{display:block;font-size:.78rem;color:#a89a86;margin-bottom:4px}
+.edit-field input,.edit-field select,.edit-field textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;font-size:.9rem}
+.edit-item{background:#14110c;border:1px solid #3d3428;border-radius:10px;padding:10px;margin-bottom:8px}
+.edit-item .q{font-size:.85rem;margin-bottom:6px;color:#e8dfd0}
+.edit-row{display:grid;grid-template-columns:100px 1fr;gap:8px}
+.edit-sec-title{color:#f5a623;font-weight:700;margin:14px 0 8px}
 .modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal[hidden]{display:none!important}
-.modal-box{width:100%;max-width:720px;max-height:90vh;overflow:auto;background:linear-gradient(160deg,#1e1a14,#16120e);border:1px solid #3d3428;border-radius:18px;padding:20px}
+.modal-box{width:100%;max-width:820px;max-height:90vh;overflow:auto;background:linear-gradient(160deg,#1e1a14,#16120e);border:1px solid #3d3428;border-radius:18px;padding:20px}
 .modal-box h3{color:#f5a623;font-size:1.15rem;margin-bottom:12px}
 .modal-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
 .modal-meta .item{background:#14110c;border:1px solid #3d3428;border-radius:10px;padding:10px}
 .modal-meta .lbl{font-size:.75rem;color:#a89a86}.modal-meta .val{font-weight:700;font-size:.92rem}
-.modal-close{margin-top:14px}
 </style>
 </head>
 <body>
@@ -123,14 +132,6 @@ tbody tr:last-child td{border-bottom:none}
     <div class="f"><label>ایستگاه کاری</label><select id="filter-ws"><option value="">همه ایستگاه‌ها</option></select></div>
     <div class="f"><label>ارزیاب</label><select id="filter-auditor"><option value="">همه ارزیاب‌ها</option></select></div>
     <div class="f"><label>نفر (اپراتور / کمک)</label><select id="filter-operator"><option value="">همه نفرات</option></select></div>
-    <div class="f"><label>حداقل درصد</label><select id="filter-minpct">
-      <option value="">همه</option>
-      <option value="50">۵۰٪ به بالا</option>
-      <option value="60">۶۰٪ به بالا</option>
-      <option value="70">۷۰٪ به بالا</option>
-      <option value="80">۸۰٪ به بالا</option>
-      <option value="90">۹۰٪ به بالا</option>
-    </select></div>
     <button type="button" class="btn-clear" id="btn-clear-f">پاک کردن فیلترها</button>
   </div>
   <div class="stats">
@@ -158,7 +159,12 @@ tbody tr:last-child td{border-bottom:none}
     <h3 id="modal-title">جزئیات گزارش</h3>
     <div class="modal-meta" id="modal-meta"></div>
     <div id="modal-body"></div>
-    <button type="button" class="btn btn-primary modal-close" id="modal-close">بستن</button>
+    <div id="modal-edit" style="display:none"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+      <button type="button" class="btn btn-primary" id="modal-save" style="display:none">ذخیره اصلاحات</button>
+      <button type="button" class="btn btn-primary modal-close" id="modal-close">بستن</button>
+    </div>
+    <p id="modal-msg" style="margin-top:8px;font-size:.85rem;color:#a89a86;min-height:1.2em"></p>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -175,17 +181,110 @@ document.getElementById("login-form").onsubmit=async function(e){e.preventDefaul
 document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();currentUser=null;allRows=[];viewRows=[];showLogin()};
 function pct(t,m){if(!m)return 0;return Math.round((Number(t)/Number(m))*1000)/10}
 function scoreClass(p){if(p>=80)return"score-good";if(p>=60)return"score-mid";return"score-low"}
-function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
-async function loadData(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(500);if(error){alert("خطا در خواندن: "+error.message);allRows=[];viewRows=[];render();return}allRows=(data||[]).map(function(r){const total=Number(r.total_score)||0;const max=Number(r.max_score)||0;const d=r.details||{};return{id:r.id,reportNo:r.report_no,date:r.audit_date||"",workstation:r.area||"",auditor:r.auditor||"",operator:r.operator_name||"",a1:r.assistant1_name||"",a2:r.assistant2_name||"",a3:r.assistant3_name||"",total:total,max:max,percent:pct(total,max),createdBy:r.created_by_name||"—",sections:(d.sections||d)||[]}});fillFilters();applyFilter()}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+async function loadData(){const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("created_at",{ascending:false}).limit(500);if(error){alert("خطا در خواندن: "+error.message);allRows=[];viewRows=[];render();return}allRows=(data||[]).map(function(r){const total=Number(r.total_score)||0;const max=Number(r.max_score)||0;const d=r.details||{};return{id:r.id,reportNo:r.report_no,date:r.audit_date||"",workstation:r.area||"",auditor:r.auditor||"",operator:r.operator_name||"",a1:r.assistant1_name||"",a2:r.assistant2_name||"",a3:r.assistant3_name||"",total:total,max:max,percent:pct(total,max),createdBy:r.created_by_name||"—",sections:(d.sections||d)||[],raw:r}});fillFilters();applyFilter()}
 function fillSelect(id, values, allLabel){const sel=document.getElementById(id);const cur=sel.value;sel.innerHTML='<option value="">'+allLabel+'</option>';values.forEach(function(v){const o=document.createElement("option");o.value=v;o.textContent=v;sel.appendChild(o)});sel.value=cur}
 function fillFilters(){const ws=new Set(),aud=new Set(),people=new Set();allRows.forEach(function(r){if(r.workstation)ws.add(r.workstation);if(r.auditor)aud.add(r.auditor);if(r.operator)people.add(r.operator);if(r.a1)people.add(r.a1);if(r.a2)people.add(r.a2);if(r.a3)people.add(r.a3)});fillSelect("filter-ws", Array.from(ws).sort(), "همه ایستگاه‌ها");fillSelect("filter-auditor", Array.from(aud).sort(), "همه ارزیاب‌ها");fillSelect("filter-operator", Array.from(people).sort(), "همه نفرات")}
-function applyFilter(){const q=String(document.getElementById("search").value||"").trim().toLowerCase();const ws=document.getElementById("filter-ws").value;const aud=document.getElementById("filter-auditor").value;const op=document.getElementById("filter-operator").value;const from=document.getElementById("f-from").value;const to=document.getElementById("f-to").value;const minPct=Number(document.getElementById("filter-minpct").value)||0;viewRows=allRows.filter(function(r){if(ws&&r.workstation!==ws)return false;if(aud&&r.auditor!==aud)return false;if(op&&r.operator!==op&&r.a1!==op&&r.a2!==op&&r.a3!==op)return false;if(from&&r.date&&r.date<from)return false;if(to&&r.date&&r.date>to)return false;if(minPct&&r.percent<minPct)return false;if(!q)return true;return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.createdBy].some(function(v){return String(v).toLowerCase().includes(q)})});render()}
+function applyFilter(){const q=String(document.getElementById("search").value||"").trim().toLowerCase();const ws=document.getElementById("filter-ws").value;const aud=document.getElementById("filter-auditor").value;const op=document.getElementById("filter-operator").value;const from=document.getElementById("f-from").value;const to=document.getElementById("f-to").value;viewRows=allRows.filter(function(r){if(ws&&r.workstation!==ws)return false;if(aud&&r.auditor!==aud)return false;if(op&&r.operator!==op&&r.a1!==op&&r.a2!==op&&r.a3!==op)return false;if(from&&r.date&&r.date<from)return false;if(to&&r.date&&r.date>to)return false;if(!q)return true;return [r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.createdBy].some(function(v){return String(v).toLowerCase().includes(q)})});render()}
 document.getElementById("search").oninput=applyFilter;
-["filter-ws","filter-auditor","filter-operator","filter-minpct","f-from","f-to"].forEach(function(id){document.getElementById(id).onchange=applyFilter;document.getElementById(id).oninput=applyFilter});
-document.getElementById("btn-clear-f").onclick=function(){document.getElementById("search").value="";document.getElementById("f-from").value="";document.getElementById("f-to").value="";document.getElementById("filter-ws").value="";document.getElementById("filter-auditor").value="";document.getElementById("filter-operator").value="";document.getElementById("filter-minpct").value="";applyFilter()};
-function render(){document.getElementById("stat-count").textContent=String(viewRows.length);let sum=0;const wsCount={};viewRows.forEach(function(r){sum+=r.percent;const k=r.workstation||"—";wsCount[k]=(wsCount[k]||0)+1});document.getElementById("stat-avg").textContent=viewRows.length?(Math.round((sum/viewRows.length)*10)/10)+"%":"0%";let top="—",topN=0;Object.keys(wsCount).forEach(function(k){if(wsCount[k]>topN){topN=wsCount[k];top=k}});document.getElementById("stat-top").textContent=top;const tb=document.getElementById("tbody");const empty=document.getElementById("empty");tb.innerHTML="";if(!viewRows.length){empty.style.display="block";empty.textContent=allRows.length?"نتیجه‌ای یافت نشد.":"هنوز هیچ رکوردی ثبت نشده است.";return}empty.style.display="none";viewRows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td>"+(i+1)+"</td><td>"+(r.reportNo!=null?r.reportNo:"—")+"</td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.workstation||"—")+"</td><td>"+esc(r.auditor||"—")+"</td><td>"+esc(r.operator||"—")+"</td><td>"+esc(r.a1||"—")+"</td><td>"+esc(r.a2||"—")+"</td><td>"+esc(r.a3||"—")+"</td><td>"+r.total+(r.max?" / "+r.max:"")+'</td><td class="'+scoreClass(r.percent)+'">'+r.percent+'%</td><td>'+esc(r.createdBy)+'</td><td><button type="button" class="btn-view" data-i="'+i+'">مشاهده</button></td>';tb.appendChild(tr)});tb.querySelectorAll(".btn-view").forEach(function(btn){btn.onclick=function(){openDetail(viewRows[Number(btn.getAttribute("data-i"))])}})}
-function openDetail(r){if(!r)return;document.getElementById("modal-title").textContent="گزارش شماره "+(r.reportNo!=null?r.reportNo:"—");document.getElementById("modal-meta").innerHTML=meta("تاریخ",r.date)+meta("ایستگاه",r.workstation)+meta("ارزیاب",r.auditor)+meta("اپراتور",r.operator)+meta("امتیاز",r.total+" / "+r.max)+meta("درصد",r.percent+"%");let body="";const secs=Array.isArray(r.sections)?r.sections:[];secs.forEach(function(sec){body+='<div style="margin:12px 0 6px;color:#f5a623;font-weight:700">'+esc(sec.title||"")+'</div>';(sec.items||[]).forEach(function(it,ii){body+='<div style="padding:6px 0;border-bottom:1px solid #2a2418;font-size:.88rem">'+(ii+1)+'- '+esc(it.question||"")+' · نمره: <strong>'+(it.score!=null?it.score:"—")+'</strong>'+(it.note?' · '+esc(it.note):"")+'</div>'})});document.getElementById("modal-body").innerHTML=body||"<p style='color:#a89a86'>جزئیات بخش‌ها موجود نیست.</p>";document.getElementById("modal").hidden=false}
+["filter-ws","filter-auditor","filter-operator","f-from","f-to"].forEach(function(id){document.getElementById(id).onchange=applyFilter;document.getElementById(id).oninput=applyFilter});
+document.getElementById("btn-clear-f").onclick=function(){document.getElementById("search").value="";document.getElementById("f-from").value="";document.getElementById("f-to").value="";document.getElementById("filter-ws").value="";document.getElementById("filter-auditor").value="";document.getElementById("filter-operator").value="";applyFilter()};
+function render(){document.getElementById("stat-count").textContent=String(viewRows.length);let sum=0;const wsCount={};viewRows.forEach(function(r){sum+=r.percent;const k=r.workstation||"—";wsCount[k]=(wsCount[k]||0)+1});document.getElementById("stat-avg").textContent=viewRows.length?(Math.round((sum/viewRows.length)*10)/10)+"%":"0%";let top="—",topN=0;Object.keys(wsCount).forEach(function(k){if(wsCount[k]>topN){topN=wsCount[k];top=k}});document.getElementById("stat-top").textContent=top;const tb=document.getElementById("tbody");const empty=document.getElementById("empty");tb.innerHTML="";if(!viewRows.length){empty.style.display="block";empty.textContent=allRows.length?"نتیجه‌ای یافت نشد.":"هنوز هیچ رکوردی ثبت نشده است.";return}empty.style.display="none";viewRows.forEach(function(r,i){const tr=document.createElement("tr");tr.innerHTML="<td>"+(i+1)+"</td><td>"+(r.reportNo!=null?r.reportNo:"—")+"</td><td>"+esc(r.date||"—")+"</td><td>"+esc(r.workstation||"—")+"</td><td>"+esc(r.auditor||"—")+"</td><td>"+esc(r.operator||"—")+"</td><td>"+esc(r.a1||"—")+"</td><td>"+esc(r.a2||"—")+"</td><td>"+esc(r.a3||"—")+"</td><td>"+r.total+(r.max?" / "+r.max:"")+'</td><td class="'+scoreClass(r.percent)+'">'+r.percent+'%</td><td>'+esc(r.createdBy)+'</td><td class="ops"><button type="button" class="btn-view" data-i="'+i+'">مشاهده</button><button type="button" class="btn-edit" data-i="'+i+'">ویرایش</button></td>';tb.appendChild(tr)});tb.querySelectorAll(".btn-view").forEach(function(btn){btn.onclick=function(){openDetail(viewRows[Number(btn.getAttribute("data-i"))],false)}});tb.querySelectorAll(".btn-edit").forEach(function(btn){btn.onclick=function(){openDetail(viewRows[Number(btn.getAttribute("data-i"))],true)}})}
+function openDetail(r,editMode){
+  if(!r)return;
+  window._editRow=r;
+  const isEdit=!!editMode;
+  document.getElementById("modal-title").textContent=(isEdit?"اصلاح گزارش شماره ":"گزارش شماره ")+(r.reportNo!=null?r.reportNo:"—");
+  document.getElementById("modal-meta").style.display=isEdit?"none":"";
+  document.getElementById("modal-body").style.display=isEdit?"none":"";
+  document.getElementById("modal-edit").style.display=isEdit?"":"none";
+  document.getElementById("modal-save").style.display=isEdit?"":"none";
+  document.getElementById("modal-msg").textContent="";
+  if(!isEdit){
+    document.getElementById("modal-meta").innerHTML=meta("تاریخ",r.date)+meta("ایستگاه",r.workstation)+meta("ارزیاب",r.auditor)+meta("اپراتور",r.operator)+meta("امتیاز",r.total+" / "+r.max)+meta("درصد",r.percent+"%");
+    let body="";
+    const secs=Array.isArray(r.sections)?r.sections:[];
+    secs.forEach(function(sec){
+      body+='<div style="margin:12px 0 6px;color:#f5a623;font-weight:700">'+esc(sec.title||"")+'</div>';
+      (sec.items||[]).forEach(function(it,ii){
+        body+='<div style="padding:6px 0;border-bottom:1px solid #2a2418;font-size:.88rem">'+(ii+1)+'- '+esc(it.question||"")+' · نمره: <strong>'+(it.score!=null?it.score:"—")+'</strong>'+(it.note?' · '+esc(it.note):"")+'</div>';
+      });
+    });
+    document.getElementById("modal-body").innerHTML=body||"<p style='color:#a89a86'>جزئیات بخش‌ها موجود نیست.</p>";
+  } else {
+    let html='';
+    html+='<div class="edit-field"><label>تاریخ</label><input type="date" id="e-date" value="'+esc(r.date||"")+'"></div>';
+    html+='<div class="edit-field"><label>ایستگاه کاری</label><input type="text" id="e-ws" value="'+esc(r.workstation||"")+'"></div>';
+    html+='<div class="edit-field"><label>ارزیاب</label><input type="text" id="e-auditor" value="'+esc(r.auditor||"")+'"></div>';
+    html+='<div class="edit-field"><label>اپراتور</label><input type="text" id="e-op" value="'+esc(r.operator||"")+'"></div>';
+    html+='<div class="edit-field"><label>کمک ۱</label><input type="text" id="e-a1" value="'+esc(r.a1||"")+'"></div>';
+    html+='<div class="edit-field"><label>کمک ۲</label><input type="text" id="e-a2" value="'+esc(r.a2||"")+'"></div>';
+    html+='<div class="edit-field"><label>کمک ۳</label><input type="text" id="e-a3" value="'+esc(r.a3||"")+'"></div>';
+    const secs=Array.isArray(r.sections)?JSON.parse(JSON.stringify(r.sections)):[];
+    window._editSecs=secs;
+    secs.forEach(function(sec,si){
+      html+='<div class="edit-sec-title">'+esc(sec.title||("بخش "+(si+1)))+'</div>';
+      (sec.items||[]).forEach(function(it,ii){
+        html+='<div class="edit-item"><div class="q">'+(ii+1)+'- '+esc(it.question||"")+'</div>';
+        html+='<div class="edit-row"><div><label style="font-size:.72rem;color:#a89a86">نمره</label><input type="number" min="0" step="1" data-si="'+si+'" data-ii="'+ii+'" class="e-score" value="'+(it.score!=null?it.score:"")+'"></div>';
+        html+='<div><label style="font-size:.72rem;color:#a89a86">توضیحات</label><input type="text" data-si="'+si+'" data-ii="'+ii+'" class="e-note" value="'+esc(it.note||"")+'"></div></div></div>';
+      });
+    });
+    if(!secs.length) html+='<p style="color:#a89a86">جزئیات آیتم‌ها برای ویرایش موجود نیست (فقط فیلدهای اصلی).</p>';
+    document.getElementById("modal-edit").innerHTML=html;
+  }
+  document.getElementById("modal").hidden=false;
+}
 function meta(l,v){return '<div class="item"><div class="lbl">'+esc(l)+'</div><div class="val">'+esc(v||"—")+'</div></div>'}
+document.getElementById("modal-save").onclick=async function(){
+  const r=window._editRow; if(!r||!r.id){alert("رکورد نامعتبر");return}
+  const msg=document.getElementById("modal-msg");
+  msg.textContent="در حال ذخیره..."; msg.style.color="#a89a86";
+  const secs=window._editSecs||[];
+  document.querySelectorAll(".e-score").forEach(function(inp){
+    const si=+inp.getAttribute("data-si"), ii=+inp.getAttribute("data-ii");
+    if(secs[si]&&secs[si].items&&secs[si].items[ii]){
+      const v=inp.value; secs[si].items[ii].score=v===""?null:Number(v);
+    }
+  });
+  document.querySelectorAll(".e-note").forEach(function(inp){
+    const si=+inp.getAttribute("data-si"), ii=+inp.getAttribute("data-ii");
+    if(secs[si]&&secs[si].items&&secs[si].items[ii]){
+      secs[si].items[ii].note=inp.value||"";
+    }
+  });
+  let total=0, max=0;
+  secs.forEach(function(sec){
+    (sec.items||[]).forEach(function(it){
+      if(it.score!=null&&!isNaN(it.score)) total+=Number(it.score);
+      if(it.max!=null) max+=Number(it.max);
+    });
+  });
+  if(!max && r.max) max=r.max;
+  if(max < total) max=total;
+  const payload={
+    audit_date: document.getElementById("e-date").value||null,
+    area: document.getElementById("e-ws").value||null,
+    auditor: document.getElementById("e-auditor").value||null,
+    operator_name: document.getElementById("e-op").value||null,
+    assistant1_name: document.getElementById("e-a1").value||null,
+    assistant2_name: document.getElementById("e-a2").value||null,
+    assistant3_name: document.getElementById("e-a3").value||null,
+    total_score: total,
+    max_score: max||r.max||0,
+    details: {sections: secs}
+  };
+  const {error}=await supabaseClient.from("five_s_audits").update(payload).eq("id", r.id);
+  if(error){
+    msg.style.color="#f87171";
+    msg.textContent="خطا در ذخیره: "+error.message+" — اگر permission است، SQL پالیسی UPDATE را در Supabase اجرا کنید.";
+    return;
+  }
+  msg.style.color="#4ade80";
+  msg.textContent="ذخیره شد.";
+  await loadData();
+  setTimeout(function(){document.getElementById("modal").hidden=true}, 700);
+};
 document.getElementById("modal-close").onclick=function(){document.getElementById("modal").hidden=true};
 document.getElementById("modal").onclick=function(e){if(e.target.id==="modal")document.getElementById("modal").hidden=true};
 document.getElementById("btn-excel").onclick=function(){if(!viewRows.length){alert("رکوردی برای خروجی نیست.");return}function cell(v){let t=String(v==null?"":v);if(/^[\s]*[=+\-@]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"'}const headers=["ردیف","شماره","تاریخ","ایستگاه","ارزیاب","اپراتور","کمک1","کمک2","کمک3","امتیاز","حداکثر","درصد","ثبت‌کننده"];const rows=viewRows.map(function(r,i){return [i+1,r.reportNo,r.date,r.workstation,r.auditor,r.operator,r.a1,r.a2,r.a3,r.total,r.max,r.percent,r.createdBy]});const csv=[headers].concat(rows).map(function(r){return r.map(cell).join(",")}).join("\r\n");const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="5S_Reports_"+new Date().toISOString().slice(0,10)+".csv";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},800)};
