@@ -1,42 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<script src="../gate.js?v=2"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f5a623">
-<title>مدیریت 5S | APW</title>
+<title>5S | APW</title>
+<script src="../gate.js?v=2"></script>
+<script>location.replace("./app.html?v=3");</script>
 </head>
-<body style="margin:0;font-family:Tahoma,sans-serif;background:#14110c;color:#f5f0e8;display:flex;align-items:center;justify-content:center;min-height:100vh">
-<p id="boot">در حال بارگذاری سامانه 5S...</p>
-<script src="../vendor/supabase.js"></script>
-<script>
-(async function () {
-  try {
-    // اول فایل محلی همین دامنه (Cloudflare) — بدون وابستگی به jsDelivr/GitHub
-    var sources = ["./app.html", "./app.local.html"];
-    var html = null, lastErr = null;
-    for (var i = 0; i < sources.length; i++) {
-      try {
-        var res = await fetch(sources[i] + "?v=" + Date.now());
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        html = await res.text();
-        break;
-      } catch (e) { lastErr = e; }
-    }
-    if (!html) {
-      document.getElementById("boot").textContent = "فایل 5S پیدا نشد. app.html را در پوشه 5s آپلود کنید.";
-      throw lastErr || new Error("load failed");
-    }
-    document.open();
-    document.write(html);
-    document.close();
-  } catch (e) {
-    console.error(e);
-    var el = document.getElementById("boot");
-    if (el) el.textContent = "خطا در بارگذاری 5S: " + (e && e.message ? e.message : e);
-  }
-})();
-</script>
+<body style="background:#14110c;color:#f5a623;font-family:Tahoma;text-align:center;padding:3rem">
+در حال انتقال به سامانه 5S...
 </body>
 </html>
