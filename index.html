@@ -12,103 +12,37 @@
   <link rel="apple-touch-icon" href="./icon-192.svg">
   <link rel="icon" href="./icon-192.svg" type="image/svg+xml">
   <title>سامانه‌های مدیریت تولید | APW ایرانیان</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Vazirmatn,system-ui,sans-serif;min-height:100vh;color:#f5f0e8;background:#14110c}
+    body{font-family:Tahoma,Vazirmatn,system-ui,sans-serif;min-height:100vh;color:#f5f0e8;background:#14110c}
     .bg{position:fixed;inset:0;background:linear-gradient(180deg,rgba(15,12,8,.35) 0%,rgba(15,12,8,.5) 55%,rgba(15,12,8,.75) 100%),url("./bg-kitchen.jpg?v=1") center/cover no-repeat,#14110c;z-index:0}
     .bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 45% at 50% 0%,rgba(245,166,35,.18),transparent 55%)}
     .wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem 4rem;text-align:center}
     .logo-box{background:#fff;border-radius:14px;padding:.9rem 1.5rem;margin-bottom:1.25rem;box-shadow:0 14px 36px rgba(0,0,0,.4)}
     .logo-img{display:block;height:56px;width:auto}
-    .logo-text{font-family:Arial Black,Arial,sans-serif;font-size:2.2rem;font-weight:900;letter-spacing:-.04em;line-height:1}
-    .logo-text .a{color:#f5a623}.logo-text .pw{color:#3d3d3d}
     .company{font-size:1.05rem;color:rgba(255,255,255,.9);text-shadow:0 2px 8px rgba(0,0,0,.7);margin-bottom:1.75rem}
-    .panel{
-      width:100%;max-width:420px;
-      background:linear-gradient(160deg,rgba(44,36,24,.92),rgba(28,24,18,.92));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-      border:1px solid #4a3d2c;
-      border-radius:20px;
-      padding:1.5rem 1.25rem 1.35rem;
-      box-shadow:0 20px 48px rgba(0,0,0,.45);
-    }
-    .panel-title{
-      font-size:1.35rem;font-weight:800;color:#f5a623;
-      margin-bottom:1.25rem;letter-spacing:.02em;
-    }
+    .panel{width:100%;max-width:420px;background:linear-gradient(160deg,rgba(44,36,24,.92),rgba(28,24,18,.92));border:1px solid #4a3d2c;border-radius:20px;padding:1.5rem 1.25rem 1.35rem;box-shadow:0 20px 48px rgba(0,0,0,.45)}
+    .panel-title{font-size:1.35rem;font-weight:800;color:#f5a623;margin-bottom:1.25rem}
     .menu{display:flex;flex-direction:column;gap:12px}
-    .menu a{
-      position:relative;overflow:hidden;
-      display:flex;align-items:center;gap:14px;text-align:right;
-      text-decoration:none;color:#f5f0e8;
-      background:linear-gradient(145deg,rgba(58,50,38,.95),rgba(36,30,22,.95));
-      border:1px solid #4a4030;
-      border-radius:16px;
-      padding:.95rem 1rem;
-      transition:transform .2s,border-color .2s,box-shadow .2s,background .2s;
-    }
-    .menu a::before{
-      content:"";position:absolute;top:0;bottom:0;right:0;width:4px;
-      background:linear-gradient(180deg,#f5a623,#d97706);opacity:.85;
-    }
-    .menu a:hover{
-      transform:translateY(-2px);
-      border-color:#f5a623;
-      background:linear-gradient(145deg,rgba(70,58,40,.97),rgba(40,33,23,.97));
-      box-shadow:0 12px 30px rgba(245,166,35,.22);
-    }
-    .menu .ic{
-      flex-shrink:0;width:52px;height:52px;border-radius:14px;
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#f7b543,#d97706);color:#1a1208;
-      box-shadow:0 8px 20px rgba(245,166,35,.3),inset 0 1px 0 rgba(255,255,255,.35);
-      transition:transform .2s;
-    }
+    .menu a{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;text-align:right;text-decoration:none;color:#f5f0e8;background:linear-gradient(145deg,rgba(58,50,38,.95),rgba(36,30,22,.95));border:1px solid #4a4030;border-radius:16px;padding:.95rem 1rem}
+    .menu a::before{content:"";position:absolute;top:0;bottom:0;right:0;width:4px;background:linear-gradient(180deg,#f5a623,#d97706)}
+    .menu .ic{flex-shrink:0;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f7b543,#d97706);color:#1a1208}
     .menu .ic svg{width:26px;height:26px}
-    .menu a:hover .ic{transform:scale(1.07) rotate(-4deg)}
     .menu .txt{flex:1;min-width:0}
     .menu .ttl{display:block;font-size:1.05rem;font-weight:800}
     .menu a .sub{display:block;margin-top:4px;font-size:.78rem;font-weight:500;color:#a89a86}
-    .menu .arr{flex-shrink:0;color:#f5a623;opacity:.6;transition:transform .2s,opacity .2s}
+    .menu .arr{flex-shrink:0;color:#f5a623;opacity:.6}
     .menu .arr svg{width:20px;height:20px;display:block}
-    .menu a:hover .arr{opacity:1;transform:translateX(-4px)}
-    .menu a.soon{cursor:default}
-    .menu a.soon::before{background:#6b5d48}
-    .menu a.soon .ic{background:linear-gradient(135deg,#5a4e3c,#3e3528);color:#c9b99c;box-shadow:none}
-    .menu a.soon .ttl{color:#c9bca6}
-    .menu a.soon .arr{display:none}
-    .menu a.soon:hover{transform:none;border-color:#4a4030;box-shadow:none;background:linear-gradient(145deg,rgba(58,50,38,.95),rgba(36,30,22,.95))}
-    .menu a.soon:hover .ic{transform:none}
-    .badge{
-      display:inline-block;margin-right:6px;
-      background:rgba(245,166,35,.15);color:#f5c56a;
-      font-size:.7rem;font-weight:700;
-      padding:2px 8px;border-radius:999px;border:1px solid rgba(245,166,35,.35);
-    }
-    .install-btn{
-      margin-top:1.25rem;background:transparent;border:1px solid rgba(245,166,35,.45);
-      color:#f5a623;font-family:inherit;font-size:.9rem;font-weight:600;
-      padding:.65rem 1.4rem;border-radius:10px;cursor:pointer;display:none
-    }
-    .install-btn.show{display:inline-flex}
     footer{position:absolute;bottom:1.1rem;left:0;right:0;text-align:center;font-size:.78rem;color:rgba(255,255,255,.35)}
     .login-form{display:flex;flex-direction:column;gap:12px;text-align:right}
     .login-form label{font-size:.85rem;color:#d4c8b0;margin-bottom:-4px}
-    .login-form select,.login-form input{
-      width:100%;font-family:inherit;font-size:1rem;color:#f5f0e8;
-      background:#16120e;border:1px solid #4a4030;border-radius:12px;padding:.8rem .9rem;outline:none
-    }
-    .login-form select:focus,.login-form input:focus{border-color:#f5a623;box-shadow:0 0 0 3px rgba(245,166,35,.18)}
-    .login-btn{
-      margin-top:6px;font-family:inherit;font-size:1rem;font-weight:800;color:#1a1208;cursor:pointer;
-      background:linear-gradient(135deg,#f7b543,#e8910f);border:none;border-radius:12px;padding:.85rem;
-      box-shadow:0 10px 24px rgba(245,166,35,.3)
-    }
+    .login-form select,.login-form input{width:100%;font-family:inherit;font-size:1rem;color:#f5f0e8;background:#16120e;border:1px solid #4a4030;border-radius:12px;padding:.8rem .9rem;outline:none}
+    .login-btn{margin-top:6px;font-family:inherit;font-size:1rem;font-weight:800;color:#1a1208;cursor:pointer;background:linear-gradient(135deg,#f7b543,#e8910f);border:none;border-radius:12px;padding:.85rem}
     .login-btn:disabled{opacity:.6;cursor:wait}
     .login-msg{min-height:1.2em;font-size:.85rem;color:#f5a623;text-align:center}
     .user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-.35rem 0 1rem;padding:.6rem .8rem;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid #3d3428}
     .user-row .who{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:8px}
-    .user-row .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
+    .user-row .dot{width:8px;height:8px;border-radius:50%;background:#4ade80}
     .user-row .role{font-size:.72rem;font-weight:700;color:#f5c56a;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);border-radius:999px;padding:2px 8px}
     .logout{font-family:inherit;font-size:.8rem;font-weight:700;color:#f5a623;background:transparent;border:1px solid rgba(245,166,35,.45);border-radius:9px;padding:.4rem .8rem;cursor:pointer}
     [hidden]{display:none!important}
@@ -117,11 +51,8 @@
 <body>
   <div class="bg"></div>
   <div class="wrap">
-    <div class="logo-box">
-      <img class="logo-img" src="./logo.png?v=2" alt="APW">
-    </div>
+    <div class="logo-box"><img class="logo-img" src="./logo.png?v=2" alt="APW"></div>
     <p class="company">APW ایرانیان · واحد تولید</p>
-
     <div class="panel">
       <h1 class="panel-title">سامانه‌های مدیریت تولید</h1>
       <form id="login-form" class="login-form" hidden>
@@ -144,50 +75,25 @@
       </div>
       <nav class="menu" id="main-menu" hidden>
         <a href="./panel/">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
           <span class="txt"><span class="ttl">مدیریت وقایع پرسنلی</span><span class="sub">ثبت خطا، اخطار و سوابق نفرات</span></span>
-          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
+          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></span>
         </a>
         <a href="./process/">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg></span>
           <span class="txt"><span class="ttl">مدیریت وقایع فرآیندی</span><span class="sub">تعمیرات، برش، کاپاک، کارتن و نظافت خط</span></span>
-          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
+          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></span>
         </a>
         <a href="./5s/">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
           <span class="txt"><span class="ttl">مدیریت نظام آراستگی</span><span class="sub">ارزیابی 5S + گزارش تحلیلی نفرات</span></span>
-          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
+          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></span>
         </a>
       </nav>
     </div>
-
-    <button type="button" id="install-btn" class="install-btn">نصب روی گوشی</button>
     <footer>APW ایرانیان · تولید ام‌دی‌اف</footer>
   </div>
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./sw.js").catch(function () {});
-    }
-    var deferredPrompt = null;
-    var installBtn = document.getElementById("install-btn");
-    window.addEventListener("beforeinstallprompt", function (e) {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.classList.add("show");
-    });
-    installBtn.addEventListener("click", function () {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function () {
-        deferredPrompt = null;
-        installBtn.classList.remove("show");
-      });
-    });
-    window.addEventListener("appinstalled", function () {
-      installBtn.classList.remove("show");
-    });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./vendor/supabase.js"></script>
   <script>
     (function () {
       var SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
@@ -213,55 +119,61 @@
         document.getElementById("user-role").textContent = role === "admin" ? "دسترسی کامل" : "ثبت و مشاهده";
       }
 
-      if (!window.supabase || !window.supabase.createClient) {
-        showLogin(); msg.textContent = "اتصال به سرور برقرار نشد. صفحه را دوباره بارگذاری کنید."; return;
-      }
-      var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      async function enter(user) {
-        var res = await client.from("user_profiles").select("username, full_name, role").eq("id", user.id).maybeSingle();
-        var p = res.data;
-        if (res.error || !p || ["admin", "operator"].indexOf(p.role) === -1) {
-          await client.auth.signOut();
-          showLogin();
-          msg.textContent = "پروفایل یا سطح دسترسی این کاربر تعریف نشده است.";
+      function boot() {
+        if (!window.supabase || !window.supabase.createClient) {
+          setTimeout(boot, 200);
           return;
         }
-        var next = safeNext();
-        if (next) { location.replace(next); return; }
-        var u = String(user.email || "").replace("@people-manager.invalid", "");
-        showMenu(p.full_name || NAMES[u] || p.username, p.role);
-      }
+        var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        var u = document.getElementById("loginUser").value;
-        var pass = document.getElementById("loginPass").value;
-        if (!u || !pass) return;
-        btn.disabled = true; msg.textContent = "در حال بررسی...";
-        var names = ALIASES[u] || [u], user = null;
-        for (var i = 0; i < names.length && !user; i++) {
-          try {
-            var r = await client.auth.signInWithPassword({ email: names[i] + "@people-manager.invalid", password: pass });
-            if (!r.error && r.data && r.data.user) user = r.data.user;
-          } catch (err) {}
+        async function enter(user) {
+          var res = await client.from("user_profiles").select("username, full_name, role").eq("id", user.id).maybeSingle();
+          var p = res.data;
+          if (res.error || !p || ["admin", "operator"].indexOf(p.role) === -1) {
+            await client.auth.signOut();
+            showLogin();
+            msg.textContent = "پروفایل یا سطح دسترسی این کاربر تعریف نشده است.";
+            return;
+          }
+          var next = safeNext();
+          if (next) { location.replace(next); return; }
+          var u = String(user.email || "").replace("@people-manager.invalid", "");
+          showMenu(p.full_name || NAMES[u] || p.username, p.role);
         }
-        btn.disabled = false;
-        if (!user) { msg.textContent = "نام کاربری یا رمز عبور اشتباه است."; return; }
-        msg.textContent = "";
-        document.getElementById("loginPass").value = "";
-        await enter(user);
-      });
 
-      document.getElementById("logout-btn").addEventListener("click", async function () {
-        try { await client.auth.signOut(); } catch (e) {}
-        showLogin();
-      });
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          var u = document.getElementById("loginUser").value;
+          var pass = document.getElementById("loginPass").value;
+          if (!u || !pass) return;
+          btn.disabled = true; msg.textContent = "در حال بررسی...";
+          var names = ALIASES[u] || [u], user = null;
+          for (var i = 0; i < names.length && !user; i++) {
+            try {
+              var r = await client.auth.signInWithPassword({ email: names[i] + "@people-manager.invalid", password: pass });
+              if (!r.error && r.data && r.data.user) user = r.data.user;
+            } catch (err) {}
+          }
+          btn.disabled = false;
+          if (!user) { msg.textContent = "نام کاربری یا رمز اشتباه است یا ارتباط با سرور برقرار نشد."; return; }
+          msg.textContent = "";
+          document.getElementById("loginPass").value = "";
+          await enter(user);
+        });
 
-      client.auth.getSession().then(function (r) {
-        var s = r && r.data && r.data.session;
-        if (s && s.user) enter(s.user); else showLogin();
-      }).catch(showLogin);
+        document.getElementById("logout-btn").addEventListener("click", async function () {
+          try { await client.auth.signOut(); } catch (e) {}
+          showLogin();
+        });
+
+        client.auth.getSession().then(function (r) {
+          var s = r && r.data && r.data.session;
+          if (s && s.user) enter(s.user); else showLogin();
+        }).catch(function () { showLogin(); msg.textContent = "ارتباط با سرور داده برقرار نشد (احتمالاً فیلتر). با اینترنت دیگر یا VPN تست کنید."; });
+      }
+      showLogin();
+      msg.textContent = "در حال آماده‌سازی...";
+      boot();
     })();
   </script>
 </body>
