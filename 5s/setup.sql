@@ -44,5 +44,10 @@ create policy "five_s_delete_admin"
     )
   );
 
+drop policy if exists "five_s_update_authenticated" on public.five_s_audits;
+create policy "five_s_update_authenticated"
+  on public.five_s_audits for update to authenticated
+  using (true) with check (true);
+
 create index if not exists five_s_audits_created_at_idx on public.five_s_audits (created_at desc);
 create index if not exists five_s_audits_report_no_idx on public.five_s_audits (report_no desc);
