@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<script src="../gate.js?v=1"></script>
+<script src="../gate.js?v=2"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f5a623">
@@ -9,61 +9,32 @@
 </head>
 <body style="margin:0;font-family:Tahoma,sans-serif;background:#14110c;color:#f5f0e8;display:flex;align-items:center;justify-content:center;min-height:100vh">
 <p id="boot">در حال بارگذاری سامانه 5S...</p>
+<script src="../vendor/supabase.js"></script>
 <script>
 (async function () {
   try {
-    var sources = [
-      "https://cdn.jsdelivr.net/gh/mehdisoltani21-dot/People-Managment@81561232a3838886ce9be1846dad0b2660c8aef2/5s/index.html",
-      "https://raw.githubusercontent.com/mehdisoltani21-dot/People-Managment/81561232a3838886ce9be1846dad0b2660c8aef2/5s/index.html"
-    ];
+    // اول فایل محلی همین دامنه (Cloudflare) — بدون وابستگی به jsDelivr/GitHub
+    var sources = ["./app.html", "./app.local.html"];
     var html = null, lastErr = null;
     for (var i = 0; i < sources.length; i++) {
       try {
-        var res = await fetch(sources[i]);
+        var res = await fetch(sources[i] + "?v=" + Date.now());
         if (!res.ok) throw new Error("HTTP " + res.status);
         html = await res.text();
         break;
       } catch (e) { lastErr = e; }
     }
-    if (!html) throw lastErr || new Error("load failed");
-    html = html.replace(
-      "let currentUser=null,currentProfile=null,auditsCache=[];",
-      "let currentUser=null,currentProfile=null;window.auditsCache=[];"
-    );
-    html = html.replace(
-      "auditsCache=(data||[]).map(mapRow);return auditsCache",
-      "window.auditsCache=(data||[]).map(mapRow);return window.auditsCache"
-    );
-    html = html.split("const r=auditsCache[idx]").join("const r=window.auditsCache[idx]");
-    if (html.indexOf("report-view.js") === -1) {
-      html = html.replace("</body>", '<script src="report-view.js?v=4"></' + 'script></body>');
+    if (!html) {
+      document.getElementById("boot").textContent = "فایل 5S پیدا نشد. app.html را در پوشه 5s آپلود کنید.";
+      throw lastErr || new Error("load failed");
     }
-    html = html.replace('a.back{color:#f5a623;text-decoration:none;font-size:.9rem;font-weight:600}',
-      'a.back,.view-back{display:inline-flex!important;align-items:center;gap:8px;background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;font-size:.95rem!important;padding:11px 18px!important;border-radius:12px!important;border:none!important;text-decoration:none!important;box-shadow:0 8px 22px rgba(245,166,35,.35)!important}');
-    html = html.replace('>← بازگشت</a>', '>← صفحه اصلی</a>');
-    // کارت گزارش تحلیلی در منوی اصلی 5S
-    if (html.indexOf("analytics.html") === -1) {
-      html = html.replace(
-        'id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های آنلاین</span></button>\n</div></section>',
-        'id="go-view-records"><div class="home-icon">▤</div><h3>مشاهده رکوردها</h3><span>گزارش‌های آنلاین</span></button>\n<a class="home-card" href="analytics.html" style="text-decoration:none"><div class="home-icon">📊</div><h3>گزارش تحلیلی</h3><span>آنالیز نفرات و ایستگاه‌ها</span></a>\n</div></section>'
-      );
-      // اگر الگوی بالا جور نبود، الگوی ساده‌تر
-      if (html.indexOf("analytics.html") === -1) {
-        html = html.replace(
-          "</div></section>\n<section id=\"form-view\"",
-          '<a class="home-card" href="analytics.html" style="text-decoration:none"><div class="home-icon">📊</div><h3>گزارش تحلیلی</h3><span>آنالیز نفرات و ایستگاه‌ها</span></a></div></section>\n<section id="form-view"'
-        );
-      }
-    }
-    html = html.replace("<head>", '<head><script src="../gate.js?v=1"></' + 'script>');
-    html = html.replace(/document\.getElementById\("logout-btn"\)\.onclick=async function\(\)\{await supabaseClient\.auth\.signOut\(\);currentUser=null;showLogin\(\)\};/, 'document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();location.replace("../")};');
     document.open();
     document.write(html);
     document.close();
   } catch (e) {
-    document.getElementById("boot").innerHTML =
-      "خطا در بارگذاری. <a style=\"color:#f5a623\" href=\"?v=reload\">تلاش مجدد</a><br><small>" +
-      String(e) + "</small>";
+    console.error(e);
+    var el = document.getElementById("boot");
+    if (el) el.textContent = "خطا در بارگذاری 5S: " + (e && e.message ? e.message : e);
   }
 })();
 </script>
