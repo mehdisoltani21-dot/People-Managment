@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5a623">
+<title>ملزومات مصرفی | APW</title>
+<script src="../gate.js?v=1"></script>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:Vazirmatn,Tahoma,sans-serif;direction:rtl;color:#f5f0e8;background:radial-gradient(ellipse at top right,#3a2a12 0%,transparent 42%),#14110c;min-height:100vh;line-height:1.8}
+button,input,select,textarea{font:inherit}
+.container{max-width:1100px;margin:0 auto;padding:18px 16px 40px}
+.app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid #3d3428;border-radius:16px;background:linear-gradient(145deg,#2a2318,#1a1610);margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{background:#fff;border-radius:10px;padding:6px 10px}
+.brand-logo img{display:block;height:28px;width:auto}
+.brand h1{font-size:1.1rem;font-weight:800}
+.brand p{font-size:.78rem;color:#a89a86;line-height:1.4}
+.header-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.user-chip{display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.25);border:1px solid #3d3428}
+.user-chip .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
+.btn{border:none;border-radius:12px;padding:.7rem 1.2rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-primary{background:linear-gradient(135deg,#f7b543,#e8910f);color:#1a1208;box-shadow:0 8px 22px rgba(245,166,35,.3)}
+.btn-secondary{background:#2a2418;color:#f5c56a;border:1px solid #4a4030}
+.btn-sm{padding:.45rem .9rem;font-size:.85rem;border-radius:10px}
+.btn-danger{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.4)}
+.nav-home{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-weight:800;font-size:.85rem;padding:.45rem .9rem;border-radius:10px;text-decoration:none}
+.view-back{background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;border:none;border-radius:12px;padding:.55rem 1rem;cursor:pointer;margin-bottom:14px}
+.section{border:1px solid #3d3428;border-radius:16px;background:linear-gradient(145deg,#2a2318,#1a1610);padding:18px 16px}
+.section h2{font-size:1.15rem;font-weight:800;color:#f5a623;margin-bottom:4px}
+.desc{color:#a89a86;font-size:.88rem;margin-bottom:14px}
+.form-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.fg label{display:block;font-size:.8rem;color:#a89a86;margin-bottom:4px;font-weight:600}
+.fg input,.fg select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8}
+.table-wrap{width:100%;overflow-x:auto;border-radius:12px;border:1px solid #3d3428}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:720px}
+thead th{text-align:right;padding:11px 10px;font-size:.82rem;font-weight:700;background:#241e16;color:#f5a623;border-bottom:1px solid #3d3428;white-space:nowrap}
+tbody td{padding:8px 8px;border-bottom:1px solid #2a2418;vertical-align:middle}
+tbody input,tbody select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8}
+.row-num{width:48px;text-align:center;color:#a89a86;font-weight:700}
+.row-del{width:70px}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.msg{margin-top:12px;font-size:.9rem;min-height:1.3em;color:#a89a86}
+.msg.ok{color:#4ade80}.msg.err{color:#f87171}
+.banner{background:#1c1812;border:1px solid #3d3428;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.88rem;color:#cbbfaa}
+.banner strong{color:#f5a623}
+.calc-box{margin-top:18px;border:1px dashed #4a4030;border-radius:14px;padding:14px;background:#16120e}
+.calc-box h3{font-size:.95rem;color:#f5a623;margin-bottom:6px}
+.calc-box p{font-size:.85rem;color:#a89a86}
+.home-title{text-align:center;margin:8px 0 18px}
+.home-title h2{font-size:1.2rem;font-weight:800}
+.home-title p{color:#a89a86;font-size:.9rem}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px;margin:0 auto}
+@media(max-width:560px){.home-grid{grid-template-columns:1fr}}
+.home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:150px;padding:22px 16px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit}
+.home-card:hover{border-color:#f5a623;transform:translateY(-2px)}
+.home-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208;font-size:1.6rem;font-weight:900}
+.info-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:.85rem;color:#a89a86}
+.info-meta span{background:#14110c;border:1px solid #3d3428;border-radius:8px;padding:6px 10px}
+.info-meta strong{color:#f5c56a}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo"><img src="../logo.png?v=2" alt="APW"></div>
+      <div><h1>ملزومات مصرفی</h1><p>موجودی روزانه — با ثبت جدید، لیست قبلی همان روز جایگزین می‌شود</p></div>
+    </div>
+    <div class="header-tools">
+      <span class="user-chip"><span class="dot"></span><span id="user-label">...</span></span>
+      <a class="nav-home" href="./">← وقایع فرآیندی</a>
+      <a class="nav-home" href="../">صفحه اصلی</a>
+      <button type="button" class="btn btn-secondary btn-sm" id="logout-btn">خروج</button>
+    </div>
+  </header>
+
+  <section id="home-view">
+    <div class="home-title"><h2>ملزومات مصرفی</h2><p>ثبت یا مشاهده موجودی روز</p></div>
+    <div class="home-grid">
+      <button type="button" class="home-card" id="go-form">
+        <div class="home-icon">+</div>
+        <h3>ثبت / به‌روزرسانی موجودی</h3>
+        <span style="color:#a89a86;font-size:.85rem">لیست امروز جایگزین لیست قبلی می‌شود</span>
+      </button>
+      <button type="button" class="home-card" id="go-view">
+        <div class="home-icon">≡</div>
+        <h3>مشاهده موجودی فعلی</h3>
+        <span style="color:#a89a86;font-size:.85rem">آخرین لیست ثبت‌شده</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="form-view" hidden>
+    <button type="button" class="view-back" id="back-form">→ بازگشت</button>
+    <div class="section">
+      <h2>فرم ملزومات مصرفی</h2>
+      <p class="desc">همه ردیف‌های تاریخ انتخاب‌شده پاک می‌شوند و لیست جدید جایگزین می‌گردد.</p>
+      <div class="banner">⚠️ با زدن «ذخیره و جایگزینی»، <strong>همه آیتم‌های همان تاریخ</strong> حذف و لیست همین فرم جایگزین می‌شود.</div>
+      <div class="form-top">
+        <div class="fg"><label for="f-date">تاریخ موجودی</label><input type="date" id="f-date"></div>
+        <div class="fg"><label for="f-by">ثبت‌کننده</label><input type="text" id="f-by" readonly></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ردیف</th>
+              <th>نام ملزوم</th>
+              <th>موجودی</th>
+              <th>واحد</th>
+              <th>توضیحات</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="items-body"></tbody>
+        </table>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="add-row">+ ردیف جدید</button>
+        <button type="button" class="btn btn-primary" id="save-btn">ذخیره و جایگزینی</button>
+      </div>
+      <p class="msg" id="form-msg"></p>
+      <div class="calc-box">
+        <h3>محاسبات (به‌زودی)</h3>
+        <p>این قسمت بعداً طبق فرمول‌هایی که می‌فرستی پر می‌شود.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="list-view" hidden>
+    <button type="button" class="view-back" id="back-list">→ بازگشت</button>
+    <div class="section">
+      <h2>موجودی فعلی</h2>
+      <p class="desc">آخرین لیست ثبت‌شده برای هر تاریخ</p>
+      <div class="form-top">
+        <div class="fg"><label for="v-date">تاریخ</label><input type="date" id="v-date"></div>
+        <div class="fg" style="display:flex;align-items:flex-end;gap:8px">
+          <button type="button" class="btn btn-secondary btn-sm" id="load-date">نمایش</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="load-latest">آخرین ثبت</button>
+        </div>
+      </div>
+      <div class="info-meta" id="list-meta"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ردیف</th>
+              <th>نام ملزوم</th>
+              <th>موجودی</th>
+              <th>واحد</th>
+              <th>توضیحات</th>
+            </tr>
+          </thead>
+          <tbody id="list-body"></tbody>
+        </table>
+      </div>
+      <p class="msg" id="list-msg"></p>
+      <div class="calc-box">
+        <h3>محاسبات (به‌زودی)</h3>
+        <p>کنار همین جدول بعداً محاسبات روزانه را اضافه می‌کنیم.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
+const SUPABASE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const TABLE = "consumable_inventory";
+
+const DEFAULT_ITEMS = [
+  { name: "", qty: "", unit: "عدد", note: "" },
+  { name: "", qty: "", unit: "عدد", note: "" },
+  { name: "", qty: "", unit: "عدد", note: "" },
+  { name: "", qty: "", unit: "متر", note: "" },
+  { name: "", qty: "", unit: "کیلوگرم", note: "" }
+];
+
+const UNITS = ["عدد", "متر", "کیلوگرم", "بسته", "رول", "کارتن", "لیتر", "متر مربع", "سایر"];
+
+const $ = (id) => document.getElementById(id);
+let profile = null;
+
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function todayIso(){
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+}
+function faDate(iso){
+  if(!iso) return "—";
+  try { return new Date(iso.length<=10 ? iso+"T00:00:00" : iso).toLocaleDateString("fa-IR"); }
+  catch(e){ return iso; }
+}
+
+function show(view){
+  $("home-view").hidden = view !== "home";
+  $("form-view").hidden = view !== "form";
+  $("list-view").hidden = view !== "list";
+}
+
+function unitSelect(val){
+  return UNITS.map(u => `<option value="${u}"${u===val?" selected":""}>${u}</option>`).join("");
+}
+
+function renderRows(items){
+  const tb = $("items-body");
+  tb.innerHTML = "";
+  (items.length ? items : DEFAULT_ITEMS).forEach((it, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      `<td class="row-num">${i+1}</td>` +
+      `<td><input type="text" class="c-name" value="${esc(it.name||"")}" placeholder="نام ملزوم"></td>` +
+      `<td><input type="number" class="c-qty" min="0" step="any" value="${it.qty!==""&&it.qty!=null?esc(it.qty):""}" placeholder="0"></td>` +
+      `<td><select class="c-unit">${unitSelect(it.unit||"عدد")}</select></td>` +
+      `<td><input type="text" class="c-note" value="${esc(it.note||"")}" placeholder="توضیح"></td>` +
+      `<td class="row-del"><button type="button" class="btn btn-danger btn-sm c-del">حذف</button></td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll(".c-del").forEach(btn => {
+    btn.onclick = () => {
+      const tr = btn.closest("tr");
+      tr.remove();
+      renumber();
+    };
+  });
+}
+
+function renumber(){
+  [...$("items-body").querySelectorAll("tr")].forEach((tr,i)=>{
+    const n = tr.querySelector(".row-num");
+    if(n) n.textContent = String(i+1);
+  });
+}
+
+function collectRows(){
+  const rows = [];
+  [...$("items-body").querySelectorAll("tr")].forEach(tr => {
+    const name = tr.querySelector(".c-name").value.trim();
+    const qtyRaw = tr.querySelector(".c-qty").value;
+    const unit = tr.querySelector(".c-unit").value;
+    const note = tr.querySelector(".c-note").value.trim();
+    if(!name && qtyRaw==="" && !note) return;
+    rows.push({
+      item_name: name || "—",
+      quantity: qtyRaw==="" ? null : Number(qtyRaw),
+      unit: unit || null,
+      note: note || null
+    });
+  });
+  return rows;
+}
+
+$("go-form").onclick = async () => {
+  $("f-date").value = todayIso();
+  $("f-by").value = profile?.full_name || profile?.name || "کاربر";
+  $("form-msg").textContent = "";
+  const date = $("f-date").value;
+  const { data } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
+  if(data && data.length){
+    renderRows(data.map(r => ({ name: r.item_name, qty: r.quantity, unit: r.unit||"عدد", note: r.note||"" })));
+  } else {
+    renderRows(DEFAULT_ITEMS);
+  }
+  show("form");
+};
+
+$("go-view").onclick = async () => {
+  $("v-date").value = todayIso();
+  show("list");
+  await loadLatest();
+};
+
+$("back-form").onclick = $("back-list").onclick = () => show("home");
+
+$("add-row").onclick = () => {
+  const tr = document.createElement("tr");
+  const n = $("items-body").querySelectorAll("tr").length + 1;
+  tr.innerHTML =
+    `<td class="row-num">${n}</td>` +
+    `<td><input type="text" class="c-name" placeholder="نام ملزوم"></td>` +
+    `<td><input type="number" class="c-qty" min="0" step="any" placeholder="0"></td>` +
+    `<td><select class="c-unit">${unitSelect("عدد")}</select></td>` +
+    `<td><input type="text" class="c-note" placeholder="توضیح"></td>` +
+    `<td class="row-del"><button type="button" class="btn btn-danger btn-sm c-del">حذف</button></td>`;
+  $("items-body").appendChild(tr);
+  tr.querySelector(".c-del").onclick = () => { tr.remove(); renumber(); };
+};
+
+$("f-date").onchange = async function(){
+  const date = this.value;
+  if(!date) return;
+  const { data } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
+  if(data && data.length){
+    renderRows(data.map(r => ({ name: r.item_name, qty: r.quantity, unit: r.unit||"عدد", note: r.note||"" })));
+    $("form-msg").textContent = "لیست همین تاریخ بارگذاری شد — با ذخیره جایگزین می‌شود.";
+    $("form-msg").className = "msg";
+  } else {
+    renderRows(DEFAULT_ITEMS);
+    $("form-msg").textContent = "برای این تاریخ هنوز لیستی نیست.";
+    $("form-msg").className = "msg";
+  }
+};
+
+$("save-btn").onclick = async () => {
+  const msg = $("form-msg");
+  const date = $("f-date").value;
+  if(!date){ msg.className="msg err"; msg.textContent="تاریخ را وارد کنید."; return; }
+  const items = collectRows();
+  if(!items.length){ msg.className="msg err"; msg.textContent="حداقل یک ردیف با نام یا موجودی وارد کنید."; return; }
+  if(!confirm("لیست قبلی همین تاریخ پاک می‌شود و لیست جدید جایگزین می‌گردد. ادامه؟")) return;
+  msg.className="msg"; msg.textContent="در حال ذخیره...";
+
+  const { error: delErr } = await supabaseClient.from(TABLE).delete().eq("snapshot_date", date);
+  if(delErr){
+    msg.className="msg err";
+    msg.textContent="خطا در پاک‌کردن قبلی: "+delErr.message+" — جدول/پالیسی را در Supabase بسازید (process/consumables-setup.sql).";
+    return;
+  }
+
+  const payload = items.map((it,i)=>({
+    snapshot_date: date,
+    item_name: it.item_name,
+    quantity: it.quantity,
+    unit: it.unit,
+    note: it.note,
+    sort_order: i,
+    created_by: profile?.id || null,
+    created_by_name: profile?.full_name || profile?.name || null
+  }));
+
+  const { error: insErr } = await supabaseClient.from(TABLE).insert(payload);
+  if(insErr){
+    msg.className="msg err";
+    msg.textContent="خطا در ذخیره: "+insErr.message;
+    return;
+  }
+  msg.className="msg ok";
+  msg.textContent="ذخیره شد. لیست تاریخ "+faDate(date)+" جایگزین شد ("+items.length+" آیتم).";
+};
+
+async function renderList(rows, meta){
+  const tb = $("list-body");
+  tb.innerHTML = "";
+  $("list-meta").innerHTML = meta || "";
+  if(!rows || !rows.length){
+    $("list-msg").textContent = "برای این تاریخ رکوردی نیست.";
+    return;
+  }
+  $("list-msg").textContent = "";
+  rows.forEach((r,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${i+1}</td><td>${esc(r.item_name)}</td><td>${r.quantity==null?"—":r.quantity}</td><td>${esc(r.unit||"—")}</td><td>${esc(r.note||"—")}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+async function loadByDate(date){
+  if(!date) return;
+  const { data, error } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
+  if(error){
+    $("list-msg").textContent = "خطا: "+error.message;
+    return;
+  }
+  const meta = data&&data.length
+    ? `<span>تاریخ: <strong>${faDate(date)}</strong></span><span>تعداد آیتم: <strong>${data.length}</strong></span><span>ثبت‌کننده: <strong>${esc(data[0].created_by_name||"—")}</strong></span>`
+    : "";
+  await renderList(data||[], meta);
+}
+
+async function loadLatest(){
+  const { data, error } = await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
+  if(error){ $("list-msg").textContent="خطا: "+error.message; return; }
+  if(!data || !data.length){ await renderList([], ""); $("list-msg").textContent="هنوز هیچ موجودی ثبت نشده."; return; }
+  $("v-date").value = data[0].snapshot_date;
+  await loadByDate(data[0].snapshot_date);
+}
+
+$("load-date").onclick = () => loadByDate($("v-date").value);
+$("load-latest").onclick = loadLatest;
+
+$("logout-btn").onclick = async () => {
+  await supabaseClient.auth.signOut();
+  location.href = "../";
+};
+
+(async function init(){
+  const { data: sess } = await supabaseClient.auth.getSession();
+  if(!sess.session){ location.href = "../"; return; }
+  const uid = sess.session.user.id;
+  const { data: prof } = await supabaseClient.from("user_profiles").select("*").eq("id", uid).maybeSingle();
+  profile = prof || { id: uid, full_name: sess.session.user.email, role: "user" };
+  $("user-label").textContent = profile.full_name || profile.name || "کاربر";
+  show("home");
+})();
+</script>
+</body>
+</html>
