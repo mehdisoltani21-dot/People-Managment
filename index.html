@@ -202,7 +202,9 @@
 
       function safeNext() {
         var n = new URLSearchParams(location.search).get("next") || "";
-        return /^\/People-Managment\/[^\/]/.test(n) && n.indexOf("//") === -1 ? n : "";
+        if (!n || n.indexOf("//") !== -1 || n.indexOf("://") !== -1) return "";
+        if (n.charAt(0) === "/") return n;
+        return "";
       }
       function showLogin() { form.hidden = false; menu.hidden = true; userRow.hidden = true; }
       function showMenu(name, role) {
