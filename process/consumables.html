@@ -11,56 +11,52 @@
 *{box-sizing:border-box;margin:0;padding:0}
 [hidden]{display:none!important}
 body{font-family:Vazirmatn,Tahoma,sans-serif;direction:rtl;color:#f5f0e8;background:radial-gradient(ellipse at top right,#3a2a12 0%,transparent 42%),#14110c;min-height:100vh;line-height:1.8}
-button,input,select,textarea{font:inherit}
-.container{max-width:1100px;margin:0 auto;padding:18px 16px 40px}
+button,input,select{font:inherit}
+.container{max-width:1200px;margin:0 auto;padding:18px 16px 40px}
 .app-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:14px 16px;border:1px solid #3d3428;border-radius:16px;background:linear-gradient(145deg,#2a2318,#1a1610);margin-bottom:18px}
 .brand{display:flex;align-items:center;gap:12px}
 .brand-logo{background:#fff;border-radius:10px;padding:6px 10px}
 .brand-logo img{display:block;height:28px;width:auto}
 .brand h1{font-size:1.1rem;font-weight:800}
-.brand p{font-size:.78rem;color:#a89a86;line-height:1.4}
+.brand p{font-size:.78rem;color:#a89a86}
 .header-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .user-chip{display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:700;padding:6px 12px;border-radius:999px;background:rgba(0,0,0,.25);border:1px solid #3d3428}
-.user-chip .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80}
+.user-chip .dot{width:8px;height:8px;border-radius:50%;background:#4ade80}
 .btn{border:none;border-radius:12px;padding:.7rem 1.2rem;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn-primary{background:linear-gradient(135deg,#f7b543,#e8910f);color:#1a1208;box-shadow:0 8px 22px rgba(245,166,35,.3)}
 .btn-secondary{background:#2a2418;color:#f5c56a;border:1px solid #4a4030}
 .btn-sm{padding:.45rem .9rem;font-size:.85rem;border-radius:10px}
-.btn-danger{background:rgba(239,68,68,.12);color:#fca5a5;border:1px solid rgba(239,68,68,.4)}
 .nav-home{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-weight:800;font-size:.85rem;padding:.45rem .9rem;border-radius:10px;text-decoration:none}
 .view-back{background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;border:none;border-radius:12px;padding:.55rem 1rem;cursor:pointer;margin-bottom:14px}
-.section{border:1px solid #3d3428;border-radius:16px;background:linear-gradient(145deg,#2a2318,#1a1610);padding:18px 16px}
+.section{border:1px solid #3d3428;border-radius:16px;background:linear-gradient(145deg,#2a2318,#1a1610);padding:18px 16px;margin-bottom:16px}
 .section h2{font-size:1.15rem;font-weight:800;color:#f5a623;margin-bottom:4px}
+.section h3{font-size:1rem;font-weight:800;color:#f5c56a;margin:16px 0 8px;padding:8px 12px;background:#241e16;border-radius:10px;text-align:center}
 .desc{color:#a89a86;font-size:.88rem;margin-bottom:14px}
 .form-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
 .fg label{display:block;font-size:.8rem;color:#a89a86;margin-bottom:4px;font-weight:600}
 .fg input,.fg select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8}
-.table-wrap{width:100%;overflow-x:auto;border-radius:12px;border:1px solid #3d3428}
-table{width:100%;border-collapse:separate;border-spacing:0;min-width:720px}
-thead th{text-align:right;padding:11px 10px;font-size:.82rem;font-weight:700;background:#241e16;color:#f5a623;border-bottom:1px solid #3d3428;white-space:nowrap}
-tbody td{padding:8px 8px;border-bottom:1px solid #2a2418;vertical-align:middle}
-tbody input,tbody select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8}
-.row-num{width:48px;text-align:center;color:#a89a86;font-weight:700}
-.row-del{width:70px}
-.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
-.msg{margin-top:12px;font-size:.9rem;min-height:1.3em;color:#a89a86}
+.table-wrap{width:100%;overflow-x:auto;border-radius:12px;border:1px solid #3d3428;margin-bottom:8px}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:640px}
+thead th{text-align:right;padding:10px 8px;font-size:.78rem;font-weight:700;background:#241e16;color:#f5a623;border-bottom:1px solid #3d3428;white-space:nowrap}
+tbody td{padding:8px;border-bottom:1px solid #2a2418;vertical-align:middle;font-size:.88rem}
+tbody input{width:100%;padding:8px 10px;border-radius:8px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8}
+.row-num{width:40px;text-align:center;color:#a89a86;font-weight:700}
+.form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.msg{margin-top:10px;font-size:.9rem;min-height:1.3em;color:#a89a86}
 .msg.ok{color:#4ade80}.msg.err{color:#f87171}
 .banner{background:#1c1812;border:1px solid #3d3428;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.88rem;color:#cbbfaa}
 .banner strong{color:#f5a623}
-.calc-box{margin-top:18px;border:1px dashed #4a4030;border-radius:14px;padding:14px;background:#16120e}
-.calc-box h3{font-size:.95rem;color:#f5a623;margin-bottom:6px}
-.calc-box p{font-size:.85rem;color:#a89a86}
 .home-title{text-align:center;margin:8px 0 18px}
 .home-title h2{font-size:1.2rem;font-weight:800}
 .home-title p{color:#a89a86;font-size:.9rem}
-.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:720px;margin:0 auto}
-@media(max-width:560px){.home-grid{grid-template-columns:1fr}}
-.home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:150px;padding:22px 16px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit}
-.home-card:hover{border-color:#f5a623;transform:translateY(-2px)}
-.home-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208;font-size:1.6rem;font-weight:900}
-.info-meta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:.85rem;color:#a89a86}
-.info-meta span{background:#14110c;border:1px solid #3d3428;border-radius:8px;padding:6px 10px}
-.info-meta strong{color:#f5c56a}
+.home-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;max-width:900px;margin:0 auto}
+@media(max-width:700px){.home-grid{grid-template-columns:1fr}}
+.home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:140px;padding:20px 14px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit}
+.home-card:hover{border-color:#f5a623}
+.home-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208;font-size:1.4rem;font-weight:900}
+.total-row td{background:#2a2410;font-weight:800;color:#f5a623}
+.hint{font-size:.78rem;color:#8a7a68;margin-top:4px}
+.name-cell{font-weight:600;color:#e8dfd0;min-width:140px}
 </style>
 </head>
 <body>
@@ -68,7 +64,7 @@ tbody input,tbody select{width:100%;padding:8px 10px;border-radius:8px;border:1p
   <header class="app-header">
     <div class="brand">
       <div class="brand-logo"><img src="../logo.png?v=2" alt="APW"></div>
-      <div><h1>ملزومات مصرفی</h1><p>موجودی روزانه — با ثبت جدید، لیست قبلی همان روز جایگزین می‌شود</p></div>
+      <div><h1>ملزومات مصرفی</h1><p>موجودی روزانه + محاسبات تولید</p></div>
     </div>
     <div class="header-tools">
       <span class="user-chip"><span class="dot"></span><span id="user-label">...</span></span>
@@ -79,90 +75,143 @@ tbody input,tbody select{width:100%;padding:8px 10px;border-radius:8px;border:1p
   </header>
 
   <section id="home-view">
-    <div class="home-title"><h2>ملزومات مصرفی</h2><p>ثبت یا مشاهده موجودی روز</p></div>
+    <div class="home-title"><h2>ملزومات مصرفی</h2><p>ثبت موجودی روزانه و مشاهده محاسبات</p></div>
     <div class="home-grid">
       <button type="button" class="home-card" id="go-form">
         <div class="home-icon">+</div>
-        <h3>ثبت / به‌روزرسانی موجودی</h3>
-        <span style="color:#a89a86;font-size:.85rem">لیست امروز جایگزین لیست قبلی می‌شود</span>
+        <h3>ثبت موجودی</h3>
+        <span style="color:#a89a86;font-size:.85rem">به‌روزرسانی روزانه</span>
+      </button>
+      <button type="button" class="home-card" id="go-calc">
+        <div class="home-icon">∑</div>
+        <h3>محاسبات</h3>
+        <span style="color:#a89a86;font-size:.85rem">پالت · پایه · کارتن · گوشه‌بند</span>
       </button>
       <button type="button" class="home-card" id="go-view">
         <div class="home-icon">≡</div>
-        <h3>مشاهده موجودی فعلی</h3>
-        <span style="color:#a89a86;font-size:.85rem">آخرین لیست ثبت‌شده</span>
+        <h3>مشاهده موجودی</h3>
+        <span style="color:#a89a86;font-size:.85rem">آخرین لیست</span>
       </button>
     </div>
   </section>
 
   <section id="form-view" hidden>
-    <button type="button" class="view-back" id="back-form">→ بازگشت</button>
+    <button type="button" class="view-back" data-back>→ بازگشت</button>
     <div class="section">
-      <h2>فرم ملزومات مصرفی</h2>
-      <p class="desc">همه ردیف‌های تاریخ انتخاب‌شده پاک می‌شوند و لیست جدید جایگزین می‌گردد.</p>
-      <div class="banner">⚠️ با زدن «ذخیره و جایگزینی»، <strong>همه آیتم‌های همان تاریخ</strong> حذف و لیست همین فرم جایگزین می‌شود.</div>
+      <h2>ثبت / به‌روزرسانی موجودی</h2>
+      <p class="desc">اعداد موجودی را هر روز وارد کن. با ذخیره، لیست همان تاریخ جایگزین می‌شود.</p>
+      <div class="banner">⚠️ ذخیره = پاک شدن لیست قبلی <strong>همان تاریخ</strong> و ثبت لیست جدید.</div>
       <div class="form-top">
-        <div class="fg"><label for="f-date">تاریخ موجودی</label><input type="date" id="f-date"></div>
-        <div class="fg"><label for="f-by">ثبت‌کننده</label><input type="text" id="f-by" readonly></div>
+        <div class="fg"><label>تاریخ موجودی</label><input type="date" id="f-date"></div>
+        <div class="fg"><label>ثبت‌کننده</label><input type="text" id="f-by" readonly></div>
       </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ردیف</th><th>شرح کالا</th><th>موجودی</th><th>واحد</th><th>توضیح</th></tr></thead>
+          <tbody id="items-body"></tbody>
+        </table>
+      </div>
+      <p class="hint">برای کارتن‌های پروفیل، در بخش محاسبات می‌توانی «چسب‌خورده / چسب‌نخورده» را جدا وارد کنی.</p>
+      <div class="form-actions">
+        <button type="button" class="btn btn-primary" id="save-btn">ذخیره و جایگزینی</button>
+        <button type="button" class="btn btn-secondary" id="save-go-calc">ذخیره و رفتن به محاسبات</button>
+      </div>
+      <p class="msg" id="form-msg"></p>
+    </div>
+  </section>
+
+  <section id="calc-view" hidden>
+    <button type="button" class="view-back" data-back>→ بازگشت</button>
+    <div class="section">
+      <h2>محاسبات تولید</h2>
+      <p class="desc">بر اساس موجودی ثبت‌شده — فرمول‌ها از جدول عملیاتی شما</p>
+      <div class="form-top">
+        <div class="fg"><label>تاریخ</label><input type="date" id="c-date"></div>
+        <div class="fg" style="display:flex;align-items:flex-end;gap:8px">
+          <button type="button" class="btn btn-secondary btn-sm" id="c-load">بارگذاری</button>
+        </div>
+      </div>
+      <p class="msg" id="calc-msg"></p>
+
+      <h3>پالت</h3>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>ردیف</th>
-              <th>نام ملزوم</th>
-              <th>موجودی</th>
-              <th>واحد</th>
-              <th>توضیحات</th>
-              <th></th>
+              <th>شرح کالا</th><th>تعداد</th><th>تعداد پالت قابل تولید</th>
+              <th>جمع پالت قابل تولید</th><th>روزهای مورد نیاز برای تولید</th>
             </tr>
           </thead>
-          <tbody id="items-body"></tbody>
+          <tbody id="tb-pallet"></tbody>
         </table>
       </div>
+      <p class="hint">پالت = موجودی ÷ ۴ &nbsp;|&nbsp; روز = جمع پالت ÷ ۳۰۰</p>
+
+      <h3>پایه</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>شرح کالا</th><th>تعداد</th><th>پایه قابل تولید</th><th>باقی‌مانده</th>
+              <th>تعداد مورد نیاز</th><th>روزهای مورد نیاز</th>
+            </tr>
+          </thead>
+          <tbody id="tb-base"></tbody>
+        </table>
+      </div>
+      <p class="hint">پایه قابل تولید (SUNTA/AGT) = موجودی &nbsp;|&nbsp; روز ≈ پایه ÷ ۱۴۰۰ &nbsp;|&nbsp; مورد نیاز SUNTA پیش‌فرض ۶۶۲</p>
+
+      <h3>Köşe Bend</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>شرح کالا</th><th>تعداد تقریبی موجود</th><th>تعداد باکس موجود</th><th>ساعت مورد نیاز برای برش</th>
+            </tr>
+          </thead>
+          <tbody id="tb-kose"></tbody>
+        </table>
+      </div>
+      <p class="hint">باکس = موجودی ÷ ۵۰۰ &nbsp;|&nbsp; ساعت برش = موجودی ÷ ۲۰۰</p>
+
+      <h3>کارتن پروفیل</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ردیف</th><th>شرح کالا</th><th>تعداد کل</th><th>چسب‌خورده</th><th>چسب‌نخورده</th>
+              <th>کد پروفیل</th><th>پروفیل قابل تولید</th><th>روز چسب‌زنی</th>
+            </tr>
+          </thead>
+          <tbody id="tb-carton"></tbody>
+        </table>
+      </div>
+      <p class="hint">چسب‌نخورده را می‌توانی دستی اصلاح کنی. پروفیل = چسب‌خورده × ضریب &nbsp;|&nbsp; روز چسب = چسب‌نخورده ÷ ۹۰۰</p>
       <div class="form-actions">
-        <button type="button" class="btn btn-secondary" id="add-row">+ ردیف جدید</button>
-        <button type="button" class="btn btn-primary" id="save-btn">ذخیره و جایگزینی</button>
+        <button type="button" class="btn btn-primary" id="save-carton-extra">ذخیره جزئیات چسب کارتن‌ها</button>
       </div>
-      <p class="msg" id="form-msg"></p>
-      <div class="calc-box">
-        <h3>محاسبات (به‌زودی)</h3>
-        <p>این قسمت بعداً طبق فرمول‌هایی که می‌فرستی پر می‌شود.</p>
-      </div>
+      <p class="msg" id="carton-msg"></p>
     </div>
   </section>
 
   <section id="list-view" hidden>
-    <button type="button" class="view-back" id="back-list">→ بازگشت</button>
+    <button type="button" class="view-back" data-back>→ بازگشت</button>
     <div class="section">
-      <h2>موجودی فعلی</h2>
-      <p class="desc">آخرین لیست ثبت‌شده برای هر تاریخ</p>
+      <h2>موجودی ثبت‌شده</h2>
       <div class="form-top">
-        <div class="fg"><label for="v-date">تاریخ</label><input type="date" id="v-date"></div>
+        <div class="fg"><label>تاریخ</label><input type="date" id="v-date"></div>
         <div class="fg" style="display:flex;align-items:flex-end;gap:8px">
           <button type="button" class="btn btn-secondary btn-sm" id="load-date">نمایش</button>
           <button type="button" class="btn btn-secondary btn-sm" id="load-latest">آخرین ثبت</button>
         </div>
       </div>
-      <div class="info-meta" id="list-meta"></div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>ردیف</th>
-              <th>نام ملزوم</th>
-              <th>موجودی</th>
-              <th>واحد</th>
-              <th>توضیحات</th>
-            </tr>
-          </thead>
+          <thead><tr><th>ردیف</th><th>شرح کالا</th><th>موجودی</th><th>واحد</th><th>توضیح</th></tr></thead>
           <tbody id="list-body"></tbody>
         </table>
       </div>
       <p class="msg" id="list-msg"></p>
-      <div class="calc-box">
-        <h3>محاسبات (به‌زودی)</h3>
-        <p>کنار همین جدول بعداً محاسبات روزانه را اضافه می‌کنیم.</p>
-      </div>
     </div>
   </section>
 </div>
@@ -174,231 +223,348 @@ const SUPABASE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const TABLE = "consumable_inventory";
 
-const DEFAULT_ITEMS = [
-  { name: '3 ردیفه کامل', qty: "", unit: 'عدد', note: "" },
-  { name: 'سه ردیفه جدید ( کاپاک و نئوپان)', qty: "", unit: 'عدد', note: "" },
-  { name: '122*8 -SUNTA', qty: "", unit: 'عدد', note: "" },
-  { name: '122*8 - AGT', qty: "", unit: 'عدد', note: "" },
-  { name: '10*8 برش خورده', qty: "", unit: 'عدد', note: "" },
-  { name: 'خام 4 ردیفه', qty: "", unit: 'عدد', note: "" },
-  { name: 'Köşe Bend', qty: "", unit: 'عدد', note: "" },
-  { name: '01 کارتن پروفیل', qty: "", unit: 'کارتن', note: "" },
-  { name: '03 کارتن پروفیل', qty: "", unit: 'کارتن', note: "" },
-  { name: '04 کارتن پروفیل', qty: "", unit: 'کارتن', note: "" },
-  { name: '05 کارتن پروفیل', qty: "", unit: 'کارتن', note: "" },
-  { name: '06 کارتن پروفیل', qty: "", unit: 'کارتن', note: "" },
-];
+const PALLET_DIV = 4;
+const PALLET_DAY_RATE = 300;
+const BASE_DAY_RATE = 1400;
+const SUNTA_NEED = 662;
+const KOSE_BOX_DIV = 500;
+const KOSE_HOUR_DIV = 200;
+const GLUE_DAY_RATE = 900;
 
-const UNITS = ["عدد", "متر", "کیلوگرم", "بسته", "رول", "کارتن", "لیتر", "متر مربع", "سایر"];
+const CATALOG = [
+  { key: "p3", name: "3 ردیفه کامل", unit: "عدد", group: "pallet" },
+  { key: "p3n", name: "سه ردیفه جدید ( کاپاک و نئوپان)", unit: "عدد", group: "pallet" },
+  { key: "sunta", name: "122*8 -SUNTA", unit: "عدد", group: "base", need: SUNTA_NEED },
+  { key: "agt", name: "122*8 - AGT", unit: "عدد", group: "base", need: 0 },
+  { key: "cut108", name: "10*8 برش خورده", unit: "عدد", group: "base", need: 0 },
+  { key: "raw4", name: "خام 4 ردیفه", unit: "عدد", group: "base", need: 0 },
+  { key: "kose", name: "Köşe Bend", unit: "عدد", group: "kose" },
+  { key: "c01", name: "01 کارتن پروفیل", unit: "کارتن", group: "carton", mult: 6, codes: "LB-3841" },
+  { key: "c03", name: "03 کارتن پروفیل", unit: "کارتن", group: "carton", mult: 8, codes: "LB-3846,LB-7014" },
+  { key: "c04", name: "04 کارتن پروفیل", unit: "کارتن", group: "carton", mult: 6, codes: "LB-3845,MP-5498" },
+  { key: "c05", name: "05 کارتن پروفیل", unit: "کارتن", group: "carton", mult: 8, codes: "MP-5499" },
+  { key: "c06", name: "06 کارتن پروفیل", unit: "کارتن", group: "carton", mult: 8, codes: "SPR-7140,SPR-7177" }
+];
 
 const $ = (id) => document.getElementById(id);
 let profile = null;
+let stockMap = {};
 
 function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-function todayIso(){
-  const d = new Date();
-  return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
-}
-function faDate(iso){
-  if(!iso) return "—";
-  try { return new Date(iso.length<=10 ? iso+"T00:00:00" : iso).toLocaleDateString("fa-IR"); }
-  catch(e){ return iso; }
-}
+function todayIso(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function faDate(iso){if(!iso)return"—";try{return new Date(iso.length<=10?iso+"T00:00:00":iso).toLocaleDateString("fa-IR")}catch(e){return iso}}
+function num(v){const n=Number(v);return isFinite(n)?n:0}
+function rnd(v,d=2){const p=10**d;return Math.round(num(v)*p)/p}
+function parseNote(note){if(!note) return {};try { return JSON.parse(note) || {}; } catch(e){ return { text: note }; }}
 
 function show(view){
   $("home-view").hidden = view !== "home";
   $("form-view").hidden = view !== "form";
+  $("calc-view").hidden = view !== "calc";
   $("list-view").hidden = view !== "list";
 }
 
-function unitSelect(val){
-  return UNITS.map(u => `<option value="${u}"${u===val?" selected":""}>${u}</option>`).join("");
-}
-
-function renderRows(items){
+function renderFormRows(map){
   const tb = $("items-body");
   tb.innerHTML = "";
-  (items.length ? items : DEFAULT_ITEMS).forEach((it, i) => {
+  CATALOG.forEach((it, i) => {
+    const s = map[it.name] || {};
     const tr = document.createElement("tr");
     tr.innerHTML =
-      `<td class="row-num">${i+1}</td>` +
-      `<td><input type="text" class="c-name" value="${esc(it.name||"")}" placeholder="نام ملزوم"></td>` +
-      `<td><input type="number" class="c-qty" min="0" step="any" value="${it.qty!==""&&it.qty!=null?esc(it.qty):""}" placeholder="0"></td>` +
-      `<td><select class="c-unit">${unitSelect(it.unit||"عدد")}</select></td>` +
-      `<td><input type="text" class="c-note" value="${esc(it.note||"")}" placeholder="توضیح"></td>` +
-      `<td class="row-del"><button type="button" class="btn btn-danger btn-sm c-del">حذف</button></td>`;
+      `<td class="row-num">${i+1}</td>`+
+      `<td class="name-cell">${esc(it.name)}</td>`+
+      `<td><input type="number" min="0" step="any" class="c-qty" data-name="${esc(it.name)}" value="${s.qty!=null&&s.qty!==""?s.qty:""}" placeholder="0"></td>`+
+      `<td>${esc(it.unit)}</td>`+
+      `<td><input type="text" class="c-note" data-name="${esc(it.name)}" value="${esc(s.text||"")}" placeholder="—"></td>`;
     tb.appendChild(tr);
   });
-  tb.querySelectorAll(".c-del").forEach(btn => {
-    btn.onclick = () => {
-      const tr = btn.closest("tr");
-      tr.remove();
-      renumber();
+}
+
+async function loadStock(date){
+  stockMap = {};
+  const { data, error } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
+  if(error) throw error;
+  (data||[]).forEach(r => {
+    const extra = parseNote(r.note);
+    stockMap[r.item_name] = {
+      qty: r.quantity, unit: r.unit, note: r.note,
+      text: extra.text || (typeof r.note==="string" && r.note[0]!=="{" ? r.note : ""),
+      glued: extra.glued, unglued: extra.unglued, id: r.id
     };
   });
+  return data||[];
 }
 
-function renumber(){
-  [...$("items-body").querySelectorAll("tr")].forEach((tr,i)=>{
-    const n = tr.querySelector(".row-num");
-    if(n) n.textContent = String(i+1);
-  });
-}
-
-function collectRows(){
+function collectForm(){
   const rows = [];
-  [...$("items-body").querySelectorAll("tr")].forEach(tr => {
-    const name = tr.querySelector(".c-name").value.trim();
-    const qtyRaw = tr.querySelector(".c-qty").value;
-    const unit = tr.querySelector(".c-unit").value;
-    const note = tr.querySelector(".c-note").value.trim();
-    if(!name && qtyRaw==="" && !note) return;
+  CATALOG.forEach((it, i) => {
+    const inp = document.querySelectorAll(".c-qty")[i];
+    const noteInp = document.querySelectorAll(".c-note")[i];
+    const qtyRaw = inp ? inp.value : "";
+    const text = noteInp ? noteInp.value.trim() : "";
+    const prev = stockMap[it.name] || {};
+    const extra = {};
+    if(prev.glued!=null) extra.glued = prev.glued;
+    if(prev.unglued!=null) extra.unglued = prev.unglued;
+    if(text) extra.text = text;
     rows.push({
-      item_name: name || "—",
+      item_name: it.name,
       quantity: qtyRaw==="" ? null : Number(qtyRaw),
-      unit: unit || null,
-      note: note || null
+      unit: it.unit,
+      note: Object.keys(extra).length ? JSON.stringify(extra) : (text || null),
+      sort_order: i
     });
   });
   return rows;
+}
+
+async function saveStock(date, andCalc){
+  const msg = $("form-msg");
+  if(!date){ msg.className="msg err"; msg.textContent="تاریخ را وارد کنید."; return false; }
+  const items = collectForm();
+  if(!confirm("لیست قبلی همین تاریخ جایگزین می‌شود. ادامه؟")) return false;
+  msg.className="msg"; msg.textContent="در حال ذخیره...";
+  const { error: delErr } = await supabaseClient.from(TABLE).delete().eq("snapshot_date", date);
+  if(delErr){ msg.className="msg err"; msg.textContent="خطا: "+delErr.message+" — SQL جدول را اجرا کرده‌اید؟"; return false; }
+  const payload = items.map(it => ({
+    ...it, snapshot_date: date,
+    created_by: profile?.id || null,
+    created_by_name: profile?.full_name || profile?.name || null
+  }));
+  const { error: insErr } = await supabaseClient.from(TABLE).insert(payload);
+  if(insErr){ msg.className="msg err"; msg.textContent="خطا: "+insErr.message; return false; }
+  msg.className="msg ok"; msg.textContent="ذخیره شد.";
+  await loadStock(date);
+  if(andCalc){ $("c-date").value=date; show("calc"); renderCalcs(); }
+  return true;
+}
+
+function qtyOf(name){
+  const s = stockMap[name];
+  return s && s.qty!=null ? num(s.qty) : 0;
+}
+
+function renderCalcs(){
+  const palletItems = CATALOG.filter(x => x.group==="pallet");
+  let palletSum = 0;
+  const pRows = palletItems.map(it => {
+    const q = qtyOf(it.name);
+    const pallets = rnd(q / PALLET_DIV, 1);
+    palletSum += pallets;
+    return { name: it.name, q, pallets };
+  });
+  const palletDays = rnd(palletSum / PALLET_DAY_RATE, 2);
+  const tbP = $("tb-pallet");
+  tbP.innerHTML = "";
+  pRows.forEach((r,i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="name-cell">${esc(r.name)}</td><td>${r.q.toLocaleString("fa-IR")}</td><td>${r.pallets.toLocaleString("fa-IR")}</td>`+
+      (i===0 ? `<td rowspan="${pRows.length}" style="vertical-align:middle;font-weight:800;color:#f5a623">${rnd(palletSum,1).toLocaleString("fa-IR")}</td>
+                <td rowspan="${pRows.length}" style="vertical-align:middle;font-weight:800;color:#f5a623">${palletDays.toLocaleString("fa-IR")}</td>` : "");
+    tbP.appendChild(tr);
+  });
+
+  const tbB = $("tb-base");
+  tbB.innerHTML = "";
+  let baseProdTotal = 0;
+  CATALOG.filter(x => x.group==="base").forEach(it => {
+    const q = qtyOf(it.name);
+    let producible = 0, remain = 0, need = it.need || 0, days = 0;
+    if(it.key==="sunta" || it.key==="agt"){
+      producible = q; remain = Math.max(0, producible - need); days = rnd(producible / BASE_DAY_RATE, 2);
+    } else if(it.key==="raw4"){
+      producible = q; remain = 0; days = rnd(producible / BASE_DAY_RATE, 2);
+    } else if(it.key==="cut108"){
+      producible = 0;
+      const s = stockMap[it.name] || {};
+      const extra = parseNote(s.note);
+      remain = extra.remain != null ? num(extra.remain) : 0;
+      days = remain > 0 ? rnd(remain / 2740, 2) : 0;
+    }
+    baseProdTotal += producible;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="name-cell">${esc(it.name)}</td>
+      <td>${q.toLocaleString("fa-IR")}</td>
+      <td>${producible.toLocaleString("fa-IR")}</td>
+      <td>${it.key==="cut108" ? `<input type="number" min="0" step="any" class="base-remain" data-name="${esc(it.name)}" value="${remain||""}" style="max-width:100px">` : remain.toLocaleString("fa-IR")}</td>
+      <td>${need.toLocaleString("fa-IR")}</td>
+      <td>${days.toLocaleString("fa-IR")}</td>`;
+    tbB.appendChild(tr);
+  });
+  const trT = document.createElement("tr");
+  trT.className = "total-row";
+  trT.innerHTML = `<td colspan="2">جمع پایه قابل تولید (SUNTA/AGT/خام)</td><td colspan="4">${baseProdTotal.toLocaleString("fa-IR")}</td>`;
+  tbB.appendChild(trT);
+  tbB.querySelectorAll(".base-remain").forEach(inp => {
+    inp.onchange = () => {
+      const v = num(inp.value);
+      const days = v > 0 ? rnd(v / 2740, 2) : 0;
+      inp.closest("tr").children[5].textContent = days.toLocaleString("fa-IR");
+    };
+  });
+
+  const koseQ = qtyOf("Köşe Bend");
+  $("tb-kose").innerHTML = `<tr>
+    <td class="name-cell">Köşe Bend</td>
+    <td>${koseQ.toLocaleString("fa-IR")}</td>
+    <td>${rnd(koseQ / KOSE_BOX_DIV, 2).toLocaleString("fa-IR")}</td>
+    <td>${rnd(koseQ / KOSE_HOUR_DIV, 2).toLocaleString("fa-IR")}</td>
+  </tr>`;
+
+  const tbC = $("tb-carton");
+  tbC.innerHTML = "";
+  let sumTotal=0, sumGlued=0, sumUnglued=0, sumProf=0, sumGlueDays=0;
+  CATALOG.filter(x => x.group==="carton").forEach((it, idx) => {
+    const q = qtyOf(it.name);
+    const s = stockMap[it.name] || {};
+    let glued = s.glued != null ? num(s.glued) : q;
+    let unglued = s.unglued != null ? num(s.unglued) : Math.max(0, q - glued);
+    if(s.glued == null && s.unglued == null){ glued = q; unglued = 0; }
+    const prof = Math.round(glued * it.mult);
+    const gdays = rnd(unglued / GLUE_DAY_RATE, 2);
+    sumTotal += q; sumGlued += glued; sumUnglued += unglued; sumProf += prof; sumGlueDays += gdays;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${idx+1}</td>
+      <td class="name-cell">${esc(it.name)}</td>
+      <td>${q.toLocaleString("fa-IR")}</td>
+      <td><input type="number" min="0" step="any" class="c-glued" data-name="${esc(it.name)}" value="${glued}" style="max-width:100px"></td>
+      <td><input type="number" min="0" step="any" class="c-unglued" data-name="${esc(it.name)}" value="${unglued}" style="max-width:100px"></td>
+      <td style="font-size:.78rem">${esc(it.codes)}</td>
+      <td class="c-prof">${prof.toLocaleString("fa-IR")}</td>
+      <td class="c-gdays">${gdays.toLocaleString("fa-IR")}</td>`;
+    tbC.appendChild(tr);
+  });
+  const trC = document.createElement("tr");
+  trC.className = "total-row";
+  trC.innerHTML = `<td></td><td>جمع</td><td>${sumTotal.toLocaleString("fa-IR")}</td>
+    <td id="sum-glued">${sumGlued.toLocaleString("fa-IR")}</td>
+    <td id="sum-unglued">${sumUnglued.toLocaleString("fa-IR")}</td>
+    <td></td><td id="sum-prof">${sumProf.toLocaleString("fa-IR")}</td>
+    <td id="sum-gdays">${rnd(sumGlueDays,2).toLocaleString("fa-IR")}</td>`;
+  tbC.appendChild(trC);
+
+  function recalcCartonRow(tr){
+    const name = tr.querySelector(".c-glued").getAttribute("data-name");
+    const it = CATALOG.find(x => x.name === name);
+    const glued = num(tr.querySelector(".c-glued").value);
+    const unglued = num(tr.querySelector(".c-unglued").value);
+    tr.querySelector(".c-prof").textContent = Math.round(glued * (it?.mult||1)).toLocaleString("fa-IR");
+    tr.querySelector(".c-gdays").textContent = rnd(unglued / GLUE_DAY_RATE, 2).toLocaleString("fa-IR");
+    let sg=0,su=0,sp=0,sd=0;
+    tbC.querySelectorAll("tr").forEach(r => {
+      const g = r.querySelector(".c-glued"); if(!g) return;
+      const ug = r.querySelector(".c-unglued");
+      const item = CATALOG.find(x => x.name === g.getAttribute("data-name"));
+      const gv=num(g.value), uv=num(ug.value);
+      sg+=gv; su+=uv; sp+=Math.round(gv*(item?.mult||1)); sd+=uv/GLUE_DAY_RATE;
+    });
+    $("sum-glued").textContent = sg.toLocaleString("fa-IR");
+    $("sum-unglued").textContent = su.toLocaleString("fa-IR");
+    $("sum-prof").textContent = sp.toLocaleString("fa-IR");
+    $("sum-gdays").textContent = rnd(sd,2).toLocaleString("fa-IR");
+  }
+  tbC.querySelectorAll(".c-glued, .c-unglued").forEach(inp => {
+    inp.oninput = () => recalcCartonRow(inp.closest("tr"));
+  });
+}
+
+$("save-carton-extra").onclick = async () => {
+  const date = $("c-date").value;
+  const msg = $("carton-msg");
+  if(!date){ msg.className="msg err"; msg.textContent="تاریخ مشخص نیست."; return; }
+  msg.className="msg"; msg.textContent="در حال ذخیره جزئیات چسب...";
+  for(const it of CATALOG.filter(x => x.group==="carton")){
+    const gInp = document.querySelector(`.c-glued[data-name="${CSS.escape(it.name)}"]`);
+    const uInp = document.querySelector(`.c-unglued[data-name="${CSS.escape(it.name)}"]`);
+    if(!gInp) continue;
+    const prev = stockMap[it.name] || {};
+    const extra = parseNote(prev.note);
+    extra.glued = num(gInp.value);
+    extra.unglued = num(uInp.value);
+    if(prev.text) extra.text = prev.text;
+    const { error } = await supabaseClient.from(TABLE).update({ note: JSON.stringify(extra) })
+      .eq("snapshot_date", date).eq("item_name", it.name);
+    if(error){ msg.className="msg err"; msg.textContent=error.message; return; }
+  }
+  const rem = document.querySelector(".base-remain");
+  if(rem){
+    const name = rem.getAttribute("data-name");
+    const prev = stockMap[name] || {};
+    const extra = parseNote(prev.note);
+    extra.remain = num(rem.value);
+    await supabaseClient.from(TABLE).update({ note: JSON.stringify(extra) })
+      .eq("snapshot_date", date).eq("item_name", name);
+  }
+  await loadStock(date);
+  renderCalcs();
+  msg.className="msg ok"; msg.textContent="جزئیات ذخیره شد.";
+};
+
+async function renderList(date){
+  const rows = await loadStock(date);
+  const tb = $("list-body");
+  tb.innerHTML = "";
+  if(!rows.length){ $("list-msg").textContent="برای این تاریخ رکوردی نیست."; return; }
+  $("list-msg").textContent = "";
+  rows.forEach((r,i) => {
+    const extra = parseNote(r.note);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${i+1}</td><td>${esc(r.item_name)}</td><td>${r.quantity==null?"—":Number(r.quantity).toLocaleString("fa-IR")}</td><td>${esc(r.unit||"—")}</td><td>${esc(extra.text||"—")}</td>`;
+    tb.appendChild(tr);
+  });
 }
 
 $("go-form").onclick = async () => {
   $("f-date").value = todayIso();
   $("f-by").value = profile?.full_name || profile?.name || "کاربر";
   $("form-msg").textContent = "";
-  const date = $("f-date").value;
-  const { data } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
-  if(data && data.length){
-    renderRows(data.map(r => ({ name: r.item_name, qty: r.quantity, unit: r.unit||"عدد", note: r.note||"" })));
-  } else {
-    renderRows(DEFAULT_ITEMS);
-  }
+  try { await loadStock($("f-date").value); renderFormRows(stockMap); }
+  catch(e){ renderFormRows({}); $("form-msg").className="msg err"; $("form-msg").textContent = "جدول آماده نیست یا خطا: "+e.message; }
   show("form");
+};
+$("f-date").onchange = async function(){
+  try { await loadStock(this.value); renderFormRows(stockMap); } catch(e){ renderFormRows({}); }
+};
+$("save-btn").onclick = () => saveStock($("f-date").value, false);
+$("save-go-calc").onclick = () => saveStock($("f-date").value, true);
+
+$("go-calc").onclick = async () => {
+  $("c-date").value = todayIso();
+  $("calc-msg").textContent = "";
+  try {
+    await loadStock($("c-date").value);
+    if(!Object.keys(stockMap).length){
+      const { data } = await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
+      if(data && data[0]){ $("c-date").value = data[0].snapshot_date; await loadStock($("c-date").value); }
+    }
+    renderCalcs();
+    if(!Object.keys(stockMap).length) $("calc-msg").textContent = "هنوز موجودی ثبت نشده — اول ثبت موجودی را بزن.";
+  } catch(e){ $("calc-msg").className="msg err"; $("calc-msg").textContent=e.message; }
+  show("calc");
+};
+$("c-load").onclick = async () => {
+  try { await loadStock($("c-date").value); renderCalcs(); $("calc-msg").textContent=""; }
+  catch(e){ $("calc-msg").className="msg err"; $("calc-msg").textContent=e.message; }
 };
 
 $("go-view").onclick = async () => {
   $("v-date").value = todayIso();
   show("list");
-  await loadLatest();
+  try {
+    const { data } = await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
+    if(data&&data[0]){ $("v-date").value=data[0].snapshot_date; await renderList($("v-date").value); }
+    else $("list-msg").textContent="هنوز رکوردی نیست.";
+  } catch(e){ $("list-msg").textContent=e.message; }
 };
+$("load-date").onclick = () => renderList($("v-date").value).catch(e => $("list-msg").textContent=e.message);
+$("load-latest").onclick = () => $("go-view").onclick();
 
-$("back-form").onclick = $("back-list").onclick = () => show("home");
-
-$("add-row").onclick = () => {
-  const tr = document.createElement("tr");
-  const n = $("items-body").querySelectorAll("tr").length + 1;
-  tr.innerHTML =
-    `<td class="row-num">${n}</td>` +
-    `<td><input type="text" class="c-name" placeholder="نام ملزوم"></td>` +
-    `<td><input type="number" class="c-qty" min="0" step="any" placeholder="0"></td>` +
-    `<td><select class="c-unit">${unitSelect("عدد")}</select></td>` +
-    `<td><input type="text" class="c-note" placeholder="توضیح"></td>` +
-    `<td class="row-del"><button type="button" class="btn btn-danger btn-sm c-del">حذف</button></td>`;
-  $("items-body").appendChild(tr);
-  tr.querySelector(".c-del").onclick = () => { tr.remove(); renumber(); };
-};
-
-$("f-date").onchange = async function(){
-  const date = this.value;
-  if(!date) return;
-  const { data } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
-  if(data && data.length){
-    renderRows(data.map(r => ({ name: r.item_name, qty: r.quantity, unit: r.unit||"عدد", note: r.note||"" })));
-    $("form-msg").textContent = "لیست همین تاریخ بارگذاری شد — با ذخیره جایگزین می‌شود.";
-    $("form-msg").className = "msg";
-  } else {
-    renderRows(DEFAULT_ITEMS);
-    $("form-msg").textContent = "برای این تاریخ هنوز لیستی نیست.";
-    $("form-msg").className = "msg";
-  }
-};
-
-$("save-btn").onclick = async () => {
-  const msg = $("form-msg");
-  const date = $("f-date").value;
-  if(!date){ msg.className="msg err"; msg.textContent="تاریخ را وارد کنید."; return; }
-  const items = collectRows();
-  if(!items.length){ msg.className="msg err"; msg.textContent="حداقل یک ردیف با نام یا موجودی وارد کنید."; return; }
-  if(!confirm("لیست قبلی همین تاریخ پاک می‌شود و لیست جدید جایگزین می‌گردد. ادامه؟")) return;
-  msg.className="msg"; msg.textContent="در حال ذخیره...";
-
-  const { error: delErr } = await supabaseClient.from(TABLE).delete().eq("snapshot_date", date);
-  if(delErr){
-    msg.className="msg err";
-    msg.textContent="خطا در پاک‌کردن قبلی: "+delErr.message+" — جدول/پالیسی را در Supabase بسازید (process/consumables-setup.sql).";
-    return;
-  }
-
-  const payload = items.map((it,i)=>({
-    snapshot_date: date,
-    item_name: it.item_name,
-    quantity: it.quantity,
-    unit: it.unit,
-    note: it.note,
-    sort_order: i,
-    created_by: profile?.id || null,
-    created_by_name: profile?.full_name || profile?.name || null
-  }));
-
-  const { error: insErr } = await supabaseClient.from(TABLE).insert(payload);
-  if(insErr){
-    msg.className="msg err";
-    msg.textContent="خطا در ذخیره: "+insErr.message;
-    return;
-  }
-  msg.className="msg ok";
-  msg.textContent="ذخیره شد. لیست تاریخ "+faDate(date)+" جایگزین شد ("+items.length+" آیتم).";
-};
-
-async function renderList(rows, meta){
-  const tb = $("list-body");
-  tb.innerHTML = "";
-  $("list-meta").innerHTML = meta || "";
-  if(!rows || !rows.length){
-    $("list-msg").textContent = "برای این تاریخ رکوردی نیست.";
-    return;
-  }
-  $("list-msg").textContent = "";
-  rows.forEach((r,i)=>{
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i+1}</td><td>${esc(r.item_name)}</td><td>${r.quantity==null?"—":r.quantity}</td><td>${esc(r.unit||"—")}</td><td>${esc(r.note||"—")}</td>`;
-    tb.appendChild(tr);
-  });
-}
-
-async function loadByDate(date){
-  if(!date) return;
-  const { data, error } = await supabaseClient.from(TABLE).select("*").eq("snapshot_date", date).order("sort_order");
-  if(error){
-    $("list-msg").textContent = "خطا: "+error.message;
-    return;
-  }
-  const meta = data&&data.length
-    ? `<span>تاریخ: <strong>${faDate(date)}</strong></span><span>تعداد آیتم: <strong>${data.length}</strong></span><span>ثبت‌کننده: <strong>${esc(data[0].created_by_name||"—")}</strong></span>`
-    : "";
-  await renderList(data||[], meta);
-}
-
-async function loadLatest(){
-  const { data, error } = await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
-  if(error){ $("list-msg").textContent="خطا: "+error.message; return; }
-  if(!data || !data.length){ await renderList([], ""); $("list-msg").textContent="هنوز هیچ موجودی ثبت نشده."; return; }
-  $("v-date").value = data[0].snapshot_date;
-  await loadByDate(data[0].snapshot_date);
-}
-
-$("load-date").onclick = () => loadByDate($("v-date").value);
-$("load-latest").onclick = loadLatest;
-
-$("logout-btn").onclick = async () => {
-  await supabaseClient.auth.signOut();
-  location.href = "../";
-};
+document.querySelectorAll("[data-back]").forEach(b => b.onclick = () => show("home"));
+$("logout-btn").onclick = async () => { await supabaseClient.auth.signOut(); location.href="../"; };
 
 (async function init(){
   const { data: sess } = await supabaseClient.auth.getSession();
-  if(!sess.session){ location.href = "../"; return; }
+  if(!sess.session){ location.href="../"; return; }
   const uid = sess.session.user.id;
   const { data: prof } = await supabaseClient.from("user_profiles").select("*").eq("id", uid).maybeSingle();
   profile = prof || { id: uid, full_name: sess.session.user.email, role: "user" };
