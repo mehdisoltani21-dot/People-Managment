@@ -5,22 +5,154 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f5a623">
   <title>مدیریت وقایع پرسنلی | APW</title>
-  <script src="../gate.js?v=2"></script>
   <link rel="stylesheet" href="../style.css?v=14">
+  <script src="../gate.js?v=2"></script>
+  <style>
+    /* fallback if style.css slow */
+    body{font-family:Tahoma,sans-serif;background:#14110c;color:#f5f0e8;margin:0}
+  </style>
 </head>
 <body>
-  <div id="app-root"></div>
+  <!-- content restored from working SSO version -->
+  <div id="login-page" class="login-page" style="display:none">
+    <div class="login-card">
+      <div class="brand-logo" style="text-align:center;margin-bottom:12px"><img src="../logo.png?v=2" alt="APW" style="height:40px"></div>
+      <h1>ورود به سامانه</h1>
+      <p class="login-sub">مدیریت وقایع پرسنلی</p>
+      <form id="login-form">
+        <label for="loginUser">نام کاربری</label>
+        <select id="loginUser" required>
+          <option value="">-- انتخاب --</option>
+          <option value="mehdi-soltani">مهدی سلطانی</option>
+          <option value="masoud-kazemi">مسعود کاظمی</option>
+          <option value="mehdi-afshar">مهدی افشار</option>
+          <option value="arash-baba">آرش بابا</option>
+        </select>
+        <label for="loginPass">رمز عبور</label>
+        <input type="password" id="loginPass" required>
+        <button type="submit" class="btn btn-primary">ورود</button>
+        <p id="login-error" class="error"></p>
+      </form>
+      <p style="text-align:center;margin-top:16px"><a class="nav-home" href="../">← صفحه اصلی</a></p>
+    </div>
+  </div>
+
+  <main id="app-page" class="app-page" style="display:none">
+    <header class="app-header">
+      <div class="brand">
+        <img src="../logo.png?v=2" alt="APW" class="header-logo">
+        <div>
+          <h1>مدیریت وقایع پرسنلی</h1>
+          <p>واحد تولید APW ایرانیان</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span id="current-user-label" class="user-chip"></span>
+        <a class="nav-home" href="../">← صفحه اصلی</a>
+        <button type="button" id="logout-btn" class="btn btn-secondary btn-sm">خروج</button>
+      </div>
+    </header>
+
+    <section id="home-view" class="home-view">
+      <div class="home-grid">
+        <button type="button" class="home-card" id="btn-new-record">
+          <div class="home-icon">+</div>
+          <h3>رکورد جدید</h3>
+          <span>ثبت واقعه پرسنلی</span>
+        </button>
+        <button type="button" class="home-card" id="btn-view-records">
+          <div class="home-icon">≡</div>
+          <h3>مشاهده رکوردها</h3>
+          <span>جست‌وجو و گزارش</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="form-view" class="form-view" style="display:none">
+      <button type="button" class="view-back" id="back-from-form">→ بازگشت</button>
+      <div class="card">
+        <h2 id="form-title">ثبت رکورد جدید</h2>
+        <p class="section-description">اطلاعات نفر و جزئیات گزارش را وارد کنید.</p>
+        <form id="record-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="record-date">تاریخ</label>
+              <input type="date" id="record-date" required>
+            </div>
+            <div class="form-group">
+              <label for="person-select">نفر</label>
+              <select id="person-select" required></select>
+            </div>
+            <div class="form-group">
+              <label for="error-type">نوع</label>
+              <select id="error-type" required></select>
+            </div>
+            <div class="form-group">
+              <label for="warning-type">نوع اخطار</label>
+              <select id="warning-type">
+                <option value="">—</option>
+                <option value="اخطار شفاهی">اخطار شفاهی</option>
+                <option value="اخطار کتبی">اخطار کتبی</option>
+                <option value="معرفی به کمیته انضباطی">معرفی به کمیته انضباطی</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label for="description">شرح و توضیحات</label>
+              <textarea id="description" rows="3" placeholder="شرح کوتاهی از موضوع وارد کنید..."></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="save-btn">ذخیره</button>
+            <button type="button" id="cancel-btn" class="btn btn-secondary" style="display:none">لغو ویرایش</button>
+          </div>
+          <p id="form-msg" class="msg"></p>
+        </form>
+      </div>
+    </section>
+
+    <section id="list-view" class="list-view" style="display:none">
+      <button type="button" class="view-back" id="back-from-list">→ بازگشت</button>
+      <div class="card">
+        <h2>مشاهده رکوردها</h2>
+        <p class="section-description">جست‌وجو، بررسی و دریافت خروجی اطلاعات</p>
+        <div class="tools">
+          <input type="search" id="search-input" placeholder="جست‌وجو...">
+          <button type="button" id="export-btn" class="btn btn-secondary btn-sm">↓ اکسل</button>
+        </div>
+        <div id="filter-summary" class="filter-summary" style="display:none"></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ردیف</th><th>تاریخ</th><th>نفر</th><th>نوع</th><th>اخطار</th><th>شرح</th><th>ثبت‌کننده</th><th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody id="records-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
   <script src="../vendor/supabase.js"></script>
   <script>
-    (function waitSb(n){
-      if(window.supabase&&window.supabase.createClient){
-        var s1=document.createElement('script');s1.src='../script.js?v=13';document.body.appendChild(s1);
-        var s2=document.createElement('script');s2.src='../access.js?v=5';document.body.appendChild(s2);
-        return;
-      }
-      if(n>80){document.body.innerHTML='<p style="color:#f5a623;text-align:center;margin-top:3rem;font-family:Tahoma">کتابخانه اتصال بارگذاری نشد. فیلتر اینترنت را بررسی کنید.</p>';return;}
-      setTimeout(function(){waitSb(n+1)},150);
-    })(0);
+  (function waitSb(n){
+    if(window.supabase && window.supabase.createClient){
+      var a=document.createElement("script"); a.src="../script.js?v=14"; document.body.appendChild(a);
+      a.onload=function(){
+        var b=document.createElement("script"); b.src="../access.js?v=5"; document.body.appendChild(b);
+      };
+      return;
+    }
+    if(n>100){
+      var m=document.createElement("p");
+      m.style.cssText="color:#f5a623;text-align:center;padding:2rem;font-family:Tahoma";
+      m.textContent="کتابخانه اتصال بار نشد. یک‌بار صفحه را رفرش کنید.";
+      document.body.prepend(m);
+      return;
+    }
+    setTimeout(function(){ waitSb(n+1); }, 120);
+  })(0);
   </script>
 </body>
 </html>
