@@ -1,1 +1,40 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<script src="../gate.js?v=3"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>گزارش تحلیلی 5S | APW</title>
+</head>
+<body style="margin:0;background:#0f0d0a;color:#f5a623;font-family:Tahoma;display:flex;align-items:center;justify-content:center;min-height:100vh">
+<p id="b">بارگذاری گزارش تحلیلی...</p>
+<script>
+(async function(){
+  try{
+    var sources=[
+      "./analytics-full.html?v=4",
+      "https://cdn.jsdelivr.net/gh/mehdisoltani21-dot/People-Managment@d3f834c9f211f90a440c6d78d1ad6966fee6c1de/5s/analytics.html",
+      "https://raw.githubusercontent.com/mehdisoltani21-dot/People-Managment/d3f834c9f211f90a440c6d78d1ad6966fee6c1de/5s/analytics.html"
+    ];
+    var html=null,err=null;
+    for(var i=0;i<sources.length;i++){
+      try{
+        var r=await fetch(sources[i]);
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        html=await r.text();
+        if(html.indexOf("PLACEHOLDER")>=0||html.length<500) throw new Error("bad");
+        break;
+      }catch(e){err=e}
+    }
+    if(!html) throw err||new Error("fail");
+    if(html.indexOf("analytics-compare.js")<0){
+      html=html.replace("</body>",'<script src="analytics-compare.js?v=2"><\/script></body>');
+    }
+    document.open(); document.write(html); document.close();
+  }catch(e){
+    document.getElementById("b").textContent="خطا: "+(e.message||e);
+  }
+})();
+</script>
+</body>
+</html>
