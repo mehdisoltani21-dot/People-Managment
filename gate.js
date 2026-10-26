@@ -1,17 +1,31 @@
-// APW — ورود یکپارچه
-// این فایل در صفحات داخلی (پنل، 5S، گزارش تحلیلی) بارگذاری می‌شود.
-// اگر کاربر در صفحه اصلی وارد نشده باشد، به صفحه اصلی برگردانده می‌شود.
-// فرم ورود صفحات داخلی پنهان است و خروج از هر صفحه، کاربر را به صفحه اصلی می‌برد.
+// APW — ورود یکپارچه + مسیر ریشه صحیح (Cloudflare و GitHub Pages)
 (function () {
   var SUPABASE_REF = "rtefjfvkjpatzitjjvwe";
   var STORAGE_KEY = "sb-" + SUPABASE_REF + "-auth-token";
 
-  // مسیر صفحه اصلی نسبت به این فایل (ریشه سایت روی Cloudflare یا GitHub Pages)
-  var script = document.currentScript;
-  var HOME = script ? new URL("./", script.src).href : "/";
+  // ریشه سایت: روی GitHub Pages زیر People-Managment است، روی Cloudflare ریشه دامنه
+  function siteBase() {
+    var p = location.pathname || "/";
+    if (p.indexOf("/People-Managment") === 0) {
+      return location.origin + "/People-Managment/";
+    }
+    return location.origin + "/";
+  }
+  var HOME = siteBase();
+  window.APW_BASE = HOME;
 
-  // فرم‌های ورود صفحات داخلی هرگز نمایش داده نشوند (ورود فقط از صفحه اصلی)
-  // اما اگر session باشد، اپ نشان داده می‌شود
+  // اگر مسیر اشتباه تو در تو شد (مثل /5s/5s/) اصلاح کن
+  var path = location.pathname || "";
+  if (/\/5s\/5s/.test(path) || /\/panel\/panel/.test(path) || /\/process\/process/.test(path)) {
+    var fixed = HOME;
+    if (path.indexOf("/5s") >= 0) fixed = HOME + "5s/";
+    else if (path.indexOf("/panel") >= 0) fixed = HOME + "panel/";
+    else if (path.indexOf("/process") >= 0) fixed = HOME + "process/";
+    location.replace(fixed + location.search + location.hash);
+    return;
+  }
+
+  // فرم ورود صفحات داخلی پنهان
   var st = document.createElement("style");
   st.textContent = "#login-page{display:none!important}";
   (document.head || document.documentElement).appendChild(st);

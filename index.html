@@ -51,10 +51,20 @@
     .login-error{color:#f87171;font-size:.85rem;min-height:1.2em;margin-top:8px;text-align:center}
     [hidden]{display:none!important}
   </style>
+  <script>
+  // مسیر پایه: Cloudflare = /  |  GitHub Pages = /People-Managment/
+  window.APW_BASE = (location.pathname.indexOf("/People-Managment") === 0)
+    ? (location.origin + "/People-Managment/")
+    : (location.origin + "/");
+  // اگر آدرس تو در تو اشتباه بود، برو ریشه
+  if (/\/5s\/5s|\/panel\/panel|\/process\/process/.test(location.pathname)) {
+    location.replace(window.APW_BASE);
+  }
+  </script>
 </head>
 <body>
   <div class="wrap">
-    <div class="logo-wrap"><img src="./logo.png?v=2" alt="APW"></div>
+    <div class="logo-wrap"><img src="./logo.png?v=2" alt="APW" onerror="this.style.display='none'"></div>
     <p class="brand-sub">APW ایرانیان · واحد تولید</p>
 
     <section id="login-section" class="login-box" hidden>
@@ -87,17 +97,17 @@
         <button type="button" class="logout" id="logout-btn">خروج</button>
       </div>
       <nav class="menu">
-        <a href="./panel/">
+        <a data-path="panel/" href="./panel/">
           <span class="ic">👤</span>
           <span class="txt"><span class="ttl">مدیریت وقایع پرسنلی</span><span class="sub">ثبت خطا، اخطار و سوابق نفرات</span></span>
           <span class="arr">‹</span>
         </a>
-        <a href="./process/">
+        <a data-path="process/" href="./process/">
           <span class="ic">◎</span>
           <span class="txt"><span class="ttl">مدیریت وقایع فرآیندی</span><span class="sub">تعمیرات، برش، کاپاک، کارتن و نظافت خط</span></span>
           <span class="arr">‹</span>
         </a>
-        <a href="./5s/">
+        <a data-path="5s/" href="./5s/">
           <span class="ic">☑</span>
           <span class="txt"><span class="ttl">مدیریت نظام آراستگی</span><span class="sub">ارزیابی 5S + گزارش تحلیلی نفرات</span></span>
           <span class="arr">‹</span>
@@ -106,6 +116,14 @@
     </section>
   </div>
 
+  <script>
+  (function(){
+    var B = window.APW_BASE || (location.origin + "/");
+    document.querySelectorAll("a[data-path]").forEach(function(a){
+      a.setAttribute("href", B + a.getAttribute("data-path"));
+    });
+  })();
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
   (function () {
