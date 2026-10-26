@@ -28,7 +28,6 @@
     }
     if (!html) throw lastErr || new Error("load failed");
 
-    // global cache for report detail
     html = html.replace(
       "let currentUser=null,currentProfile=null,auditsCache=[];",
       "let currentUser=null,currentProfile=null;window.auditsCache=[];"
@@ -40,13 +39,11 @@
     html = html.split("const r=auditsCache[idx]").join("const r=window.auditsCache[idx]");
     html = html.split("auditsCache[").join("window.auditsCache[");
 
-    // logout → home
     html = html.replace(
       /document\.getElementById\("logout-btn"\)\.onclick=async function\(\)\{await supabaseClient\.auth\.signOut\(\);currentUser=null;showLogin\(\)\};/,
       'document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();location.replace("../")};'
     );
 
-    // gate + report-view (photos + form-like single report)
     if (html.indexOf("gate.js") === -1) {
       html = html.replace("<head>", '<head><script src="../gate.js?v=3"><\/script>');
     }
@@ -57,6 +54,30 @@
     document.open();
     document.write(html);
     document.close();
+
+    // کارت گزارش تحلیلی با فیلتر کامل
+    try {
+      var grid = document.querySelector(".home-grid");
+      if (grid && !document.getElementById("go-analytics")) {
+        var a = document.createElement("a");
+        a.id = "go-analytics";
+        a.href = "./analytics.html?v=8";
+        a.className = "home-card";
+        a.style.textDecoration = "none";
+        a.innerHTML = '<div class="home-icon">📊</div><h3>گزارش تحلیلی و فیلتر</h3><span>فیلتر نفر، ایستگاه، تاریخ + اکسل</span>';
+        grid.appendChild(a);
+      }
+      var hdr = document.querySelector(".header") || document.querySelector("header") || document.querySelector(".app-header");
+      if (hdr && !document.getElementById("hdr-analytics")) {
+        var ha = document.createElement("a");
+        ha.id = "hdr-analytics";
+        ha.href = "./analytics.html?v=8";
+        ha.className = "nav-home";
+        ha.textContent = "گزارش تحلیلی";
+        ha.style.marginInlineStart = "6px";
+        hdr.appendChild(ha);
+      }
+    } catch (e) { console.warn(e); }
   } catch (e) {
     console.error(e);
     var el = document.getElementById("boot");
