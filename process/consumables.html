@@ -1,40 +1,461 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<script src="../gate.js?v=3"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5a623">
 <title>ملزومات مصرفی | APW</title>
+<script src="../gate.js?v=3"></script>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Vazirmatn,Tahoma,sans-serif;background:#0f0d0a;color:#f5f0e8;min-height:100vh;line-height:1.65}
+.top{position:sticky;top:0;z-index:20;background:rgba(15,13,10,.95);border-bottom:1px solid #3d3428;padding:12px 16px}
+.top-inner{max-width:1000px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.nav-home{display:inline-flex;background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208!important;font-weight:800;font-size:.85rem;padding:9px 14px;border-radius:11px;text-decoration:none}
+.wrap{max-width:1000px;margin:0 auto;padding:16px}
+.section{background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:16px;padding:18px;margin-bottom:14px}
+.section h2{color:#f5a623;font-size:1.1rem;margin-bottom:6px}
+.section h3{color:#f5c56a;font-size:1rem;margin:16px 0 8px}
+.desc,.hint{color:#a89a86;font-size:.88rem;margin-bottom:12px}
+.banner{background:#3b2f1a;border:1px solid #5a4030;border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:.88rem}
+.form-top{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:.75rem;color:#a89a86}
+.fg input{padding:10px 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit}
+.table-wrap{overflow:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:8px 6px;border-bottom:1px solid #2a2418;text-align:right}
+th{color:#f5a623;background:#1a1610;white-space:nowrap}
+input[type=number],input[type=text]{width:100%;max-width:120px;padding:8px;border-radius:8px;border:1px solid #4a4030;background:#0f0d0a;color:#f5f0e8;font-family:inherit}
+.name-cell{min-width:140px;font-weight:600}
+.btn{border:none;border-radius:11px;padding:10px 16px;font-family:inherit;font-weight:800;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208}
+.btn-secondary{background:#2a2418;border:1px solid #5a4030;color:#f5c56a}
+.btn-sm{padding:8px 12px;font-size:.85rem}
+.form-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.msg{margin-top:10px;font-size:.88rem;min-height:1.2em}.msg.ok{color:#4ade80}.msg.err{color:#f87171}
+.view-back{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-weight:800;border:none;border-radius:12px;padding:.5rem 1rem;cursor:pointer;margin-bottom:12px;font-family:inherit}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:640px;margin:24px auto}
+@media(max-width:560px){.home-grid{grid-template-columns:1fr}}
+.home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:140px;padding:20px;border-radius:16px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit;font-family:inherit}
+.home-card:hover{border-color:#f5a623}
+.home-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208}
+.total-row td{font-weight:800;color:#f5a623}
+[hidden]{display:none!important}
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{max-width:380px;width:100%;padding:22px;border-radius:16px;border:1px solid #3d3428;background:#1a1610}
+.login-box select,.login-box input{width:100%;padding:10px;margin:6px 0 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit}
+</style>
 </head>
-<body style="margin:0;background:#0f0d0a;color:#f5a623;font-family:Vazirmatn,Tahoma,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh">
-<p id="b">بارگذاری ملزومات مصرفی...</p>
+<body>
+<section id="login-page" hidden>
+  <div class="login-box">
+    <h2 style="text-align:center;color:#f5a623;margin-bottom:12px">ملزومات مصرفی</h2>
+    <form id="login-form">
+      <label>کاربر</label>
+      <select id="loginUser" required>
+        <option value="">—</option>
+        <option value="mehdi-soltani">مهدی سلطانی</option>
+        <option value="masoud-kazemi">مسعود کاظمی</option>
+        <option value="mehdi-afshar">مهدی افشار</option>
+        <option value="arash-baba">آرش بابا</option>
+      </select>
+      <label>رمز</label>
+      <input type="password" id="loginPass" required>
+      <button class="btn btn-primary" type="submit" style="width:100%">ورود</button>
+      <p id="login-error" style="color:#f87171;margin-top:8px"></p>
+    </form>
+    <p style="text-align:center;margin-top:12px"><a class="nav-home" href="../">صفحه اصلی</a></p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <div class="top">
+    <div class="top-inner">
+      <div><strong>ملزومات مصرفی</strong><div style="font-size:.78rem;color:#a89a86">موجودی روزانه + محاسبات</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span id="user-label"></span>
+        <a class="nav-home" href="./index.html">فرآیند</a>
+        <a class="nav-home" href="../">صفحه اصلی</a>
+        <button type="button" class="btn btn-secondary btn-sm" id="logout-btn">خروج</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section id="home-view">
+      <div class="home-grid">
+        <button type="button" class="home-card" id="go-form">
+          <div class="home-icon">＋</div>
+          <strong>ثبت موجودی</strong>
+          <span style="color:#a89a86;font-size:.85rem">به‌روزرسانی روزانه</span>
+        </button>
+        <button type="button" class="home-card" id="go-list">
+          <div class="home-icon">≡</div>
+          <strong>مشاهده موجودی</strong>
+          <span style="color:#a89a86;font-size:.85rem">لیست ثبت‌شده</span>
+        </button>
+        <button type="button" class="home-card" id="go-calc">
+          <div class="home-icon">Σ</div>
+          <strong>محاسبات</strong>
+          <span style="color:#a89a86;font-size:.85rem">پالت · پایه · کارتن · گوشه‌بند</span>
+        </button>
+      </div>
+    </section>
+
+    <section id="form-view" hidden>
+      <button type="button" class="view-back" data-back>→ بازگشت</button>
+      <div class="section">
+        <h2>ثبت / به‌روزرسانی موجودی</h2>
+        <p class="desc">اعداد موجودی را هر روز وارد کن. با ذخیره، لیست همان تاریخ جایگزین می‌شود.</p>
+        <div class="banner">⚠️ ذخیره = پاک شدن لیست قبلی <strong>همان تاریخ</strong> و ثبت لیست جدید.</div>
+        <div class="form-top">
+          <div class="fg"><label>تاریخ موجودی</label><input type="date" id="f-date"></div>
+          <div class="fg"><label>ثبت‌کننده</label><input type="text" id="f-by" readonly></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ردیف</th><th>شرح کالا</th><th>موجودی</th><th>چسب‌خورده</th><th>چسب‌نخورده</th><th>واحد</th><th>توضیح</th></tr></thead>
+            <tbody id="items-body"></tbody>
+          </table>
+        </div>
+        <p class="hint">برای کارتن پروفیل: <b>موجودی کل</b> + <b>چسب‌خورده</b> + <b>چسب‌نخورده</b>. بقیه کالاها فقط موجودی.</p>
+        <div class="form-actions">
+          <button type="button" class="btn btn-primary" id="save-btn">ذخیره و جایگزینی</button>
+          <button type="button" class="btn btn-secondary" id="save-go-calc">ذخیره و رفتن به محاسبات</button>
+        </div>
+        <p class="msg" id="form-msg"></p>
+      </div>
+    </section>
+
+    <section id="list-view" hidden>
+      <button type="button" class="view-back" data-back>→ بازگشت</button>
+      <div class="section">
+        <h2>موجودی ثبت‌شده</h2>
+        <div class="form-top">
+          <div class="fg"><label>تاریخ</label><input type="date" id="l-date"></div>
+          <div class="fg" style="display:flex;align-items:flex-end;gap:8px">
+            <button type="button" class="btn btn-secondary btn-sm" id="load-date">نمایش</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="load-latest">آخرین ثبت</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ردیف</th><th>شرح کالا</th><th>موجودی</th><th>چسب‌خورده</th><th>چسب‌نخورده</th><th>واحد</th><th>توضیح</th></tr></thead>
+            <tbody id="list-body"></tbody>
+          </table>
+        </div>
+        <p class="msg" id="list-msg"></p>
+      </div>
+    </section>
+
+    <section id="calc-view" hidden>
+      <button type="button" class="view-back" data-back>→ بازگشت</button>
+      <div class="section">
+        <h2>محاسبات تولید</h2>
+        <p class="desc">بر اساس موجودی ثبت‌شده — فقط نتیجه محاسبه</p>
+        <div class="form-top">
+          <div class="fg"><label>تاریخ</label><input type="date" id="c-date"></div>
+          <div class="fg" style="display:flex;align-items:flex-end;gap:8px">
+            <button type="button" class="btn btn-secondary btn-sm" id="c-load">بارگذاری</button>
+          </div>
+        </div>
+        <p class="msg" id="calc-msg"></p>
+
+        <h3>پالت</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>شرح</th><th>موجودی</th><th>پالت (÷۴)</th><th>جمع</th><th>روز تولید</th></tr></thead>
+            <tbody id="tb-pallet"></tbody>
+          </table>
+        </div>
+
+        <h3>پایه / پنل</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>شرح</th><th>موجودی</th><th>قابل تولید</th><th>مانده</th><th>نیاز</th><th>روز</th></tr></thead>
+            <tbody id="tb-base"></tbody>
+          </table>
+        </div>
+
+        <h3>Köşe Bend</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>شرح</th><th>موجودی</th><th>روز (÷۲۰۰)</th></tr></thead>
+            <tbody id="tb-kose"></tbody>
+          </table>
+        </div>
+
+        <h3>کارتن پروفیل</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ردیف</th><th>شرح کالا</th><th>تعداد کل</th><th>چسب‌خورده</th><th>چسب‌نخورده</th>
+                <th>کد پروفیل</th><th>پروفیل قابل تولید</th><th>روز چسب‌زنی</th>
+              </tr>
+            </thead>
+            <tbody id="tb-carton"></tbody>
+          </table>
+        </div>
+        <p class="hint">چسب از فرم ثبت خوانده می‌شود. پروفیل = چسب‌خورده × ضریب | روز چسب = چسب‌نخورده ÷ ۹۰۰</p>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-(async function(){
+const SUPABASE_URL="https://rtefjfvkjpatzitjjvwe.supabase.co";
+const SUPABASE_KEY="sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+window.supabaseClient=supabaseClient;
+const TABLE="consumable_stock";
+const PALLET_DIV=4, PALLET_DAY_RATE=200, BASE_DAY_RATE=2740, GLUE_DAY_RATE=900, SUNTA_NEED=0;
+const CATALOG=[
+  { key:"p3", name:"3 ردیفه کامل", unit:"عدد", group:"pallet" },
+  { key:"p3n", name:"سه ردیفه جدید ( کاپاک و نئوپان)", unit:"عدد", group:"pallet" },
+  { key:"sunta", name:"122*8 -SUNTA", unit:"عدد", group:"base", need:SUNTA_NEED },
+  { key:"agt", name:"122*8 - AGT", unit:"عدد", group:"base", need:0 },
+  { key:"cut108", name:"10*8 برش خورده", unit:"عدد", group:"base", need:0 },
+  { key:"raw4", name:"خام 4 ردیفه", unit:"عدد", group:"base", need:0 },
+  { key:"kose", name:"Köşe Bend", unit:"عدد", group:"kose" },
+  { key:"c01", name:"01 کارتن پروفیل", unit:"کارتن", group:"carton", mult:6, codes:"LB-3841" },
+  { key:"c03", name:"03 کارتن پروفیل", unit:"کارتن", group:"carton", mult:8, codes:"LB-3846,LB-7014" },
+  { key:"c04", name:"04 کارتن پروفیل", unit:"کارتن", group:"carton", mult:6, codes:"LB-3845,MP-5498" },
+  { key:"c05", name:"05 کارتن پروفیل", unit:"کارتن", group:"carton", mult:8, codes:"MP-5499" },
+  { key:"c06", name:"06 کارتن پروفیل", unit:"کارتن", group:"carton", mult:8, codes:"SPR-7140,SPR-7177" }
+];
+let profile=null, stockMap={};
+const $=id=>document.getElementById(id);
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function num(v){const n=Number(v);return isFinite(n)?n:0}
+function rnd(n,d){const p=Math.pow(10,d||0);return Math.round(n*p)/p}
+function today(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function parseNote(note){if(!note)return{};try{return JSON.parse(note)||{}}catch(e){return{text:note}}}
+function show(view){
+  $["home-view"].hidden=view!=="home";
+  $["form-view"].hidden=view!=="form";
+  $["list-view"].hidden=view!=="list";
+  $["calc-view"].hidden=view!=="calc";
+}
+
+function renderFormRows(map){
+  const tb=$("items-body");
+  if(!tb) return;
+  tb.innerHTML="";
+  CATALOG.forEach((it,i)=>{
+    const s=map[it.name]||{};
+    const isCarton=it.group==="carton";
+    const g=(s.glued!=null&&s.glued!=="")?s.glued:"";
+    const ug=(s.unglued!=null&&s.unglued!=="")?s.unglued:"";
+    const glueCells=isCarton
+      ? `<td><input type="number" min="0" step="any" class="c-glued-form" data-name="${esc(it.name)}" value="${g}" placeholder="0"></td>`+
+        `<td><input type="number" min="0" step="any" class="c-unglued-form" data-name="${esc(it.name)}" value="${ug}" placeholder="0"></td>`
+      : `<td style="text-align:center;color:#6b5f50">—</td><td style="text-align:center;color:#6b5f50">—</td>`;
+    const tr=document.createElement("tr");
+    tr.innerHTML=
+      `<td class="row-num">${i+1}</td>`+
+      `<td class="name-cell">${esc(it.name)}</td>`+
+      `<td><input type="number" min="0" step="any" class="c-qty" data-name="${esc(it.name)}" value="${s.qty!=null&&s.qty!==""?s.qty:""}" placeholder="0"></td>`+
+      glueCells+
+      `<td>${esc(it.unit)}</td>`+
+      `<td><input type="text" class="c-note" data-name="${esc(it.name)}" value="${esc(s.text||"")}" placeholder="—"></td>`;
+    tb.appendChild(tr);
+  });
+}
+
+async function loadStock(date){
+  stockMap={};
+  const {data,error}=await supabaseClient.from(TABLE).select("*").eq("snapshot_date",date).order("sort_order");
+  if(error) throw error;
+  (data||[]).forEach(r=>{
+    const extra=parseNote(r.note);
+    stockMap[r.item_name]={
+      qty:r.quantity, unit:r.unit, note:r.note,
+      text:extra.text||(typeof r.note==="string"&&r.note[0]!=="{"?r.note:""),
+      glued:extra.glued, unglued:extra.unglued, id:r.id
+    };
+  });
+  return data||[];
+}
+
+function collectForm(){
+  const rows=[];
+  CATALOG.forEach((it,i)=>{
+    const inp=document.querySelectorAll(".c-qty")[i];
+    const noteInp=document.querySelectorAll(".c-note")[i];
+    const qtyRaw=inp?inp.value:"";
+    const text=noteInp?noteInp.value.trim():"";
+    const extra={};
+    if(it.group==="carton"){
+      const g2=Array.from(document.querySelectorAll(".c-glued-form")).find(el=>el.getAttribute("data-name")===it.name);
+      const ug2=Array.from(document.querySelectorAll(".c-unglued-form")).find(el=>el.getAttribute("data-name")===it.name);
+      if(g2&&g2.value!=="") extra.glued=Number(g2.value);
+      if(ug2&&ug2.value!=="") extra.unglued=Number(ug2.value);
+    }
+    if(text) extra.text=text;
+    rows.push({
+      item_name:it.name,
+      quantity:qtyRaw===""?null:Number(qtyRaw),
+      unit:it.unit,
+      note:Object.keys(extra).length?JSON.stringify(extra):null,
+      sort_order:i
+    });
+  });
+  return rows;
+}
+
+async function saveStock(date,andCalc){
+  const msg=$("form-msg");
+  if(!date){msg.className="msg err";msg.textContent="تاریخ را وارد کنید.";return false;}
+  const items=collectForm();
+  if(!confirm("لیست قبلی همین تاریخ جایگزین می‌شود. ادامه؟")) return false;
+  msg.className="msg";msg.textContent="در حال ذخیره...";
+  const {error:delErr}=await supabaseClient.from(TABLE).delete().eq("snapshot_date",date);
+  if(delErr){msg.className="msg err";msg.textContent="خطا: "+delErr.message;return false;}
+  const payload=items.map(it=>({
+    ...it, snapshot_date:date,
+    created_by:profile?.id||null,
+    created_by_name:profile?.full_name||profile?.name||null
+  }));
+  const {error:insErr}=await supabaseClient.from(TABLE).insert(payload);
+  if(insErr){msg.className="msg err";msg.textContent="خطا: "+insErr.message;return false;}
+  msg.className="msg ok";msg.textContent="ذخیره شد.";
+  await loadStock(date);
+  if(andCalc){$("c-date").value=date;show("calc");renderCalcs();}
+  return true;
+}
+
+function qtyOf(name){const s=stockMap[name];return s&&s.qty!=null?num(s.qty):0}
+
+function renderCalcs(){
+  const date=$("c-date").value;
+  const msg=$("calc-msg");
+  if(!date){msg.className="msg err";msg.textContent="تاریخ را انتخاب کنید.";return;}
+  msg.textContent="";
+
+  const pRows=CATALOG.filter(x=>x.group==="pallet").map(it=>{
+    const q=qtyOf(it.name);
+    return {name:it.name,q,pallets:rnd(q/PALLET_DIV,1)};
+  });
+  const palletSum=pRows.reduce((a,r)=>a+r.pallets,0);
+  const palletDays=rnd(palletSum/PALLET_DAY_RATE,2);
+  const tbP=$("tb-pallet"); tbP.innerHTML="";
+  pRows.forEach((r,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="name-cell">${esc(r.name)}</td><td>${r.q.toLocaleString("fa-IR")}</td><td>${r.pallets.toLocaleString("fa-IR")}</td>`+
+      (i===0?`<td rowspan="${pRows.length}" style="vertical-align:middle;font-weight:800;color:#f5a623">${rnd(palletSum,1).toLocaleString("fa-IR")}</td><td rowspan="${pRows.length}" style="vertical-align:middle;font-weight:800;color:#f5a623">${palletDays.toLocaleString("fa-IR")}</td>`:"");
+    tbP.appendChild(tr);
+  });
+
+  const tbB=$("tb-base"); tbB.innerHTML="";
+  let baseProdTotal=0;
+  CATALOG.filter(x=>x.group==="base").forEach(it=>{
+    const q=qtyOf(it.name);
+    let producible=0, remain=0, need=it.need||0, days=0;
+    if(it.key==="sunta"||it.key==="agt"){ producible=q; remain=Math.max(0,producible-need); days=rnd(producible/BASE_DAY_RATE,2); }
+    else if(it.key==="raw4"){ producible=q; days=rnd(producible/BASE_DAY_RATE,2); }
+    else if(it.key==="cut108"){
+      const s=stockMap[it.name]||{}; const extra=parseNote(s.note);
+      remain=extra.remain!=null?num(extra.remain):0;
+      days=remain>0?rnd(remain/2740,2):0;
+    }
+    baseProdTotal+=producible;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="name-cell">${esc(it.name)}</td><td>${q.toLocaleString("fa-IR")}</td><td>${producible.toLocaleString("fa-IR")}</td><td>${remain.toLocaleString("fa-IR")}</td><td>${need.toLocaleString("fa-IR")}</td><td>${days.toLocaleString("fa-IR")}</td>`;
+    tbB.appendChild(tr);
+  });
+
+  const tbK=$("tb-kose"); tbK.innerHTML="";
+  CATALOG.filter(x=>x.group==="kose").forEach(it=>{
+    const q=qtyOf(it.name);
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td class="name-cell">${esc(it.name)}</td><td>${q.toLocaleString("fa-IR")}</td><td>${rnd(q/200,2).toLocaleString("fa-IR")}</td>`;
+    tbK.appendChild(tr);
+  });
+
+  const tbC=$("tb-carton"); tbC.innerHTML="";
+  let sumTotal=0,sumGlued=0,sumUnglued=0,sumProf=0,sumGlueDays=0;
+  CATALOG.filter(x=>x.group==="carton").forEach((it,idx)=>{
+    const q=qtyOf(it.name);
+    const s=stockMap[it.name]||{};
+    let glued=s.glued!=null?num(s.glued):q;
+    let unglued=s.unglued!=null?num(s.unglued):Math.max(0,q-glued);
+    if(s.glued==null&&s.unglued==null){glued=q;unglued=0;}
+    const prof=Math.round(glued*it.mult);
+    const gdays=rnd(unglued/GLUE_DAY_RATE,2);
+    sumTotal+=q;sumGlued+=glued;sumUnglued+=unglued;sumProf+=prof;sumGlueDays+=gdays;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${idx+1}</td><td class="name-cell">${esc(it.name)}</td>
+      <td>${q.toLocaleString("fa-IR")}</td>
+      <td>${Number(glued).toLocaleString("fa-IR")}</td>
+      <td>${Number(unglued).toLocaleString("fa-IR")}</td>
+      <td>${esc(it.codes||"")}</td>
+      <td>${prof.toLocaleString("fa-IR")}</td>
+      <td>${gdays.toLocaleString("fa-IR")}</td>`;
+    tbC.appendChild(tr);
+  });
+  const trSum=document.createElement("tr");
+  trSum.className="total-row";
+  trSum.innerHTML=`<td colspan="2">جمع</td><td>${sumTotal.toLocaleString("fa-IR")}</td><td>${sumGlued.toLocaleString("fa-IR")}</td><td>${sumUnglued.toLocaleString("fa-IR")}</td><td></td><td>${sumProf.toLocaleString("fa-IR")}</td><td>${rnd(sumGlueDays,2).toLocaleString("fa-IR")}</td>`;
+  tbC.appendChild(trSum);
+}
+
+async function renderList(date){
+  const rows=await loadStock(date);
+  const tb=$("list-body"); tb.innerHTML="";
+  if(!rows.length){$("list-msg").textContent="برای این تاریخ رکوردی نیست.";return;}
+  $("list-msg").textContent="";
+  rows.forEach((r,i)=>{
+    const extra=parseNote(r.note);
+    const g=extra.glued!=null?Number(extra.glued).toLocaleString("fa-IR"):"—";
+    const ug=extra.unglued!=null?Number(extra.unglued).toLocaleString("fa-IR"):"—";
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${i+1}</td><td>${esc(r.item_name)}</td><td>${r.quantity==null?"—":Number(r.quantity).toLocaleString("fa-IR")}</td><td>${g}</td><td>${ug}</td><td>${esc(r.unit||"—")}</td><td>${esc(extra.text||"—")}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+$("go-form").onclick=async()=>{show("form");$("f-date").value=$("f-date").value||today();try{await loadStock($("f-date").value);renderFormRows(stockMap);}catch(e){renderFormRows({});$("form-msg").className="msg err";$("form-msg").textContent="خطا: "+e.message;}};
+$("go-list").onclick=()=>{show("list");$("l-date").value=$("l-date").value||today();};
+$("go-calc").onclick=async()=>{show("calc");$("c-date").value=$("c-date").value||today();try{await loadStock($("c-date").value);renderCalcs();}catch(e){$("calc-msg").className="msg err";$("calc-msg").textContent=e.message;}};
+document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show("home"));
+$("f-date").onchange=async function(){try{await loadStock(this.value);renderFormRows(stockMap);}catch(e){renderFormRows({});}};
+$("save-btn").onclick=()=>saveStock($("f-date").value,false);
+$("save-go-calc").onclick=()=>saveStock($("f-date").value,true);
+$("load-date").onclick=()=>renderList($("l-date").value);
+$("c-load").onclick=async()=>{try{await loadStock($("c-date").value);renderCalcs();}catch(e){$("calc-msg").className="msg err";$("calc-msg").textContent=e.message;}};
+$("load-latest").onclick=async()=>{
+  const {data}=await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
+  if(data&&data[0]){$("l-date").value=data[0].snapshot_date;renderList(data[0].snapshot_date);}
+};
+$("logout-btn").onclick=async()=>{await supabaseClient.auth.signOut();location.replace("../");};
+$("login-form").onsubmit=async e=>{
+  e.preventDefault();
   try{
-    var sources=[
-      "./consumables-full.html?v=5",
-      "https://cdn.jsdelivr.net/gh/mehdisoltani21-dot/People-Managment@5822c710b9/process/consumables.html",
-      "https://raw.githubusercontent.com/mehdisoltani21-dot/People-Managment/5822c710b9/process/consumables.html"
-    ];
-    var html=null,err=null;
-    for(var i=0;i<sources.length;i++){
-      try{
-        var r=await fetch(sources[i]);
-        if(!r.ok) throw new Error("HTTP "+r.status);
-        html=await r.text();
-        if(html.indexOf("PLACEHOLDER")>=0||html.length<1000) throw new Error("bad");
-        break;
-      }catch(e){err=e}
-    }
-    if(!html) throw err||new Error("fail");
-    // inject patch for glued/unglued on form
-    if(html.indexOf("consumables-glue.js")<0){
-      html=html.replace("</body>",'<script src="consumables-glue.js?v=5"><\/script></body>');
-    }
-    document.open(); document.write(html); document.close();
-  }catch(e){
-    document.getElementById("b").textContent="خطا: "+(e.message||e);
-  }
+    const u=$("loginUser").value,p=$("loginPass").value;
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email:u+"@people-manager.invalid",password:p});
+    if(error)throw error;
+    const {data:prof}=await supabaseClient.from("user_profiles").select("*").eq("id",data.user.id).maybeSingle();
+    profile=prof||{id:data.user.id,full_name:data.user.email};
+    $("login-page").hidden=true;$("app").hidden=false;
+    $("user-label").textContent=profile.full_name||profile.username||"کاربر";
+    $("f-by").value=$("user-label").textContent;
+    show("home");
+  }catch(err){$("login-error").textContent=err.message||"خطا"}
+};
+(async()=>{
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  if(session&&session.user){
+    const {data:prof}=await supabaseClient.from("user_profiles").select("*").eq("id",session.user.id).maybeSingle();
+    profile=prof||{id:session.user.id,full_name:session.user.email};
+    $("login-page").hidden=true;$("app").hidden=false;
+    $("user-label").textContent=profile.full_name||profile.username||"کاربر";
+    $("f-by").value=$("user-label").textContent;
+    show("home");
+  } else $("login-page").hidden=false;
 })();
 </script>
 </body>
