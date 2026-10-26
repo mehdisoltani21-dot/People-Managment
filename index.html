@@ -12,169 +12,172 @@
   <link rel="apple-touch-icon" href="./icon-192.svg">
   <link rel="icon" href="./icon-192.svg" type="image/svg+xml">
   <title>سامانه‌های مدیریت تولید | APW ایرانیان</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:Tahoma,Vazirmatn,system-ui,sans-serif;min-height:100vh;color:#f5f0e8;background:#14110c}
-    .bg{position:fixed;inset:0;background:linear-gradient(180deg,rgba(15,12,8,.35) 0%,rgba(15,12,8,.5) 55%,rgba(15,12,8,.75) 100%),url("./bg-kitchen.jpg?v=1") center/cover no-repeat,#14110c;z-index:0}
-    .bg::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 45% at 50% 0%,rgba(245,166,35,.18),transparent 55%)}
-    .wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.25rem 4rem;text-align:center}
-    .logo-box{background:#fff;border-radius:14px;padding:.9rem 1.5rem;margin-bottom:1.25rem;box-shadow:0 14px 36px rgba(0,0,0,.4)}
-    .logo-img{display:block;height:56px;width:auto}
-    .company{font-size:1.05rem;color:rgba(255,255,255,.9);text-shadow:0 2px 8px rgba(0,0,0,.7);margin-bottom:1.75rem}
-    .panel{width:100%;max-width:420px;background:linear-gradient(160deg,rgba(44,36,24,.92),rgba(28,24,18,.92));border:1px solid #4a3d2c;border-radius:20px;padding:1.5rem 1.25rem 1.35rem;box-shadow:0 20px 48px rgba(0,0,0,.45)}
-    .panel-title{font-size:1.35rem;font-weight:800;color:#f5a623;margin-bottom:1.25rem}
-    .menu{display:flex;flex-direction:column;gap:12px}
-    .menu a{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;text-align:right;text-decoration:none;color:#f5f0e8;background:linear-gradient(145deg,rgba(58,50,38,.95),rgba(36,30,22,.95));border:1px solid #4a4030;border-radius:16px;padding:.95rem 1rem}
-    .menu a::before{content:"";position:absolute;top:0;bottom:0;right:0;width:4px;background:linear-gradient(180deg,#f5a623,#d97706)}
-    .menu .ic{flex-shrink:0;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f7b543,#d97706);color:#1a1208}
-    .menu .ic svg{width:26px;height:26px}
-    .menu .txt{flex:1;min-width:0}
-    .menu .ttl{display:block;font-size:1.05rem;font-weight:800}
-    .menu a .sub{display:block;margin-top:4px;font-size:.78rem;font-weight:500;color:#a89a86}
-    .menu .arr{flex-shrink:0;color:#f5a623;opacity:.6}
-    .menu .arr svg{width:20px;height:20px;display:block}
-    footer{position:absolute;bottom:1.1rem;left:0;right:0;text-align:center;font-size:.78rem;color:rgba(255,255,255,.35)}
-    .login-form{display:flex;flex-direction:column;gap:12px;text-align:right}
-    .login-form label{font-size:.85rem;color:#d4c8b0;margin-bottom:-4px}
-    .login-form select,.login-form input{width:100%;font-family:inherit;font-size:1rem;color:#f5f0e8;background:#16120e;border:1px solid #4a4030;border-radius:12px;padding:.8rem .9rem;outline:none}
-    .login-btn{margin-top:6px;font-family:inherit;font-size:1rem;font-weight:800;color:#1a1208;cursor:pointer;background:linear-gradient(135deg,#f7b543,#e8910f);border:none;border-radius:12px;padding:.85rem}
-    .login-btn:disabled{opacity:.6;cursor:wait}
-    .login-msg{min-height:1.2em;font-size:.85rem;color:#f5a623;text-align:center}
-    .user-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:-.35rem 0 1rem;padding:.6rem .8rem;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid #3d3428}
-    .user-row .who{font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:8px}
-    .user-row .dot{width:8px;height:8px;border-radius:50%;background:#4ade80}
-    .user-row .role{font-size:.72rem;font-weight:700;color:#f5c56a;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);border-radius:999px;padding:2px 8px}
+    body,button,input,select,textarea,a,h1,h2,h3,p,span,label{font-family:Vazirmatn,Tahoma,system-ui,sans-serif!important}
+    body{font-family:Vazirmatn,Tahoma,system-ui,sans-serif;min-height:100vh;color:#f5f0e8;background:#14110c;
+      background-image:linear-gradient(160deg,rgba(15,13,10,.82),rgba(20,16,12,.88)),url('./bg-mdf.jpg');
+      background-size:cover;background-position:center;background-attachment:fixed}
+    .wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px 40px}
+    .logo-wrap{background:#fff;border-radius:18px;padding:14px 22px;box-shadow:0 12px 40px rgba(0,0,0,.35);margin-bottom:10px}
+    .logo-wrap img{display:block;height:52px;width:auto}
+    .brand-sub{text-align:center;color:#cbbfaa;font-size:.95rem;margin-bottom:22px;font-weight:600}
+    .panel{width:100%;max-width:420px;background:linear-gradient(160deg,rgba(42,35,24,.94),rgba(22,18,12,.96));
+      border:1px solid #3d3428;border-radius:22px;padding:22px 18px 18px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+    .panel h1{text-align:center;color:#f5a623;font-size:1.15rem;font-weight:800;margin-bottom:14px}
+    .user-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;
+      background:rgba(20,17,12,.7);border:1px solid #3d3428;border-radius:14px}
+    .user-bar .name{font-weight:700;font-size:.9rem}
+    .user-bar .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#4ade80;margin-left:6px}
+    .badge{font-size:.75rem;color:#1a1208;background:linear-gradient(135deg,#f5a623,#e8910f);padding:4px 10px;border-radius:999px;font-weight:700}
     .logout{font-family:inherit;font-size:.8rem;font-weight:700;color:#f5a623;background:transparent;border:1px solid rgba(245,166,35,.45);border-radius:9px;padding:.4rem .8rem;cursor:pointer}
+    .menu a{display:flex;align-items:center;gap:12px;padding:14px 14px;margin-bottom:10px;border-radius:16px;text-decoration:none;color:#f5f0e8;
+      background:linear-gradient(145deg,#2a2318,#1c1710);border:1px solid #3d3428;transition:.15s}
+    .menu a:hover{border-color:#f5a623;transform:translateY(-1px)}
+    .menu .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-size:1.2rem;font-weight:800;flex-shrink:0}
+    .menu .txt{flex:1;min-width:0}
+    .menu .ttl{font-weight:800;font-size:1rem;display:block}
+    .menu .sub{font-size:.78rem;color:#a89a86;display:block;margin-top:2px}
+    .menu .arr{color:#f5a623;font-weight:800;font-size:1.1rem}
+    .login-box{width:100%;max-width:400px;background:linear-gradient(160deg,rgba(42,35,24,.95),rgba(22,18,12,.97));
+      border:1px solid #3d3428;border-radius:22px;padding:24px 20px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+    .login-box h2{text-align:center;color:#f5a623;font-size:1.15rem;font-weight:800;margin-bottom:6px}
+    .login-box .sub{text-align:center;color:#a89a86;font-size:.88rem;margin-bottom:16px}
+    .login-form label{display:block;font-size:.85rem;color:#a89a86;margin-bottom:4px}
+    .login-form select,.login-form input{width:100%;font-family:inherit;font-size:1rem;color:#f5f0e8;background:#16120e;border:1px solid #4a4030;border-radius:12px;padding:.8rem .9rem;outline:none;margin-bottom:12px}
+    .login-btn{margin-top:6px;width:100%;font-family:inherit;font-size:1rem;font-weight:800;color:#1a1208;cursor:pointer;background:linear-gradient(135deg,#f7b543,#e8910f);border:none;border-radius:12px;padding:.85rem}
+    .login-error{color:#f87171;font-size:.85rem;min-height:1.2em;margin-top:8px;text-align:center}
     [hidden]{display:none!important}
   </style>
 </head>
 <body>
-  <div class="bg"></div>
   <div class="wrap">
-    <div class="logo-box"><img class="logo-img" src="./logo.png?v=2" alt="APW"></div>
-    <p class="company">APW ایرانیان · واحد تولید</p>
-    <div class="panel">
-      <h1 class="panel-title">سامانه‌های مدیریت تولید</h1>
-      <form id="login-form" class="login-form" hidden>
-        <label for="loginUser">نام کاربری</label>
+    <div class="logo-wrap"><img src="./logo.png?v=2" alt="APW"></div>
+    <p class="brand-sub">APW ایرانیان · واحد تولید</p>
+
+    <section id="login-section" class="login-box" hidden>
+      <h2>ورود به سامانه</h2>
+      <p class="sub">نام کاربری و رمز عبور</p>
+      <form id="login-form" class="login-form">
+        <label for="loginUser">کاربر</label>
         <select id="loginUser" required>
-          <option value="">-- انتخاب کاربر --</option>
+          <option value="">— انتخاب —</option>
           <option value="mehdi-soltani">مهدی سلطانی</option>
           <option value="masoud-kazemi">مسعود کاظمی</option>
           <option value="mehdi-afshar">مهدی افشار</option>
           <option value="arash-baba">آرش بابا</option>
         </select>
         <label for="loginPass">رمز عبور</label>
-        <input id="loginPass" type="password" placeholder="رمز عبور را وارد کنید" autocomplete="current-password" required>
-        <button type="submit" class="login-btn" id="login-btn">ورود به سامانه</button>
-        <p class="login-msg" id="login-msg" role="status" aria-live="polite"></p>
+        <input type="password" id="loginPass" required autocomplete="current-password">
+        <button type="submit" class="login-btn">ورود</button>
+        <p id="login-error" class="login-error"></p>
       </form>
-      <div id="user-row" class="user-row" hidden>
-        <span class="who"><span class="dot"></span><span id="user-name">کاربر</span><span class="role" id="user-role"></span></span>
+    </section>
+
+    <section id="app-section" class="panel" hidden>
+      <h1>سامانه‌های مدیریت تولید</h1>
+      <div class="user-bar">
+        <div>
+          <span class="dot"></span>
+          <span class="name" id="current-user-label">کاربر</span>
+        </div>
+        <span class="badge" id="access-badge">دسترسی</span>
         <button type="button" class="logout" id="logout-btn">خروج</button>
       </div>
-      <nav class="menu" id="main-menu" hidden>
+      <nav class="menu">
         <a href="./panel/">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+          <span class="ic">👤</span>
           <span class="txt"><span class="ttl">مدیریت وقایع پرسنلی</span><span class="sub">ثبت خطا، اخطار و سوابق نفرات</span></span>
-          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></span>
+          <span class="arr">‹</span>
         </a>
         <a href="./process/">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg></span>
+          <span class="ic">◎</span>
           <span class="txt"><span class="ttl">مدیریت وقایع فرآیندی</span><span class="sub">تعمیرات، برش، کاپاک، کارتن و نظافت خط</span></span>
-          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></span>
+          <span class="arr">‹</span>
         </a>
         <a href="./5s/">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <span class="ic">☑</span>
           <span class="txt"><span class="ttl">مدیریت نظام آراستگی</span><span class="sub">ارزیابی 5S + گزارش تحلیلی نفرات</span></span>
-          <span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg></span>
+          <span class="arr">‹</span>
         </a>
       </nav>
-    </div>
-    <footer>APW ایرانیان · تولید ام‌دی‌اف</footer>
+    </section>
   </div>
-  <script src="./vendor/supabase.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    (function () {
-      var SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
-      var SUPABASE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
-      var NAMES = { "mehdi-soltani": "مهدی سلطانی", "mahdi-soltani": "مهدی سلطانی", "masoud-kazemi": "مسعود کاظمی", "mehdi-afshar": "مهدی افشار", "mahdi-afshar": "مهدی افشار", "arash-baba": "آرش بابا" };
-      var ALIASES = { "mehdi-soltani": ["mahdi-soltani", "mehdi-soltani"], "mehdi-afshar": ["mahdi-afshar", "mehdi-afshar"] };
-      var form = document.getElementById("login-form");
-      var menu = document.getElementById("main-menu");
-      var userRow = document.getElementById("user-row");
-      var msg = document.getElementById("login-msg");
-      var btn = document.getElementById("login-btn");
+  (function () {
+    const SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+    if (!window.supabase) return;
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabaseClient = supabaseClient;
 
-      function safeNext() {
-        var n = new URLSearchParams(location.search).get("next") || "";
-        if (!n || n.indexOf("//") !== -1 || n.indexOf("://") !== -1) return "";
-        if (n.charAt(0) === "/") return n;
-        return "";
-      }
-      function showLogin() { form.hidden = false; menu.hidden = true; userRow.hidden = true; }
-      function showMenu(name, role) {
-        form.hidden = true; menu.hidden = false; userRow.hidden = false;
-        document.getElementById("user-name").textContent = name || "کاربر";
-        document.getElementById("user-role").textContent = role === "admin" ? "دسترسی کامل" : "ثبت و مشاهده";
-      }
+    const loginSection = document.getElementById("login-section");
+    const appSection = document.getElementById("app-section");
+    const loginForm = document.getElementById("login-form");
+    const loginError = document.getElementById("login-error");
+    const userLabel = document.getElementById("current-user-label");
+    const accessBadge = document.getElementById("access-badge");
+    const logoutBtn = document.getElementById("logout-btn");
 
-      function boot() {
-        if (!window.supabase || !window.supabase.createClient) {
-          setTimeout(boot, 200);
-          return;
+    function showLogin() {
+      if (loginSection) loginSection.hidden = false;
+      if (appSection) appSection.hidden = true;
+    }
+    function showApp(profile, user) {
+      if (loginSection) loginSection.hidden = true;
+      if (appSection) appSection.hidden = false;
+      const name = (profile && (profile.full_name || profile.username)) || (user && user.email) || "کاربر";
+      if (userLabel) userLabel.textContent = name;
+      if (accessBadge) accessBadge.textContent = (profile && profile.role === "admin") ? "دسترسی کامل" : "دسترسی کاربر";
+    }
+
+    async function loadProfile(user) {
+      const { data } = await supabaseClient.from("user_profiles").select("*").eq("id", user.id).maybeSingle();
+      return data;
+    }
+
+    if (loginForm) {
+      loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        loginError.textContent = "";
+        const u = document.getElementById("loginUser").value;
+        const p = document.getElementById("loginPass").value;
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: u + "@people-manager.invalid",
+            password: p
+          });
+          if (error) throw error;
+          const profile = await loadProfile(data.user);
+          showApp(profile, data.user);
+        } catch (err) {
+          loginError.textContent = "ورود ناموفق: " + (err.message || "خطا");
         }
-        var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      });
+    }
 
-        async function enter(user) {
-          var res = await client.from("user_profiles").select("username, full_name, role").eq("id", user.id).maybeSingle();
-          var p = res.data;
-          if (res.error || !p || ["admin", "operator"].indexOf(p.role) === -1) {
-            await client.auth.signOut();
-            showLogin();
-            msg.textContent = "پروفایل یا سطح دسترسی این کاربر تعریف نشده است.";
-            return;
-          }
-          var next = safeNext();
-          if (next) { location.replace(next); return; }
-          var u = String(user.email || "").replace("@people-manager.invalid", "");
-          showMenu(p.full_name || NAMES[u] || p.username, p.role);
-        }
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", async function () {
+        await supabaseClient.auth.signOut();
+        showLogin();
+      });
+    }
 
-        form.addEventListener("submit", async function (e) {
-          e.preventDefault();
-          var u = document.getElementById("loginUser").value;
-          var pass = document.getElementById("loginPass").value;
-          if (!u || !pass) return;
-          btn.disabled = true; msg.textContent = "در حال بررسی...";
-          var names = ALIASES[u] || [u], user = null;
-          for (var i = 0; i < names.length && !user; i++) {
-            try {
-              var r = await client.auth.signInWithPassword({ email: names[i] + "@people-manager.invalid", password: pass });
-              if (!r.error && r.data && r.data.user) user = r.data.user;
-            } catch (err) {}
-          }
-          btn.disabled = false;
-          if (!user) { msg.textContent = "نام کاربری یا رمز اشتباه است یا ارتباط با سرور برقرار نشد."; return; }
-          msg.textContent = "";
-          document.getElementById("loginPass").value = "";
-          await enter(user);
-        });
-
-        document.getElementById("logout-btn").addEventListener("click", async function () {
-          try { await client.auth.signOut(); } catch (e) {}
-          showLogin();
-        });
-
-        client.auth.getSession().then(function (r) {
-          var s = r && r.data && r.data.session;
-          if (s && s.user) enter(s.user); else showLogin();
-        }).catch(function () { showLogin(); msg.textContent = "ارتباط با سرور داده برقرار نشد (احتمالاً فیلتر). با اینترنت دیگر یا VPN تست کنید."; });
+    supabaseClient.auth.getSession().then(async function (r) {
+      const s = r.data && r.data.session;
+      if (s && s.user) {
+        const profile = await loadProfile(s.user);
+        showApp(profile, s.user);
+      } else {
+        showLogin();
       }
-      showLogin();
-      msg.textContent = "در حال آماده‌سازی...";
-      boot();
-    })();
+    }).catch(showLogin);
+  })();
   </script>
+  <script src="./access.js?v=3"></script>
 </body>
 </html>
