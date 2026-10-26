@@ -39,13 +39,15 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
 #login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .login-box{max-width:380px;width:100%;padding:22px;border-radius:16px;border:1px solid #3d3428;background:#1a1610}
 .login-box input,.login-box select{width:100%;padding:10px;margin:6px 0 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit}
+.page-icon{width:48px;height:48px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208;box-shadow:0 8px 20px rgba(245,166,35,.3);flex-shrink:0}
+.brand-row{display:flex;align-items:center;gap:12px}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <section id="login-page" hidden>
   <div class="login-box">
-    <h2 style="text-align:center;margin-bottom:12px">گزارش ماهانه نفرات</h2>
+    <div style="text-align:center;margin-bottom:12px"><div class="page-icon" style="margin:0 auto 10px">Σ</div><h2>گزارش ماهانه نفرات</h2></div>
     <form id="login-form">
       <label>کاربر</label>
       <select id="loginUser" required>
@@ -67,9 +69,12 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
 <div id="app" hidden>
   <div class="top">
     <div class="top-inner">
-      <div>
-        <strong>گزارش ماهانه نفرات 5S</strong>
-        <div style="font-size:.78rem;color:#a89a86">میانگین نمره ثبت · سلطانی · کاظمی</div>
+      <div class="brand-row">
+        <div class="page-icon" aria-hidden="true">Σ</div>
+        <div>
+          <strong>گزارش ماهانه نفرات 5S</strong>
+          <div style="font-size:.78rem;color:#a89a86">میانگین نمره ثبت · سلطانی · کاظمی</div>
+        </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
         <span id="user-label"></span>
@@ -112,15 +117,8 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
         <table>
           <thead>
             <tr>
-              <th>#</th>
-              <th>نفر</th>
-              <th>تعداد گزارش</th>
-              <th>میانگین ثبت</th>
-              <th>میانگین سلطانی</th>
-              <th>میانگین کاظمی</th>
-              <th>اختلاف سلطانی−ثبت</th>
-              <th>اختلاف کاظمی−سلطانی</th>
-              <th>میانگین درصد نهایی*</th>
+              <th>#</th><th>نفر</th><th>تعداد گزارش</th><th>میانگین ثبت</th><th>میانگین سلطانی</th><th>میانگین کاظمی</th>
+              <th>اختلاف سلطانی−ثبت</th><th>اختلاف کاظمی−سلطانی</th><th>میانگین درصد نهایی*</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
@@ -146,18 +144,12 @@ const SUPABASE_URL="https://rtefjfvkjpatzitjjvwe.supabase.co";
 const SUPABASE_KEY="sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 window.supabaseClient=supabaseClient;
-
 let currentUser=null, currentProfile=null, allRows=[], personStats=[], detailMap={};
-
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function avg(arr){if(!arr.length)return null;return arr.reduce(function(a,b){return a+b},0)/arr.length}
 function round1(n){return n==null?"—":(Math.round(n*10)/10)}
 function diffCls(n){if(n==null)return "neu";if(n>0.05)return "pos";if(n<-0.05)return "neg";return "neu"}
-function statusOf(r){
-  if(r.workflow_status) return r.workflow_status;
-  const w=(r.details&&r.details.workflow)||{};
-  return w.status||"submitted";
-}
+function statusOf(r){if(r.workflow_status) return r.workflow_status;const w=(r.details&&r.details.workflow)||{};return w.status||"submitted"}
 function scoresOf(r){
   const w=(r.details&&r.details.workflow)||{};
   const reg=Number(r.total_score);
@@ -169,40 +161,32 @@ function scoresOf(r){
   return {reg:isNaN(reg)?null:reg, sol:sol, kaz:kaz, max:max, final:final, pct:pct};
 }
 function monthDefaults(){
-  const now=new Date();
-  const y=now.getFullYear(), m=now.getMonth();
-  const from=new Date(y,m,1);
-  const to=new Date(y,m+1,0);
+  const now=new Date(); const y=now.getFullYear(), m=now.getMonth();
+  const from=new Date(y,m,1); const to=new Date(y,m+1,0);
   function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
   document.getElementById("f-from").value=iso(from);
   document.getElementById("f-to").value=iso(to);
 }
-
 async function loadProfile(user){
   const {data}=await supabaseClient.from("user_profiles").select("*").eq("id",user.id).maybeSingle();
   currentProfile=data;
   document.getElementById("user-label").textContent=(data&&(data.full_name||data.username))||user.email||"کاربر";
 }
-
 async function loadData(){
   const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("audit_date",{ascending:false}).limit(1000);
   if(error){alert("خطا: "+error.message);allRows=[];return}
   allRows=(data||[]).map(function(r){
     let details=r.details||{};
     if(typeof details==="string"){try{details=JSON.parse(details)}catch(e){details={}}}
-    r.details=details;
-    return r;
+    r.details=details; return r;
   });
-  const ws=document.getElementById("f-ws");
-  const cur=ws.value;
+  const ws=document.getElementById("f-ws"); const cur=ws.value;
   ws.innerHTML='<option value="">همه</option>';
   Array.from(new Set(allRows.map(function(r){return r.area||""}).filter(Boolean))).sort().forEach(function(v){
     const o=document.createElement("option");o.value=v;o.textContent=v;ws.appendChild(o);
   });
-  ws.value=cur;
-  compute();
+  ws.value=cur; compute();
 }
-
 function peopleOnRow(r, roleFilter){
   const list=[];
   function add(name, role){
@@ -217,14 +201,12 @@ function peopleOnRow(r, roleFilter){
   add(r.assistant3_name,"assistant");
   return list;
 }
-
 function compute(){
   const from=document.getElementById("f-from").value;
   const to=document.getElementById("f-to").value;
   const ws=document.getElementById("f-ws").value;
   const st=document.getElementById("f-status").value;
   const roleFilter=document.getElementById("f-role").value;
-
   const filtered=allRows.filter(function(r){
     const d=r.audit_date||"";
     if(from && d<from) return false;
@@ -236,89 +218,40 @@ function compute(){
     if(st==="finalized" && s!=="finalized") return false;
     return true;
   });
-
-  const map={}; // name -> aggregates
-  detailMap={};
+  const map={}; detailMap={};
   filtered.forEach(function(r){
     const sc=scoresOf(r);
     peopleOnRow(r, roleFilter).forEach(function(p){
-      if(!map[p.name]){
-        map[p.name]={name:p.name, count:0, reg:[], sol:[], kaz:[], pct:[], roles:{}};
-        detailMap[p.name]=[];
-      }
-      const m=map[p.name];
-      m.count++;
-      m.roles[p.role]=(m.roles[p.role]||0)+1;
+      if(!map[p.name]){ map[p.name]={name:p.name, count:0, reg:[], sol:[], kaz:[], pct:[], roles:{}}; detailMap[p.name]=[]; }
+      const m=map[p.name]; m.count++; m.roles[p.role]=(m.roles[p.role]||0)+1;
       if(sc.reg!=null) m.reg.push(sc.reg);
       if(sc.sol!=null) m.sol.push(sc.sol);
       if(sc.kaz!=null) m.kaz.push(sc.kaz);
       if(sc.pct!=null) m.pct.push(sc.pct);
-      detailMap[p.name].push({
-        reportNo:r.report_no, date:r.audit_date, area:r.area,
-        role:p.role, reg:sc.reg, sol:sc.sol, kaz:sc.kaz, pct:sc.pct, status:statusOf(r), id:r.id
-      });
+      detailMap[p.name].push({reportNo:r.report_no, date:r.audit_date, area:r.area, role:p.role, reg:sc.reg, sol:sc.sol, kaz:sc.kaz, pct:sc.pct, status:statusOf(r), id:r.id});
     });
   });
-
   personStats=Object.keys(map).map(function(k){
-    const m=map[k];
-    const aReg=avg(m.reg), aSol=avg(m.sol), aKaz=avg(m.kaz), aPct=avg(m.pct);
-    return {
-      name:m.name,
-      count:m.count,
-      aReg:aReg, aSol:aSol, aKaz:aKaz, aPct:aPct,
-      dSolReg:(aSol!=null&&aReg!=null)?(aSol-aReg):null,
-      dKazSol:(aKaz!=null&&aSol!=null)?(aKaz-aSol):null,
-      roles:m.roles
-    };
+    const m=map[k]; const aReg=avg(m.reg), aSol=avg(m.sol), aKaz=avg(m.kaz), aPct=avg(m.pct);
+    return {name:m.name, count:m.count, aReg:aReg, aSol:aSol, aKaz:aKaz, aPct:aPct,
+      dSolReg:(aSol!=null&&aReg!=null)?(aSol-aReg):null, dKazSol:(aKaz!=null&&aSol!=null)?(aKaz-aSol):null, roles:m.roles};
   }).sort(function(a,b){return (b.aPct||0)-(a.aPct||0)});
-
   render();
 }
-
 function render(){
-  const tb=document.getElementById("tbody");
-  const empty=document.getElementById("empty");
-  const kpis=document.getElementById("kpis");
+  const tb=document.getElementById("tbody"); const empty=document.getElementById("empty"); const kpis=document.getElementById("kpis");
   tb.innerHTML="";
-  if(!personStats.length){
-    empty.style.display="";
-    kpis.innerHTML="";
-    return;
-  }
+  if(!personStats.length){ empty.style.display=""; kpis.innerHTML=""; return; }
   empty.style.display="none";
   const allReg=[], allSol=[], allKaz=[], allPct=[];
-  personStats.forEach(function(p){
-    if(p.aReg!=null) allReg.push(p.aReg);
-    if(p.aSol!=null) allSol.push(p.aSol);
-    if(p.aKaz!=null) allKaz.push(p.aKaz);
-    if(p.aPct!=null) allPct.push(p.aPct);
-  });
-  kpis.innerHTML=
-    '<div class="kpi"><div class="n">'+personStats.length+'</div><div class="l">تعداد نفر</div></div>'+
-    '<div class="kpi"><div class="n">'+round1(avg(allReg))+'</div><div class="l">میانگین ثبت</div></div>'+
-    '<div class="kpi"><div class="n">'+round1(avg(allSol))+'</div><div class="l">میانگین سلطانی</div></div>'+
-    '<div class="kpi"><div class="n">'+round1(avg(allKaz))+'</div><div class="l">میانگین کاظمی</div></div>'+
-    '<div class="kpi"><div class="n">'+round1(avg(allPct))+'%</div><div class="l">میانگین درصد نهایی</div></div>';
-
+  personStats.forEach(function(p){ if(p.aReg!=null) allReg.push(p.aReg); if(p.aSol!=null) allSol.push(p.aSol); if(p.aKaz!=null) allKaz.push(p.aKaz); if(p.aPct!=null) allPct.push(p.aPct); });
+  kpis.innerHTML='<div class="kpi"><div class="n">'+personStats.length+'</div><div class="l">تعداد نفر</div></div><div class="kpi"><div class="n">'+round1(avg(allReg))+'</div><div class="l">میانگین ثبت</div></div><div class="kpi"><div class="n">'+round1(avg(allSol))+'</div><div class="l">میانگین سلطانی</div></div><div class="kpi"><div class="n">'+round1(avg(allKaz))+'</div><div class="l">میانگین کاظمی</div></div><div class="kpi"><div class="n">'+round1(avg(allPct))+'%</div><div class="l">میانگین درصد نهایی</div></div>';
   personStats.forEach(function(p,i){
-    const tr=document.createElement("tr");
-    tr.className="clickable";
-    tr.innerHTML=
-      '<td>'+(i+1)+'</td>'+
-      '<td><b>'+esc(p.name)+'</b></td>'+
-      '<td>'+p.count+'</td>'+
-      '<td>'+round1(p.aReg)+'</td>'+
-      '<td>'+round1(p.aSol)+'</td>'+
-      '<td>'+round1(p.aKaz)+'</td>'+
-      '<td class="'+diffCls(p.dSolReg)+'">'+(p.dSolReg==null?"—":(p.dSolReg>0?"+":"")+round1(p.dSolReg))+'</td>'+
-      '<td class="'+diffCls(p.dKazSol)+'">'+(p.dKazSol==null?"—":(p.dKazSol>0?"+":"")+round1(p.dKazSol))+'</td>'+
-      '<td>'+(p.aPct==null?"—":round1(p.aPct)+"%")+'</td>';
-    tr.onclick=function(){openDetail(p.name)};
-    tb.appendChild(tr);
+    const tr=document.createElement("tr"); tr.className="clickable";
+    tr.innerHTML='<td>'+(i+1)+'</td><td><b>'+esc(p.name)+'</b></td><td>'+p.count+'</td><td>'+round1(p.aReg)+'</td><td>'+round1(p.aSol)+'</td><td>'+round1(p.aKaz)+'</td><td class="'+diffCls(p.dSolReg)+'">'+(p.dSolReg==null?"—":(p.dSolReg>0?"+":"")+round1(p.dSolReg))+'</td><td class="'+diffCls(p.dKazSol)+'">'+(p.dKazSol==null?"—":(p.dKazSol>0?"+":"")+round1(p.dKazSol))+'</td><td>'+(p.aPct==null?"—":round1(p.aPct)+"%")+'</td>';
+    tr.onclick=function(){openDetail(p.name)}; tb.appendChild(tr);
   });
 }
-
 function openDetail(name){
   const rows=detailMap[name]||[];
   document.getElementById("modal").hidden=false;
@@ -327,33 +260,19 @@ function openDetail(name){
   rows.forEach(function(r){
     h+='<tr><td>'+esc(r.reportNo)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.area)+'</td><td>'+(r.role==="operator"?"اپراتور":"کمک")+'</td><td>'+round1(r.reg)+'</td><td>'+round1(r.sol)+'</td><td>'+round1(r.kaz)+'</td><td>'+(r.pct==null?"—":round1(r.pct)+"%")+'</td><td>'+esc(r.status)+'</td></tr>';
   });
-  h+='</tbody></table>';
-  document.getElementById("modal-body").innerHTML=h;
+  h+='</tbody></table>'; document.getElementById("modal-body").innerHTML=h;
 }
-
 document.getElementById("modal-close").onclick=function(){document.getElementById("modal").hidden=true};
 document.getElementById("btn-run").onclick=compute;
-document.getElementById("btn-clear").onclick=function(){
-  monthDefaults();
-  document.getElementById("f-ws").value="";
-  document.getElementById("f-status").value="";
-  document.getElementById("f-role").value="any";
-  compute();
-};
+document.getElementById("btn-clear").onclick=function(){monthDefaults();document.getElementById("f-ws").value="";document.getElementById("f-status").value="";document.getElementById("f-role").value="any";compute();};
 document.getElementById("btn-excel").onclick=function(){
   if(!personStats.length){alert("داده‌ای نیست");return;}
   function cell(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'}
   const headers=["ردیف","نفر","تعداد گزارش","میانگین ثبت","میانگین سلطانی","میانگین کاظمی","اختلاف سلطانی-ثبت","اختلاف کاظمی-سلطانی","میانگین درصد نهایی"];
-  const rows=personStats.map(function(p,i){
-    return [i+1,p.name,p.count,round1(p.aReg),round1(p.aSol),round1(p.aKaz),
-      p.dSolReg==null?"":round1(p.dSolReg), p.dKazSol==null?"":round1(p.dKazSol),
-      p.aPct==null?"":round1(p.aPct)];
-  });
+  const rows=personStats.map(function(p,i){return [i+1,p.name,p.count,round1(p.aReg),round1(p.aSol),round1(p.aKaz),p.dSolReg==null?"":round1(p.dSolReg),p.dKazSol==null?"":round1(p.dKazSol),p.aPct==null?"":round1(p.aPct)];});
   const csv=[headers].concat(rows).map(function(r){return r.map(cell).join(",")}).join("\r\n");
-  const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
-  a.download="5S_person_scores_"+(document.getElementById("f-from").value||"")+"_"+(document.getElementById("f-to").value||"")+".csv";
-  a.click();
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"}));
+  a.download="5S_person_scores.csv";a.click();
 };
 document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();location.replace("../")};
 document.getElementById("login-form").onsubmit=async function(e){
@@ -363,24 +282,17 @@ document.getElementById("login-form").onsubmit=async function(e){
     const {data,error}=await supabaseClient.auth.signInWithPassword({email:u+"@people-manager.invalid",password:p});
     if(error)throw error;
     currentUser=data.user; await loadProfile(currentUser);
-    document.getElementById("login-page").hidden=true;
-    document.getElementById("app").hidden=false;
+    document.getElementById("login-page").hidden=true; document.getElementById("app").hidden=false;
     monthDefaults(); await loadData();
   }catch(err){document.getElementById("login-error").textContent=err.message||"خطا"}
 };
-
 (async function(){
   const {data:{session}}=await supabaseClient.auth.getSession();
   if(session&&session.user){
-    currentUser=session.user;
-    await loadProfile(currentUser);
-    document.getElementById("login-page").hidden=true;
-    document.getElementById("app").hidden=false;
-    monthDefaults();
-    await loadData();
-  } else {
-    document.getElementById("login-page").hidden=false;
-  }
+    currentUser=session.user; await loadProfile(currentUser);
+    document.getElementById("login-page").hidden=true; document.getElementById("app").hidden=false;
+    monthDefaults(); await loadData();
+  } else document.getElementById("login-page").hidden=false;
 })();
 </script>
 </body>
