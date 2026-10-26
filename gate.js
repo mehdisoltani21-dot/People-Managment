@@ -10,25 +10,24 @@
   var script = document.currentScript;
   var HOME = script ? new URL("./", script.src).href : "/";
 
-  // فرم‌های ورود صفحات داخلی هرگز نمایش داده نشوند
+  // فرم‌های ورود صفحات داخلی هرگز نمایش داده نشوند (ورود فقط از صفحه اصلی)
+  // اما اگر session باشد، اپ نشان داده می‌شود
   var st = document.createElement("style");
   st.textContent = "#login-page{display:none!important}";
   (document.head || document.documentElement).appendChild(st);
 
   function goHome() {
     var next = location.pathname + location.search + location.hash;
-    location.replace(HOME + (HOME.indexOf("?") >= 0 ? "&" : "?") + "next=" + encodeURIComponent(next));
+    var join = HOME.indexOf("?") >= 0 ? "&" : "?";
+    location.replace(HOME + join + "next=" + encodeURIComponent(next));
   }
 
-  // بررسی سریع نشست ذخیره‌شده (بدون انتظار برای بارگذاری کتابخانه)
   var raw = null;
   try { raw = localStorage.getItem(STORAGE_KEY); } catch (e) {}
-  // لینک‌های ورود مستقیم (?t=...) خودشان وارد می‌کنند
   var q = new URLSearchParams(location.search);
   var hasToken = !!(q.get("t") || q.get("token"));
   if (!raw && !hasToken) { goHome(); return; }
 
-  // اگر نشست منقضی/باطل شد یا کاربر خارج شد → صفحه اصلی
   var hooked = false;
   function hook() {
     if (hooked) return;
@@ -49,7 +48,6 @@
     if (hooked || tries > 150) clearInterval(timer);
   }, 100);
 
-  // پشتیبان: اگر localStorage پاک شد (مثلاً خروج در تب دیگر)
   window.addEventListener("storage", function (e) {
     if (e.key === STORAGE_KEY && !e.newValue) location.replace(HOME);
   });
