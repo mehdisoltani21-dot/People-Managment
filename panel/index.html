@@ -5,63 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#f5a623">
   <title>مدیریت وقایع پرسنلی | APW</title>
-  <link rel="stylesheet" href="../style.css?v=14">
-  <script src="../gate.js?v=2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=15">
+  <script src="../gate.js?v=3"></script>
   <style>
-    body{font-family:Tahoma,sans-serif;background:#14110c;color:#f5f0e8;margin:0}
-    .home-view{max-width:720px;margin:36px auto;padding:0 16px}
+    body,button,input,select,textarea{font-family:Vazirmatn,Tahoma,sans-serif!important}
+    .home-view{max-width:720px;margin:36px auto 16px;padding:0 16px}
+    .home-title{text-align:center;margin-bottom:26px}
+    .home-title h2{font-size:1.3rem;font-weight:800;color:#f5f0e8;margin-bottom:6px}
+    .home-title p{color:#a89a86;font-size:.9rem}
     .home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     @media(max-width:560px){.home-grid{grid-template-columns:1fr}}
-    .home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:160px;padding:24px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit;font-family:inherit}
-    .home-card:hover{border-color:#f5a623}
-    .home-icon{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208}
-    .app-header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #3d3428;background:#1a1610}
-    .card{margin:16px;padding:16px;border:1px solid #3d3428;border-radius:16px;background:#1a1610}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .form-group label{display:block;font-size:.85rem;color:#a89a86;margin-bottom:4px}
-    .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font:inherit}
-    .form-group.full{grid-column:1/-1}
-    .btn{border:none;border-radius:12px;padding:.7rem 1.2rem;font-weight:800;cursor:pointer;font:inherit}
-    .btn-primary{background:linear-gradient(135deg,#f7b543,#e8910f);color:#1a1208}
-    .btn-secondary{background:#2a2418;color:#f5c56a;border:1px solid #4a4030}
-    .view-back{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-weight:800;border:none;border-radius:12px;padding:.5rem 1rem;cursor:pointer;margin:12px 16px}
-    .nav-home{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-weight:800;padding:.4rem .8rem;border-radius:10px;text-decoration:none;font-size:.85rem}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:8px;border-bottom:1px solid #2a2418;text-align:right;font-size:.88rem}
-    th{color:#f5a623}
-    .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-    .login-box{max-width:380px;width:100%;padding:24px;border-radius:18px;border:1px solid #3d3428;background:#1a1610}
+    .home-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:170px;padding:26px 16px;border-radius:18px;border:1px solid #3d3428;background:linear-gradient(145deg,#2a2318,#1a1610);cursor:pointer;color:inherit;font-family:inherit}
+    .home-card:hover{border-color:#f5a623;transform:translateY(-3px)}
+    .home-icon{width:70px;height:70px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;font-weight:800;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208}
+    .home-card h3{font-size:1.08rem;font-weight:800}
+    .home-card span{font-size:.8rem;color:#a89a86}
+    .view-back{background:linear-gradient(135deg,#f5a623,#e8910f)!important;color:#1a1208!important;font-weight:800!important;border:none;border-radius:12px;padding:.5rem 1rem;cursor:pointer;margin-bottom:12px}
+    .nav-home{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208;font-weight:800;padding:.4rem .85rem;border-radius:10px;text-decoration:none;font-size:.85rem}
   </style>
 </head>
 <body>
   <section id="login-page" class="login-page" style="display:none">
-    <div class="login-box">
+    <div class="login-box" style="max-width:400px;margin:40px auto;padding:24px">
       <h1>ورود</h1>
       <form id="login-form">
-        <div class="form-group" style="margin-bottom:10px">
-          <label>کاربر</label>
-          <select id="loginUser" required>
-            <option value="">—</option>
-            <option value="mehdi-soltani">مهدی سلطانی</option>
-            <option value="masoud-kazemi">مسعود کاظمی</option>
-            <option value="mehdi-afshar">مهدی افشار</option>
-            <option value="arash-baba">آرش بابا</option>
-          </select>
-        </div>
-        <div class="form-group" style="margin-bottom:10px">
-          <label>رمز</label>
-          <input type="password" id="loginPass" required>
-        </div>
-        <button class="btn btn-primary" type="submit">ورود</button>
+        <label>کاربر</label>
+        <select id="loginUser" required>
+          <option value="">—</option>
+          <option value="mehdi-soltani">مهدی سلطانی</option>
+          <option value="masoud-kazemi">مسعود کاظمی</option>
+          <option value="mehdi-afshar">مهدی افشار</option>
+          <option value="arash-baba">آرش بابا</option>
+        </select>
+        <label>رمز</label>
+        <input type="password" id="loginPass" required>
+        <button type="submit">ورود</button>
         <p id="login-error"></p>
       </form>
-      <p style="margin-top:12px"><a class="nav-home" href="../">صفحه اصلی</a></p>
+      <p><a class="nav-home" href="../">صفحه اصلی</a></p>
     </div>
   </section>
 
-  <main id="app-page" style="display:none">
-    <header class="app-header">
-      <div><strong>مدیریت وقایع پرسنلی</strong></div>
+  <main id="app-page" class="app-page" style="display:none">
+    <header class="app-header" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #3d3428">
+      <div style="display:flex;align-items:center;gap:10px">
+        <img src="../logo.png?v=2" alt="APW" style="height:32px;background:#fff;border-radius:8px;padding:4px">
+        <strong>مدیریت وقایع پرسنلی</strong>
+      </div>
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <span id="current-user-name"></span>
         <a class="nav-home" href="../">صفحه اصلی</a>
@@ -70,78 +61,104 @@
     </header>
 
     <section id="home-view" class="home-view">
+      <div class="home-title"><h2>انتخاب عملیات</h2><p>رکورد جدید یا مشاهده سوابق</p></div>
       <div class="home-grid">
         <button type="button" class="home-card" id="go-new-record">
           <div class="home-icon">+</div>
           <h3>رکورد جدید</h3>
+          <span>ثبت واقعه پرسنلی</span>
         </button>
         <button type="button" class="home-card" id="go-view-records">
           <div class="home-icon">≡</div>
           <h3>مشاهده رکوردها</h3>
+          <span>جست‌وجو و گزارش</span>
         </button>
       </div>
     </section>
 
-    <section id="form-view" style="display:none">
+    <section id="form-view" class="form-section" hidden style="padding:16px">
       <button type="button" class="view-back" id="back-from-form">→ بازگشت</button>
-      <div class="card">
+      <div class="card" style="padding:16px;border:1px solid #3d3428;border-radius:16px">
         <h2 id="form-title">ثبت رکورد جدید</h2>
         <form id="record-form">
-          <div class="form-grid">
-            <div class="form-group"><label>تاریخ وقوع</label><input type="date" id="occurrenceDate" required></div>
-            <div class="form-group"><label>تاریخ گزارش</label><input type="date" id="reportDate"></div>
-            <div class="form-group"><label>نفر</label><select id="personSelect" required></select></div>
-            <div class="form-group"><label>کد نفر</label><input type="text" id="personIdDisplay" readonly></div>
-            <div class="form-group"><label>ایستگاه</label><input type="text" id="workstation"></div>
-            <div class="form-group"><label>نوع خطا</label><input type="text" id="errorType" required></div>
-            <div class="form-group"><label>نوع اخطار</label>
-              <select id="warningType">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div><label>تاریخ وقوع</label><input type="date" id="occurrenceDate" required style="width:100%;padding:8px"></div>
+            <div><label>تاریخ گزارش</label><input type="date" id="reportDate" style="width:100%;padding:8px"></div>
+            <div><label>نفر</label><select id="personSelect" required style="width:100%;padding:8px"></select></div>
+            <div><label>کد نفر</label><input type="text" id="personIdDisplay" readonly style="width:100%;padding:8px"></div>
+            <div><label>ایستگاه کاری</label><input type="text" id="workstation" style="width:100%;padding:8px"></div>
+            <div><label>نوع خطا</label>
+              <select id="errorType" required style="width:100%;padding:8px">
+                <option value="">انتخاب</option>
+                <option>تأخیر</option><option>غیبت</option><option>کم‌کاری</option>
+                <option>عدم رعایت ایمنی</option><option>خرابی محصول</option><option>سایر</option>
+              </select>
+            </div>
+            <div><label>نوع اخطار</label>
+              <select id="warningType" style="width:100%;padding:8px">
                 <option value="">—</option>
                 <option value="اخطار شفاهی">اخطار شفاهی</option>
                 <option value="اخطار کتبی">اخطار کتبی</option>
                 <option value="معرفی به کمیته انضباطی">معرفی به کمیته انضباطی</option>
               </select>
             </div>
-            <div class="form-group full"><label>شرح</label><textarea id="description" rows="3"></textarea></div>
+            <div style="grid-column:1/-1"><label>شرح</label><textarea id="description" rows="3" style="width:100%;padding:8px"></textarea></div>
           </div>
           <div style="margin-top:12px;display:flex;gap:8px">
-            <button type="submit" class="btn btn-primary" id="submit-btn">ذخیره</button>
-            <button type="button" class="btn btn-secondary" id="cancel-btn" style="display:none">لغو</button>
+            <button type="submit" id="submit-btn" class="btn btn-primary">ذخیره</button>
+            <button type="button" id="cancel-btn" class="btn btn-secondary" style="display:none">لغو ویرایش</button>
           </div>
         </form>
       </div>
     </section>
 
-    <section id="records-panel" style="display:none">
+    <section id="records-panel" class="table-section" hidden style="padding:16px">
       <button type="button" class="view-back" id="back-from-records">→ بازگشت</button>
-      <div class="card">
-        <h2>رکوردها</h2>
-        <input type="search" id="search-input" placeholder="جست‌وجو..." style="width:100%;margin:8px 0;padding:10px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8">
+      <div class="card" style="padding:16px;border:1px solid #3d3428;border-radius:16px">
+        <h2>مشاهده رکوردها</h2>
+        <input type="search" id="search-input" placeholder="جست‌وجو..." style="width:100%;padding:10px;margin:8px 0;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8">
         <div id="filter-summary" style="display:none"></div>
         <p id="empty-message" style="display:none">رکوردی نیست</p>
         <div style="overflow:auto">
-          <table id="records-table">
-            <thead><tr><th>ردیف</th><th>تاریخ</th><th>نفر</th><th>نوع</th><th>اخطار</th><th>شرح</th><th>ثبت‌کننده</th><th></th></tr></thead>
+          <table id="records-table" style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr>
+                <th>ردیف</th><th>کد</th><th>نام</th><th>ایستگاه</th><th>اخطار</th><th>خطا</th><th>گزارش</th><th>وقوع</th><th>شرح</th><th>ثبت‌کننده</th><th></th>
+              </tr>
+            </thead>
             <tbody id="records-body"></tbody>
           </table>
         </div>
+        <button type="button" id="export-records-btn" class="btn btn-secondary" style="margin-top:10px">↓ اکسل</button>
       </div>
     </section>
   </main>
 
-  <script src="../vendor/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js?v=22"></script>
   <script>
-  (function waitSb(n){
-    if(window.supabase && window.supabase.createClient){
-      var a=document.createElement("script"); a.src="../script.js?v=20"; document.body.appendChild(a);
-      return;
-    }
-    if(n>100){
-      document.body.innerHTML='<p style="color:#f5a623;text-align:center;padding:2rem;font-family:Tahoma">کتابخانه اتصال بار نشد. رفرش کنید.</p>';
-      return;
-    }
-    setTimeout(function(){ waitSb(n+1); }, 120);
-  })(0);
+    (function () {
+      const home = document.getElementById("home-view");
+      const formView = document.getElementById("form-view");
+      const panel = document.getElementById("records-panel");
+      const goNew = document.getElementById("go-new-record");
+      const goView = document.getElementById("go-view-records");
+      const backForm = document.getElementById("back-from-form");
+      const backRec = document.getElementById("back-from-records");
+      function showHome(){ if(home) home.hidden=false; if(formView) formView.hidden=true; if(panel) panel.hidden=true; }
+      function showForm(){ if(home) home.hidden=true; if(formView) formView.hidden=false; if(panel) panel.hidden=true; }
+      function showRecords(){ if(home) home.hidden=true; if(formView) formView.hidden=true; if(panel) panel.hidden=false; }
+      if(goNew) goNew.addEventListener("click", showForm);
+      if(goView) goView.addEventListener("click", showRecords);
+      if(backForm) backForm.addEventListener("click", showHome);
+      if(backRec) backRec.addEventListener("click", showHome);
+      showHome();
+      document.addEventListener("click", function(e){
+        if(e.target && (e.target.classList.contains("btn-edit") || e.target.closest(".btn-edit"))) {
+          setTimeout(showForm, 30);
+        }
+      });
+    })();
   </script>
 </body>
 </html>
