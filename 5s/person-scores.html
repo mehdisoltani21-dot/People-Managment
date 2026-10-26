@@ -18,7 +18,7 @@ body{font-family:Vazirmatn,Tahoma,sans-serif;background:#0f0d0a;color:#f5f0e8;mi
 .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
 .filters .f{display:flex;flex-direction:column;gap:4px}
 .filters label{font-size:.75rem;color:#a89a86}
-.filters input,.filters select{padding:10px 12px;border-radius:11px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;min-width:130px}
+.filters input,.filters select{padding:10px 12px;border-radius:11px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;min-width:140px}
 .btn{border:none;border-radius:11px;padding:10px 16px;font-family:inherit;font-weight:800;cursor:pointer}
 .btn-primary{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208}
 .btn-ghost{background:#2a2418;border:1px solid #5a4030;color:#f5c56a}
@@ -74,7 +74,7 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
   <div class="top">
     <div class="top-inner">
       <div class="brand-row">
-        <div class="page-icon" aria-hidden="true">Σ</div>
+        <div class="page-icon">Σ</div>
         <div>
           <strong>گزارش ماهانه نفرات 5S</strong>
           <div style="font-size:.78rem;color:#a89a86">میانگین نمره ثبت · سلطانی · کاظمی</div>
@@ -92,7 +92,7 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
 
   <div class="wrap">
     <div class="card">
-      <p class="hint">برای هر نفر، میانگین سه لایه امتیاز در بازه انتخابی محاسبه می‌شود. روی ردیف کلیک کنید تا جزئیات را ببینید.
+      <p class="hint">از لیست <b>اپراتور</b> یا <b>کمک‌اپراتور</b> نفر را انتخاب کنید. روی ردیف کلیک کنید تا جزئیات را ببینید.
         <br><span class="role-ic role-op">◎</span> اپراتور &nbsp; <span class="role-ic role-as">＋</span> کمک‌اپراتور
       </p>
       <div class="filters">
@@ -107,15 +107,11 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
             <option value="finalized">فقط نهایی‌شده</option>
           </select>
         </div>
-        <div class="f"><label>اسم نفر</label>
-          <select id="f-person"><option value="">همه نفرات</option></select>
+        <div class="f"><label>اپراتور</label>
+          <select id="f-operator"><option value="">همه اپراتورها</option></select>
         </div>
-        <div class="f"><label>نقش</label>
-          <select id="f-role">
-            <option value="any">همه نقش‌ها</option>
-            <option value="operator">◎ فقط اپراتور</option>
-            <option value="assistant">＋ فقط کمک</option>
-          </select>
+        <div class="f"><label>کمک‌اپراتور</label>
+          <select id="f-assistant"><option value="">همه کمک‌ها</option></select>
         </div>
         <button type="button" class="btn btn-primary" id="btn-run">محاسبه</button>
         <button type="button" class="btn btn-ghost" id="btn-clear">پاک کردن</button>
@@ -133,7 +129,7 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <p style="font-size:.75rem;color:#8a7a68;margin-top:10px">* درصد نهایی بر اساس آخرین مرحله موجود (کاظمی، وگرنه سلطانی، وگرنه ثبت)</p>
+      <p style="font-size:.75rem;color:#8a7a68;margin-top:10px">* درصد نهایی بر اساس آخرین مرحله موجود</p>
       <p id="empty" style="color:#a89a86;margin-top:12px;display:none">در این بازه داده‌ای نیست</p>
     </div>
   </div>
@@ -199,37 +195,37 @@ async function loadData(){
   compute();
 }
 function fillPersonFilter(){
-  const sel=document.getElementById("f-person");
-  if(!sel) return;
-  const cur=sel.value;
-  const names=new Set();
-  allRows.forEach(function(r){
-    [r.operator_name,r.assistant1_name,r.assistant2_name,r.assistant3_name].forEach(function(n){
-      if(n&&String(n).trim()) names.add(String(n).trim());
+  function fill(id, getter, allLabel){
+    const sel=document.getElementById(id);
+    if(!sel) return;
+    const cur=sel.value;
+    const names=new Set();
+    allRows.forEach(function(r){ getter(r).forEach(function(n){ if(n&&String(n).trim()) names.add(String(n).trim()); }); });
+    sel.innerHTML='<option value="">'+allLabel+'</option>';
+    Array.from(names).sort().forEach(function(n){
+      const o=document.createElement("option"); o.value=n; o.textContent=n; sel.appendChild(o);
     });
-  });
-  sel.innerHTML='<option value="">همه نفرات</option>';
-  Array.from(names).sort().forEach(function(n){
-    const o=document.createElement("option"); o.value=n; o.textContent=n; sel.appendChild(o);
-  });
-  sel.value=cur;
+    sel.value=cur;
+  }
+  fill("f-operator", function(r){ return [r.operator_name]; }, "همه اپراتورها");
+  fill("f-assistant", function(r){ return [r.assistant1_name,r.assistant2_name,r.assistant3_name]; }, "همه کمک‌ها");
 }
 function roleIcon(role){
   if(role==="operator") return '<span class="role-tag"><span class="role-ic role-op" title="اپراتور">◎</span>اپراتور</span>';
   return '<span class="role-tag"><span class="role-ic role-as" title="کمک">＋</span>کمک</span>';
 }
-function peopleOnRow(r, roleFilter){
+function peopleOnRow(r, opFilter, asFilter){
   const list=[];
-  function add(name, role){
-    if(!name) return;
-    if(roleFilter==="operator" && role!=="operator") return;
-    if(roleFilter==="assistant" && role!=="assistant") return;
-    list.push({name:String(name).trim(), role:role});
+  const op=r.operator_name?String(r.operator_name).trim():"";
+  const as=[r.assistant1_name,r.assistant2_name,r.assistant3_name]
+    .map(function(n){return n?String(n).trim():""}).filter(Boolean);
+  if(!opFilter && !asFilter){
+    if(op) list.push({name:op, role:"operator"});
+    as.forEach(function(n){ list.push({name:n, role:"assistant"}); });
+    return list;
   }
-  add(r.operator_name,"operator");
-  add(r.assistant1_name,"assistant");
-  add(r.assistant2_name,"assistant");
-  add(r.assistant3_name,"assistant");
+  if(opFilter && op===opFilter) list.push({name:op, role:"operator"});
+  if(asFilter) as.forEach(function(n){ if(n===asFilter) list.push({name:n, role:"assistant"}); });
   return list;
 }
 function compute(){
@@ -237,8 +233,8 @@ function compute(){
   const to=document.getElementById("f-to").value;
   const ws=document.getElementById("f-ws").value;
   const st=document.getElementById("f-status").value;
-  const roleFilter=document.getElementById("f-role").value;
-  const personFilter=(document.getElementById("f-person")&&document.getElementById("f-person").value)||"";
+  const opFilter=(document.getElementById("f-operator")&&document.getElementById("f-operator").value)||"";
+  const asFilter=(document.getElementById("f-assistant")&&document.getElementById("f-assistant").value)||"";
   const filtered=allRows.filter(function(r){
     const d=r.audit_date||"";
     if(from && d<from) return false;
@@ -253,8 +249,7 @@ function compute(){
   const map={}; detailMap={};
   filtered.forEach(function(r){
     const sc=scoresOf(r);
-    peopleOnRow(r, roleFilter).forEach(function(p){
-      if(personFilter && p.name!==personFilter) return;
+    peopleOnRow(r, opFilter, asFilter).forEach(function(p){
       if(!map[p.name]){ map[p.name]={name:p.name, count:0, reg:[], sol:[], kaz:[], pct:[], roles:{}}; detailMap[p.name]=[]; }
       const m=map[p.name]; m.count++; m.roles[p.role]=(m.roles[p.role]||0)+1;
       if(sc.reg!=null) m.reg.push(sc.reg);
@@ -300,7 +295,14 @@ function openDetail(name){
 }
 document.getElementById("modal-close").onclick=function(){document.getElementById("modal").hidden=true};
 document.getElementById("btn-run").onclick=compute;
-document.getElementById("btn-clear").onclick=function(){monthDefaults();document.getElementById("f-ws").value="";document.getElementById("f-status").value="";document.getElementById("f-role").value="any";if(document.getElementById("f-person"))document.getElementById("f-person").value="";compute();};
+document.getElementById("btn-clear").onclick=function(){
+  monthDefaults();
+  document.getElementById("f-ws").value="";
+  document.getElementById("f-status").value="";
+  if(document.getElementById("f-operator")) document.getElementById("f-operator").value="";
+  if(document.getElementById("f-assistant")) document.getElementById("f-assistant").value="";
+  compute();
+};
 document.getElementById("btn-excel").onclick=function(){
   if(!personStats.length){alert("داده‌ای نیست");return;}
   function cell(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'}
