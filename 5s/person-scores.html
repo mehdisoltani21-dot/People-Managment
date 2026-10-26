@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<script src="../gate.js?v=3"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f5a623">
+<title>گزارش ماهانه نفرات 5S | APW</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Vazirmatn,Tahoma,sans-serif;background:#0f0d0a;color:#f5f0e8;min-height:100vh;line-height:1.7}
+.top{position:sticky;top:0;z-index:10;background:rgba(15,13,10,.95);border-bottom:1px solid #3d3428;padding:12px 16px}
+.top-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.nav-home{display:inline-flex;background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208!important;font-weight:800;font-size:.85rem;padding:9px 14px;border-radius:11px;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.card{background:linear-gradient(145deg,#2a2318,#1a1610);border:1px solid #3d3428;border-radius:16px;padding:16px;margin-bottom:14px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.filters .f{display:flex;flex-direction:column;gap:4px}
+.filters label{font-size:.75rem;color:#a89a86}
+.filters input,.filters select{padding:10px 12px;border-radius:11px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit;min-width:130px}
+.btn{border:none;border-radius:11px;padding:10px 16px;font-family:inherit;font-weight:800;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208}
+.btn-ghost{background:#2a2418;border:1px solid #5a4030;color:#f5c56a}
+.btn-excel{background:transparent;border:1px solid #f5a623;color:#f5a623}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+.kpi{background:#14110c;border:1px solid #3d3428;border-radius:12px;padding:12px;text-align:center}
+.kpi .n{font-size:1.35rem;font-weight:800;color:#f5a623}.kpi .l{font-size:.75rem;color:#a89a86}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th,td{padding:9px 7px;border-bottom:1px solid #2a2418;text-align:right}
+th{color:#f5a623;background:#1a1610;position:sticky;top:0}
+tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
+.pos{color:#4ade80;font-weight:700}.neg{color:#f87171;font-weight:700}.neu{color:#a89a86}
+.hint{font-size:.88rem;color:#cbbfaa;margin-bottom:12px}
+.modal{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:12px}
+.modal[hidden]{display:none!important}
+.modal-box{width:100%;max-width:720px;max-height:90vh;overflow:auto;background:#16120e;border:1px solid #3d3428;border-radius:16px;padding:16px}
+.modal-box h3{color:#f5a623;margin-bottom:10px}
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{max-width:380px;width:100%;padding:22px;border-radius:16px;border:1px solid #3d3428;background:#1a1610}
+.login-box input,.login-box select{width:100%;padding:10px;margin:6px 0 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<section id="login-page" hidden>
+  <div class="login-box">
+    <h2 style="text-align:center;margin-bottom:12px">گزارش ماهانه نفرات</h2>
+    <form id="login-form">
+      <label>کاربر</label>
+      <select id="loginUser" required>
+        <option value="">—</option>
+        <option value="mehdi-soltani">مهدی سلطانی</option>
+        <option value="masoud-kazemi">مسعود کاظمی</option>
+        <option value="mehdi-afshar">مهدی افشار</option>
+        <option value="arash-baba">آرش بابا</option>
+      </select>
+      <label>رمز</label>
+      <input type="password" id="loginPass" required>
+      <button class="btn btn-primary" type="submit" style="width:100%">ورود</button>
+      <p id="login-error" style="color:#f87171;margin-top:8px"></p>
+    </form>
+    <p style="text-align:center;margin-top:12px"><a class="nav-home" href="../">صفحه اصلی</a></p>
+  </div>
+</section>
+
+<div id="app" hidden>
+  <div class="top">
+    <div class="top-inner">
+      <div>
+        <strong>گزارش ماهانه نفرات 5S</strong>
+        <div style="font-size:.78rem;color:#a89a86">میانگین نمره ثبت · سلطانی · کاظمی</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span id="user-label"></span>
+        <a class="nav-home" href="./analytics.html">گزارش تحلیلی</a>
+        <a class="nav-home" href="./index.html">سامانه 5S</a>
+        <a class="nav-home" href="../">صفحه اصلی</a>
+        <button type="button" class="btn btn-ghost" id="logout-btn">خروج</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="card">
+      <p class="hint">برای هر نفر، میانگین سه لایه امتیاز در بازه انتخابی محاسبه می‌شود. روی ردیف کلیک کنید تا جزئیات گزارش‌های همان نفر را ببینید.</p>
+      <div class="filters">
+        <div class="f"><label>از تاریخ</label><input type="date" id="f-from"></div>
+        <div class="f"><label>تا تاریخ</label><input type="date" id="f-to"></div>
+        <div class="f"><label>ایستگاه</label><select id="f-ws"><option value="">همه</option></select></div>
+        <div class="f"><label>وضعیت گزارش</label>
+          <select id="f-status">
+            <option value="">همه</option>
+            <option value="submitted">فقط ثبت‌شده</option>
+            <option value="soltani_reviewed">بررسی سلطانی به بعد</option>
+            <option value="finalized">فقط نهایی‌شده</option>
+          </select>
+        </div>
+        <div class="f"><label>نقش نفر</label>
+          <select id="f-role">
+            <option value="any">اپراتور یا کمک</option>
+            <option value="operator">فقط اپراتور</option>
+            <option value="assistant">فقط کمک</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-run">محاسبه</button>
+        <button type="button" class="btn btn-ghost" id="btn-clear">پاک کردن</button>
+        <button type="button" class="btn btn-excel" id="btn-excel">↓ اکسل</button>
+      </div>
+      <div class="kpis" id="kpis"></div>
+      <div style="overflow:auto;margin-top:8px">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>نفر</th>
+              <th>تعداد گزارش</th>
+              <th>میانگین ثبت</th>
+              <th>میانگین سلطانی</th>
+              <th>میانگین کاظمی</th>
+              <th>اختلاف سلطانی−ثبت</th>
+              <th>اختلاف کاظمی−سلطانی</th>
+              <th>میانگین درصد نهایی*</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p style="font-size:.75rem;color:#8a7a68;margin-top:10px">* درصد نهایی بر اساس آخرین مرحله موجود (کاظمی، وگرنه سلطانی، وگرنه ثبت) نسبت به سقف همان گزارش</p>
+      <p id="empty" style="color:#a89a86;margin-top:12px;display:none">در این بازه داده‌ای نیست</p>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal-box">
+    <h3 id="modal-title">جزئیات نفر</h3>
+    <div id="modal-body"></div>
+    <button type="button" class="btn btn-ghost" id="modal-close" style="margin-top:12px">بستن</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://rtefjfvkjpatzitjjvwe.supabase.co";
+const SUPABASE_KEY="sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+window.supabaseClient=supabaseClient;
+
+let currentUser=null, currentProfile=null, allRows=[], personStats=[], detailMap={};
+
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function avg(arr){if(!arr.length)return null;return arr.reduce(function(a,b){return a+b},0)/arr.length}
+function round1(n){return n==null?"—":(Math.round(n*10)/10)}
+function diffCls(n){if(n==null)return "neu";if(n>0.05)return "pos";if(n<-0.05)return "neg";return "neu"}
+function statusOf(r){
+  if(r.workflow_status) return r.workflow_status;
+  const w=(r.details&&r.details.workflow)||{};
+  return w.status||"submitted";
+}
+function scoresOf(r){
+  const w=(r.details&&r.details.workflow)||{};
+  const reg=Number(r.total_score);
+  const sol=w.soltani_review&&w.soltani_review.total!=null?Number(w.soltani_review.total):null;
+  const kaz=w.kazemi_review&&w.kazemi_review.total!=null?Number(w.kazemi_review.total):null;
+  const max=Number(r.max_score)||0;
+  const final = kaz!=null?kaz:(sol!=null?sol:(isNaN(reg)?null:reg));
+  const pct = (final!=null&&max)?(final*100/max):null;
+  return {reg:isNaN(reg)?null:reg, sol:sol, kaz:kaz, max:max, final:final, pct:pct};
+}
+function monthDefaults(){
+  const now=new Date();
+  const y=now.getFullYear(), m=now.getMonth();
+  const from=new Date(y,m,1);
+  const to=new Date(y,m+1,0);
+  function iso(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+  document.getElementById("f-from").value=iso(from);
+  document.getElementById("f-to").value=iso(to);
+}
+
+async function loadProfile(user){
+  const {data}=await supabaseClient.from("user_profiles").select("*").eq("id",user.id).maybeSingle();
+  currentProfile=data;
+  document.getElementById("user-label").textContent=(data&&(data.full_name||data.username))||user.email||"کاربر";
+}
+
+async function loadData(){
+  const {data,error}=await supabaseClient.from("five_s_audits").select("*").order("audit_date",{ascending:false}).limit(1000);
+  if(error){alert("خطا: "+error.message);allRows=[];return}
+  allRows=(data||[]).map(function(r){
+    let details=r.details||{};
+    if(typeof details==="string"){try{details=JSON.parse(details)}catch(e){details={}}}
+    r.details=details;
+    return r;
+  });
+  const ws=document.getElementById("f-ws");
+  const cur=ws.value;
+  ws.innerHTML='<option value="">همه</option>';
+  Array.from(new Set(allRows.map(function(r){return r.area||""}).filter(Boolean))).sort().forEach(function(v){
+    const o=document.createElement("option");o.value=v;o.textContent=v;ws.appendChild(o);
+  });
+  ws.value=cur;
+  compute();
+}
+
+function peopleOnRow(r, roleFilter){
+  const list=[];
+  function add(name, role){
+    if(!name) return;
+    if(roleFilter==="operator" && role!=="operator") return;
+    if(roleFilter==="assistant" && role!=="assistant") return;
+    list.push({name:String(name).trim(), role:role});
+  }
+  add(r.operator_name,"operator");
+  add(r.assistant1_name,"assistant");
+  add(r.assistant2_name,"assistant");
+  add(r.assistant3_name,"assistant");
+  return list;
+}
+
+function compute(){
+  const from=document.getElementById("f-from").value;
+  const to=document.getElementById("f-to").value;
+  const ws=document.getElementById("f-ws").value;
+  const st=document.getElementById("f-status").value;
+  const roleFilter=document.getElementById("f-role").value;
+
+  const filtered=allRows.filter(function(r){
+    const d=r.audit_date||"";
+    if(from && d<from) return false;
+    if(to && d>to) return false;
+    if(ws && (r.area||"")!==ws) return false;
+    const s=statusOf(r);
+    if(st==="submitted" && s!=="submitted") return false;
+    if(st==="soltani_reviewed" && s==="submitted") return false;
+    if(st==="finalized" && s!=="finalized") return false;
+    return true;
+  });
+
+  const map={}; // name -> aggregates
+  detailMap={};
+  filtered.forEach(function(r){
+    const sc=scoresOf(r);
+    peopleOnRow(r, roleFilter).forEach(function(p){
+      if(!map[p.name]){
+        map[p.name]={name:p.name, count:0, reg:[], sol:[], kaz:[], pct:[], roles:{}};
+        detailMap[p.name]=[];
+      }
+      const m=map[p.name];
+      m.count++;
+      m.roles[p.role]=(m.roles[p.role]||0)+1;
+      if(sc.reg!=null) m.reg.push(sc.reg);
+      if(sc.sol!=null) m.sol.push(sc.sol);
+      if(sc.kaz!=null) m.kaz.push(sc.kaz);
+      if(sc.pct!=null) m.pct.push(sc.pct);
+      detailMap[p.name].push({
+        reportNo:r.report_no, date:r.audit_date, area:r.area,
+        role:p.role, reg:sc.reg, sol:sc.sol, kaz:sc.kaz, pct:sc.pct, status:statusOf(r), id:r.id
+      });
+    });
+  });
+
+  personStats=Object.keys(map).map(function(k){
+    const m=map[k];
+    const aReg=avg(m.reg), aSol=avg(m.sol), aKaz=avg(m.kaz), aPct=avg(m.pct);
+    return {
+      name:m.name,
+      count:m.count,
+      aReg:aReg, aSol:aSol, aKaz:aKaz, aPct:aPct,
+      dSolReg:(aSol!=null&&aReg!=null)?(aSol-aReg):null,
+      dKazSol:(aKaz!=null&&aSol!=null)?(aKaz-aSol):null,
+      roles:m.roles
+    };
+  }).sort(function(a,b){return (b.aPct||0)-(a.aPct||0)});
+
+  render();
+}
+
+function render(){
+  const tb=document.getElementById("tbody");
+  const empty=document.getElementById("empty");
+  const kpis=document.getElementById("kpis");
+  tb.innerHTML="";
+  if(!personStats.length){
+    empty.style.display="";
+    kpis.innerHTML="";
+    return;
+  }
+  empty.style.display="none";
+  const allReg=[], allSol=[], allKaz=[], allPct=[];
+  personStats.forEach(function(p){
+    if(p.aReg!=null) allReg.push(p.aReg);
+    if(p.aSol!=null) allSol.push(p.aSol);
+    if(p.aKaz!=null) allKaz.push(p.aKaz);
+    if(p.aPct!=null) allPct.push(p.aPct);
+  });
+  kpis.innerHTML=
+    '<div class="kpi"><div class="n">'+personStats.length+'</div><div class="l">تعداد نفر</div></div>'+
+    '<div class="kpi"><div class="n">'+round1(avg(allReg))+'</div><div class="l">میانگین ثبت</div></div>'+
+    '<div class="kpi"><div class="n">'+round1(avg(allSol))+'</div><div class="l">میانگین سلطانی</div></div>'+
+    '<div class="kpi"><div class="n">'+round1(avg(allKaz))+'</div><div class="l">میانگین کاظمی</div></div>'+
+    '<div class="kpi"><div class="n">'+round1(avg(allPct))+'%</div><div class="l">میانگین درصد نهایی</div></div>';
+
+  personStats.forEach(function(p,i){
+    const tr=document.createElement("tr");
+    tr.className="clickable";
+    tr.innerHTML=
+      '<td>'+(i+1)+'</td>'+
+      '<td><b>'+esc(p.name)+'</b></td>'+
+      '<td>'+p.count+'</td>'+
+      '<td>'+round1(p.aReg)+'</td>'+
+      '<td>'+round1(p.aSol)+'</td>'+
+      '<td>'+round1(p.aKaz)+'</td>'+
+      '<td class="'+diffCls(p.dSolReg)+'">'+(p.dSolReg==null?"—":(p.dSolReg>0?"+":"")+round1(p.dSolReg))+'</td>'+
+      '<td class="'+diffCls(p.dKazSol)+'">'+(p.dKazSol==null?"—":(p.dKazSol>0?"+":"")+round1(p.dKazSol))+'</td>'+
+      '<td>'+(p.aPct==null?"—":round1(p.aPct)+"%")+'</td>';
+    tr.onclick=function(){openDetail(p.name)};
+    tb.appendChild(tr);
+  });
+}
+
+function openDetail(name){
+  const rows=detailMap[name]||[];
+  document.getElementById("modal").hidden=false;
+  document.getElementById("modal-title").textContent="جزئیات: "+name;
+  let h='<table><thead><tr><th>شماره</th><th>تاریخ</th><th>ایستگاه</th><th>نقش</th><th>ثبت</th><th>سلطانی</th><th>کاظمی</th><th>%</th><th>وضعیت</th></tr></thead><tbody>';
+  rows.forEach(function(r){
+    h+='<tr><td>'+esc(r.reportNo)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.area)+'</td><td>'+(r.role==="operator"?"اپراتور":"کمک")+'</td><td>'+round1(r.reg)+'</td><td>'+round1(r.sol)+'</td><td>'+round1(r.kaz)+'</td><td>'+(r.pct==null?"—":round1(r.pct)+"%")+'</td><td>'+esc(r.status)+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById("modal-body").innerHTML=h;
+}
+
+document.getElementById("modal-close").onclick=function(){document.getElementById("modal").hidden=true};
+document.getElementById("btn-run").onclick=compute;
+document.getElementById("btn-clear").onclick=function(){
+  monthDefaults();
+  document.getElementById("f-ws").value="";
+  document.getElementById("f-status").value="";
+  document.getElementById("f-role").value="any";
+  compute();
+};
+document.getElementById("btn-excel").onclick=function(){
+  if(!personStats.length){alert("داده‌ای نیست");return;}
+  function cell(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'}
+  const headers=["ردیف","نفر","تعداد گزارش","میانگین ثبت","میانگین سلطانی","میانگین کاظمی","اختلاف سلطانی-ثبت","اختلاف کاظمی-سلطانی","میانگین درصد نهایی"];
+  const rows=personStats.map(function(p,i){
+    return [i+1,p.name,p.count,round1(p.aReg),round1(p.aSol),round1(p.aKaz),
+      p.dSolReg==null?"":round1(p.dSolReg), p.dKazSol==null?"":round1(p.dKazSol),
+      p.aPct==null?"":round1(p.aPct)];
+  });
+  const csv=[headers].concat(rows).map(function(r){return r.map(cell).join(",")}).join("\r\n");
+  const blob=new Blob(["\uFEFF",csv],{type:"text/csv;charset=utf-8;"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="5S_person_scores_"+(document.getElementById("f-from").value||"")+"_"+(document.getElementById("f-to").value||"")+".csv";
+  a.click();
+};
+document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();location.replace("../")};
+document.getElementById("login-form").onsubmit=async function(e){
+  e.preventDefault();
+  try{
+    const u=document.getElementById("loginUser").value,p=document.getElementById("loginPass").value;
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email:u+"@people-manager.invalid",password:p});
+    if(error)throw error;
+    currentUser=data.user; await loadProfile(currentUser);
+    document.getElementById("login-page").hidden=true;
+    document.getElementById("app").hidden=false;
+    monthDefaults(); await loadData();
+  }catch(err){document.getElementById("login-error").textContent=err.message||"خطا"}
+};
+
+(async function(){
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  if(session&&session.user){
+    currentUser=session.user;
+    await loadProfile(currentUser);
+    document.getElementById("login-page").hidden=true;
+    document.getElementById("app").hidden=false;
+    monthDefaults();
+    await loadData();
+  } else {
+    document.getElementById("login-page").hidden=false;
+  }
+})();
+</script>
+</body>
+</html>
