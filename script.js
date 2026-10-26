@@ -1,16 +1,14 @@
- // نسخه: 2026-10-21-v6-supabase-fix
+// APW panel core — restored
 const SUPABASE_URL = "https://rtefjfvkjpatzitjjvwe.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_RK_M3waIU7Z4jLYcs5LFqQ_7dSYHDFP";
 
-if (!window.supabase?.createClient) {
-  alert("کتابخانه Supabase بارگذاری نشده است. ترتیب اسکریپت‌ها در index.html را بررسی کنید.");
-  throw new Error("Supabase JS library is missing");
+if (!window.supabase || !window.supabase.createClient) {
+  alert("کتابخانه Supabase بارگذاری نشده. اتصال اینترنت/VPN را بررسی کنید.");
+  throw new Error("Supabase missing");
 }
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+window.supabaseClient = supabaseClient;
 
 const peopleList = [
   { id: "7020", name: "Arash Baba" },
@@ -34,37 +32,45 @@ const peopleList = [
   { id: "7240", name: "Dariush Hazrati" }
 ];
 
+const ERROR_TYPES = ["تأخیر","غیبت","کم‌کاری","عدم رعایت ایمنی","خرابی محصول","سایر"];
+
 let currentUser = null;
 let currentProfile = null;
 let editingId = null;
+let allRows = [];
 
 const $ = (id) => document.getElementById(id);
 
 function showLogin() {
-  if ($("login-page")) $("login-page").style.display = "";
+  if ($("login-page")) $("login-page").style.display = "flex";
   if ($("app-page")) $("app-page").style.display = "none";
 }
 function showApp() {
   if ($("login-page")) $("login-page").style.display = "none";
-  if ($("app-page")) $("app-page").style.display = "";
-  const home = $("home-view");
-  const form = $("form-view");
-  const list = $("records-panel") || $("list-view");
-  if (home) home.style.display = "";
-  if (form) form.style.display = "none";
-  if (list) list.style.display = "none";
+  if ($("app-page")) $("app-page").style.display = "block";
 }
 
-function fillPeople() {
+function fillSelects() {
   const sel = $("personSelect");
-  if (!sel) return;
-  sel.innerHTML = '<option value="">انتخاب نفر</option>';
-  peopleList.forEach((p) => {
-    const o = document.createElement("option");
-    o.value = p.id;
-    o.textContent = p.name + " (" + p.id + ")";
-    sel.appendChild(o);
-  });
+  if (sel) {
+    sel.innerHTML = '<option value="">انتخاب نفر</option>';
+    peopleList.forEach((p) => {
+      const o = document.createElement("option");
+      o.value = p.id;
+      o.textContent = p.name + " (" + p.id + ")";
+      sel.appendChild(o);
+    });
+  }
+  const et = $("errorType");
+  if (et && et.tagName === "SELECT") {
+    et.innerHTML = '<option value="">انتخاب</option>';
+    ERROR_TYPES.forEach((t) => {
+      const o = document.createElement("option");
+      o.value = t;
+      o.textContent = t;
+      et.appendChild(o);
+    });
+  }
 }
 
 function todayStr() {
@@ -87,15 +93,25 @@ async function loadRecords() {
     .limit(500);
   if (error) {
     console.error(error);
-    alert("خطا در خواندن رکوردها: " + error.message);
+    alert("خطا در خواندن: " + error.message);
     return [];
   }
   return data || [];
 }
 
-function renderRecords(rows) {
+function renderTable(filter) {
   const tbody = $("records-body");
   if (!tbody) return;
+  const q = (filter || "").trim().toLowerCase();
+  let rows = allRows;
+  if (q) {
+    rows = rows.filter((r) =>
+      [r.person_name, r.error_type, r.warning_type, r.description, r.created_by_name, r.workstation]
+        .join(" ")
+        .toLowerCase()
+        .includes(q)
+    );
+  }
   tbody.innerHTML = "";
   const empty = $("empty-message");
   if (!rows.length) {
@@ -106,98 +122,74 @@ function renderRecords(rows) {
   const isAdmin = currentProfile && currentProfile.role === "admin";
   rows.forEach((r, i) => {
     const tr = document.createElement("tr");
-    tr.innerHTML =
-      "<td>" +
-      (i + 1) +
-      "</td><td>" +
-      (r.occurrence_date || "-") +
-      "</td><td>" +
-      (r.person_name || "-") +
-      "</td><td>" +
-      (r.error_type || "-") +
-      "</td><td>" +
-      (r.warning_type || "-") +
-      "</td><td>" +
-      (r.description || "-") +
-      "</td><td>" +
-      (r.created_by_name || "-") +
-      "</td>" +
-      (isAdmin
-        ? '<td><button type="button" data-edit="' +
-          r.id +
-          '">ویرایش</button> <button type="button" data-del="' +
-          r.id +
-          '">حذف</button></td>'
-        : "<td></td>");
+    const acts = isAdmin
+      ? `<button type="button" class="btn-edit" data-edit="${r.id}">ویرایش</button> <button type="button" class="btn-del" data-del="${r.id}">حذف</button>`
+      : "";
+    tr.innerHTML = `<td>${i + 1}</td><td>${r.person_id || ""}</td><td>${r.person_name || ""}</td><td>${r.workstation || ""}</td><td>${r.warning_type || ""}</td><td>${r.error_type || ""}</td><td>${r.report_date || ""}</td><td>${r.occurrence_date || ""}</td><td>${r.description || ""}</td><td>${r.created_by_name || ""}</td><td>${acts}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-window.__apwRecords = [];
-
-async function refreshList() {
-  window.__apwRecords = await loadRecords();
-  const q = (($("search-input") && $("search-input").value) || "").trim().toLowerCase();
-  let rows = window.__apwRecords;
-  if (q) {
-    rows = rows.filter((r) =>
-      [r.person_name, r.error_type, r.warning_type, r.description, r.created_by_name]
-        .join(" ")
-        .toLowerCase()
-        .includes(q)
-    );
-  }
-  renderRecords(rows);
+async function refresh() {
+  allRows = await loadRecords();
+  renderTable($("search-input") ? $("search-input").value : "");
 }
 
-function goHome() {
-  const home = $("home-view");
-  const form = $("form-view");
-  const list = $("records-panel") || $("list-view");
-  if (home) home.style.display = "";
-  if (form) form.style.display = "none";
-  if (list) list.style.display = "none";
-}
-function goForm() {
-  const home = $("home-view");
-  const form = $("form-view");
-  const list = $("records-panel") || $("list-view");
-  if (home) home.style.display = "none";
-  if (form) form.style.display = "";
-  if (list) list.style.display = "none";
+function resetForm() {
   editingId = null;
-  if ($("form-title")) $("form-title").textContent = "ثبت رکورد جدید";
   if ($("record-form")) $("record-form").reset();
   if ($("occurrenceDate")) $("occurrenceDate").value = todayStr();
   if ($("reportDate")) $("reportDate").value = todayStr();
+  if ($("form-title")) $("form-title").textContent = "ثبت رکورد جدید";
   if ($("cancel-btn")) $("cancel-btn").style.display = "none";
 }
-function goList() {
+
+function editRecord(id) {
+  const r = allRows.find((x) => x.id === id);
+  if (!r) return;
+  editingId = id;
+  if ($("form-title")) $("form-title").textContent = "ویرایش رکورد";
+  if ($("cancel-btn")) $("cancel-btn").style.display = "inline-block";
+  if ($("occurrenceDate")) $("occurrenceDate").value = r.occurrence_date || "";
+  if ($("reportDate")) $("reportDate").value = r.report_date || "";
+  if ($("personSelect")) $("personSelect").value = r.person_id || "";
+  if ($("personIdDisplay")) $("personIdDisplay").value = r.person_id || "";
+  if ($("workstation")) $("workstation").value = r.workstation || "";
+  if ($("errorType")) $("errorType").value = r.error_type || "";
+  if ($("warningType")) $("warningType").value = r.warning_type || "";
+  if ($("description")) $("description").value = r.description || "";
+  // show form view if home menu exists
   const home = $("home-view");
   const form = $("form-view");
-  const list = $("records-panel") || $("list-view");
-  if (home) home.style.display = "none";
-  if (form) form.style.display = "none";
-  if (list) list.style.display = "";
-  refreshList();
+  const list = $("records-panel");
+  if (home) home.hidden = true;
+  if (form) form.hidden = false;
+  if (list) list.hidden = true;
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  fillPeople();
-  if ($("go-new-record")) $("go-new-record").onclick = goForm;
-  if ($("go-view-records")) $("go-view-records").onclick = goList;
-  if ($("back-from-form")) $("back-from-form").onclick = goHome;
-  if ($("back-from-records")) $("back-from-records").onclick = goHome;
-  if ($("search-input")) $("search-input").oninput = refreshList;
+document.addEventListener("DOMContentLoaded", () => {
+  fillSelects();
+  if ($("occurrenceDate")) $("occurrenceDate").value = todayStr();
+  if ($("reportDate")) $("reportDate").value = todayStr();
 
   if ($("personSelect")) {
-    $("personSelect").onchange = function () {
+    $("personSelect").addEventListener("change", function () {
       if ($("personIdDisplay")) $("personIdDisplay").value = this.value || "";
-    };
+    });
+  }
+
+  if ($("search-input")) {
+    $("search-input").addEventListener("input", function () {
+      renderTable(this.value);
+    });
+  }
+
+  if ($("cancel-btn")) {
+    $("cancel-btn").addEventListener("click", resetForm);
   }
 
   if ($("record-form")) {
-    $("record-form").onsubmit = async function (e) {
+    $("record-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!currentUser) return alert("وارد شوید");
       const personId = $("personSelect").value;
@@ -210,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
         workstation: $("workstation") ? $("workstation").value : null,
         error_type: $("errorType").value,
         warning_type: $("warningType") ? $("warningType").value : null,
-        description: $("description").value,
+        description: $("description") ? $("description").value : "",
         created_by: currentUser.id,
         created_by_name: (currentProfile && (currentProfile.full_name || currentProfile.username)) || "",
       };
@@ -221,59 +213,49 @@ document.addEventListener("DOMContentLoaded", function () {
         ({ error } = await supabaseClient.from("people_error_records").insert(row));
       }
       if (error) return alert("خطا: " + error.message);
-      goList();
-    };
+      resetForm();
+      await refresh();
+      // go list
+      const home = $("home-view");
+      const form = $("form-view");
+      const list = $("records-panel");
+      if (home) home.hidden = true;
+      if (form) form.hidden = true;
+      if (list) list.hidden = false;
+    });
   }
 
   if ($("records-body")) {
-    $("records-body").onclick = async function (e) {
+    $("records-body").addEventListener("click", async (e) => {
       const ed = e.target.closest("[data-edit]");
       const del = e.target.closest("[data-del]");
-      if (ed) {
-        const id = ed.getAttribute("data-edit");
-        const r = window.__apwRecords.find((x) => x.id === id);
-        if (!r) return;
-        editingId = id;
-        goForm();
-        if ($("form-title")) $("form-title").textContent = "ویرایش رکورد";
-        if ($("cancel-btn")) $("cancel-btn").style.display = "";
-        $("occurrenceDate").value = r.occurrence_date || "";
-        if ($("reportDate")) $("reportDate").value = r.report_date || "";
-        $("personSelect").value = r.person_id || "";
-        if ($("personIdDisplay")) $("personIdDisplay").value = r.person_id || "";
-        if ($("workstation")) $("workstation").value = r.workstation || "";
-        $("errorType").value = r.error_type || "";
-        if ($("warningType")) $("warningType").value = r.warning_type || "";
-        $("description").value = r.description || "";
-      }
+      if (ed) editRecord(ed.getAttribute("data-edit"));
       if (del) {
         if (!confirm("حذف شود؟")) return;
         const { error } = await supabaseClient.from("people_error_records").delete().eq("id", del.getAttribute("data-del"));
         if (error) alert(error.message);
-        else refreshList();
+        else refresh();
       }
-    };
+    });
   }
-
-  if ($("cancel-btn")) $("cancel-btn").onclick = goForm;
 
   if ($("logout-btn")) {
-    $("logout-btn").onclick = async function () {
+    $("logout-btn").addEventListener("click", async () => {
       await supabaseClient.auth.signOut();
       location.replace("../");
-    };
+    });
   }
 
-  // session from landing SSO
-  supabaseClient.auth.getSession().then(async function (r) {
+  // session
+  supabaseClient.auth.getSession().then(async (r) => {
     const s = r.data && r.data.session;
     if (s && s.user) {
       currentUser = s.user;
       await loadProfile(currentUser);
       showApp();
+      await refresh();
     } else {
-      // gate.js should redirect; fallback login form
       showLogin();
     }
-  });
+  }).catch(() => showLogin());
 });
