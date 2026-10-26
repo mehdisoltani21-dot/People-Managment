@@ -64,9 +64,9 @@
         <label for="loginUser">کاربر</label>
         <select id="loginUser" required>
           <option value="">— انتخاب —</option>
-          <option value="mehdi-soltani">مهدی سلطانی</option>
+          <option value="mahdi-soltani">مهدی سلطانی</option>
           <option value="masoud-kazemi">مسعود کاظمی</option>
-          <option value="mehdi-afshar">مهدی افشار</option>
+          <option value="mahdi-afshar">مهدی افشار</option>
           <option value="arash-baba">آرش بابا</option>
         </select>
         <label for="loginPass">رمز عبور</label>
@@ -147,10 +147,15 @@
         const u = document.getElementById("loginUser").value;
         const p = document.getElementById("loginPass").value;
         try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: u + "@people-manager.invalid",
-            password: p
-          });
+          const emails = [u + "@people-manager.invalid"];
+          if (u.indexOf("mehdi-")===0) emails.push(u.replace("mehdi-","mahdi-") + "@people-manager.invalid");
+          if (u.indexOf("mahdi-")===0) emails.push(u.replace("mahdi-","mehdi-") + "@people-manager.invalid");
+          let data=null, error=null;
+          for (let i=0;i<emails.length;i++){
+            const res = await supabaseClient.auth.signInWithPassword({ email: emails[i], password: p });
+            if (!res.error && res.data && res.data.user){ data=res.data; error=null; break; }
+            error = res.error;
+          }
           if (error) throw error;
           const profile = await loadProfile(data.user);
           showApp(profile, data.user);
@@ -178,6 +183,6 @@
     }).catch(showLogin);
   })();
   </script>
-  <script src="./access.js?v=3"></script>
+  <script src="./access.js?v=4"></script>
 </body>
 </html>
