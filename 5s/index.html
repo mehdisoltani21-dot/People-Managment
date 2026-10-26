@@ -57,43 +57,32 @@
 
     try {
       var grid = document.querySelector(".home-grid");
-      if (grid && !document.getElementById("go-analytics")) {
+      function addCard(id, href, iconText, title, sub) {
+        if (!grid || document.getElementById(id)) return;
         var a = document.createElement("a");
-        a.id = "go-analytics";
-        a.href = "./analytics.html?v=10";
+        a.id = id;
+        a.href = href;
         a.className = "home-card";
         a.style.textDecoration = "none";
-        a.innerHTML = '<div class="home-icon">📊</div><h3>گزارش تحلیلی و فیلتر</h3><span>فیلتر نفر، ایستگاه، تاریخ + اکسل</span>';
+        a.innerHTML = '<div class="home-icon">' + iconText + '</div><h3>' + title + '</h3><span>' + sub + '</span>';
         grid.appendChild(a);
       }
-      if (grid && !document.getElementById("go-person-scores")) {
-        var b = document.createElement("a");
-        b.id = "go-person-scores";
-        b.href = "./person-scores.html?v=1";
-        b.className = "home-card";
-        b.style.textDecoration = "none";
-        b.innerHTML = '<div class="home-icon">👥</div><h3>گزارش ماهانه نفرات</h3><span>میانگین ثبت · سلطانی · کاظمی</span>';
-        grid.appendChild(b);
-      }
+      addCard("go-analytics", "./analytics.html?v=11", "▤", "گزارش تحلیلی و فیلتر", "فیلتر نفر، ایستگاه، تاریخ + اکسل");
+      addCard("go-person-scores", "./person-scores.html?v=2", "Σ", "گزارش ماهانه نفرات", "میانگین ثبت · سلطانی · کاظمی");
+
       var hdr = document.querySelector(".header") || document.querySelector("header") || document.querySelector(".app-header");
-      if (hdr && !document.getElementById("hdr-analytics")) {
+      function addHdr(id, href, text) {
+        if (!hdr || document.getElementById(id)) return;
         var ha = document.createElement("a");
-        ha.id = "hdr-analytics";
-        ha.href = "./analytics.html?v=10";
+        ha.id = id;
+        ha.href = href;
         ha.className = "nav-home";
-        ha.textContent = "گزارش تحلیلی";
+        ha.textContent = text;
         ha.style.marginInlineStart = "6px";
         hdr.appendChild(ha);
       }
-      if (hdr && !document.getElementById("hdr-person-scores")) {
-        var hb = document.createElement("a");
-        hb.id = "hdr-person-scores";
-        hb.href = "./person-scores.html?v=1";
-        hb.className = "nav-home";
-        hb.textContent = "گزارش نفرات";
-        hb.style.marginInlineStart = "6px";
-        hdr.appendChild(hb);
-      }
+      addHdr("hdr-analytics", "./analytics.html?v=11", "گزارش تحلیلی");
+      addHdr("hdr-person-scores", "./person-scores.html?v=2", "گزارش نفرات Σ");
     } catch (e) { console.warn(e); }
   } catch (e) {
     console.error(e);
