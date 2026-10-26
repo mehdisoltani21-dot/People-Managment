@@ -85,7 +85,8 @@ function fillSelects() {
     sel.innerHTML = '<option value="">انتخاب نفر</option>';
     peopleList.forEach((p) => {
       const o = document.createElement("option");
-      o.value = p.id;
+      o.value = String(p.id);
+      o.dataset.name = p.name;
       o.textContent = p.name + " (" + p.id + ")";
       sel.appendChild(o);
     });
@@ -123,7 +124,7 @@ async function loadRecords() {
   const { data, error } = await supabaseClient
     .from("people_error_records")
     .select("*")
-    .order("occurrence_date", { ascending: false })
+    .order("created_at", { ascending: false })
     .limit(500);
   if (error) {
     console.error(error);
@@ -133,6 +134,10 @@ async function loadRecords() {
   return data || [];
 }
 
+function displayName(r) {
+  return r.full_name || r.person_name || "";
+}
+
 function renderTable(filter) {
   const tbody = $("records-body");
   if (!tbody) return;
@@ -140,7 +145,7 @@ function renderTable(filter) {
   let rows = allRows;
   if (q) {
     rows = rows.filter((r) =>
-      [r.person_name, r.error_type, r.warning_type, r.description, r.created_by_name, r.workstation]
+      [displayName(r), r.person_id, r.error_type, r.warning_type, r.description, r.created_by_name, r.workstation]
         .join(" ")
         .toLowerCase()
         .includes(q)
@@ -159,7 +164,7 @@ function renderTable(filter) {
     const acts = isAdmin
       ? `<button type="button" class="btn-edit" data-edit="${r.id}">ویرایش</button> <button type="button" class="btn-del" data-del="${r.id}">حذف</button>`
       : "";
-    tr.innerHTML = `<td>${i + 1}</td><td>${r.person_id || ""}</td><td>${r.person_name || ""}</td><td>${r.workstation || ""}</td><td>${r.warning_type || ""}</td><td>${r.error_type || ""}</td><td>${r.report_date || ""}</td><td>${r.occurrence_date || ""}</td><td>${r.description || ""}</td><td>${r.created_by_name || ""}</td><td>${acts}</td>`;
+    tr.innerHTML = `<td>${i + 1}</td><td>${r.person_id || ""}</td><td>${displayName(r)}</td><td>${r.workstation || ""}</td><td>${r.warning_type || ""}</td><td>${r.error_type || ""}</td><td>${r.report_date || ""}</td><td>${r.occurrence_date || ""}</td><td>${r.description || ""}</td><td>${r.created_by_name || ""}</td><td>${acts}</td>`;
     tbody.appendChild(tr);
   });
 }
@@ -179,19 +184,64 @@ function resetForm() {
 }
 
 function editRecord(id) {
-  const r = allRows.find((x) => x.id === id);
+  const r = allRows.find((x) => String(x.id) === String(id));
   if (!r) return;
-  editingId = id;
+  editingId = r.id;
   if ($("form-title")) $("form-title").textContent = "ویرایش رکورد";
   if ($("cancel-btn")) $("cancel-btn").style.display = "inline-block";
   if ($("occurrenceDate")) $("occurrenceDate").value = r.occurrence_date || "";
   if ($("reportDate")) { $("reportDate").value = r.report_date || todayStr(); $("reportDate").readOnly = true; }
-  if ($("personSelect")) $("personSelect").value = r.person_id || "";
-  if ($("personIdDisplay")) $("personIdDisplay").value = r.person_id || "";
-  if ($("workstation")) $("workstation").value = r.workstation || "";
-  if ($("errorType")) $("errorType").value = r.error_type || "";
+
+  const pid = String(r.person_id || "");
+  const pname = displayName(r);
+  const sel = $("personSelect");
+  if (sel) {
+    let found = false;
+    for (let i = 0; i < sel.options.length; i++) {
+      if (String(sel.options[i].value) === pid) { found = true; break; }
+    }
+    if (!found && pid) {
+      const o = document.createElement("option");
+      o.value = pid;
+      o.dataset.name = pname;
+      o.textContent = (pname || pid) + " (" + pid + ")";
+      sel.appendChild(o);
+    }
+    sel.value = pid;
+  }
+  if ($("personIdDisplay")) $("personIdDisplay").value = pid;
+
+  const ws = $("workstation");
+  if (ws) {
+    const w = r.workstation || "";
+    if (w && ws.tagName === "SELECT") {
+      let ok = false;
+      for (let i = 0; i < ws.options.length; i++) if (ws.options[i].value === w) ok = true;
+      if (!ok) {
+        const o = document.createElement("option");
+        o.value = w; o.textContent = w + " (قبلی)";
+        ws.appendChild(o);
+      }
+    }
+    ws.value = w;
+  }
+  const et = $("errorType");
+  if (et) {
+    const e = r.error_type || "";
+    if (e && et.tagName === "SELECT") {
+      let ok = false;
+      for (let i = 0; i < et.options.length; i++) if (et.options[i].value === e) ok = true;
+      if (!ok) {
+        const o = document.createElement("option");
+        o.value = e; o.textContent = e + " (قبلی)";
+        et.appendChild(o);
+      }
+    }
+    et.value = e;
+  }
   if ($("warningType")) $("warningType").value = r.warning_type || "";
   if ($("description")) $("description").value = r.description || "";
+
   const home = $("home-view");
   const form = $("form-view");
   const list = $("records-panel");
@@ -225,13 +275,17 @@ document.addEventListener("DOMContentLoaded", () => {
     $("record-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!currentUser) return alert("وارد شوید");
-      const personId = $("personSelect").value;
-      const person = peopleList.find((p) => p.id === personId);
+      const selected = $("personSelect");
+      const personId = selected ? String(selected.value) : "";
+      const person = peopleList.find((p) => String(p.id) === personId);
+      const fullName = person
+        ? person.name
+        : (selected && selected.selectedOptions[0] && (selected.selectedOptions[0].dataset.name || selected.selectedOptions[0].textContent)) || "";
       const row = {
         occurrence_date: $("occurrenceDate").value,
         report_date: todayStr(),
         person_id: personId,
-        person_name: person ? person.name : "",
+        full_name: fullName,
         workstation: $("workstation") ? $("workstation").value : null,
         error_type: $("errorType").value,
         warning_type: $("warningType") ? $("warningType").value : null,
@@ -241,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       if (!row.workstation) return alert("لطفاً ایستگاه کاری را انتخاب کنید.");
       if (!row.error_type) return alert("لطفاً نوع خطا را انتخاب کنید.");
+      if (!row.person_id) return alert("لطفاً نفر را انتخاب کنید.");
       let error;
       if (editingId) {
         ({ error } = await supabaseClient.from("people_error_records").update(row).eq("id", editingId));
