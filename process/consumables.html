@@ -56,9 +56,9 @@ input[type=number],input[type=text]{width:100%;max-width:120px;padding:8px;borde
       <label>کاربر</label>
       <select id="loginUser" required>
         <option value="">—</option>
-        <option value="mehdi-soltani">مهدی سلطانی</option>
+        <option value="mahdi-soltani">مهدی سلطانی</option>
         <option value="masoud-kazemi">مسعود کاظمی</option>
-        <option value="mehdi-afshar">مهدی افشار</option>
+        <option value="mahdi-afshar">مهدی افشار</option>
         <option value="arash-baba">آرش بابا</option>
       </select>
       <label>رمز</label>
@@ -235,10 +235,11 @@ function rnd(n,d){const p=Math.pow(10,d||0);return Math.round(n*p)/p}
 function today(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function parseNote(note){if(!note)return{};try{return JSON.parse(note)||{}}catch(e){return{text:note}}}
 function show(view){
-  $["home-view"].hidden=view!=="home";
-  $["form-view"].hidden=view!=="form";
-  $["list-view"].hidden=view!=="list";
-  $["calc-view"].hidden=view!=="calc";
+  const hv=$("home-view"), fv=$("form-view"), lv=$("list-view"), cv=$("calc-view");
+  if(hv) hv.hidden = view!=="home";
+  if(fv) fv.hidden = view!=="form";
+  if(lv) lv.hidden = view!=="list";
+  if(cv) cv.hidden = view!=="calc";
 }
 
 function renderFormRows(map){
@@ -351,7 +352,6 @@ function renderCalcs(){
   });
 
   const tbB=$("tb-base"); tbB.innerHTML="";
-  let baseProdTotal=0;
   CATALOG.filter(x=>x.group==="base").forEach(it=>{
     const q=qtyOf(it.name);
     let producible=0, remain=0, need=it.need||0, days=0;
@@ -362,7 +362,6 @@ function renderCalcs(){
       remain=extra.remain!=null?num(extra.remain):0;
       days=remain>0?rnd(remain/2740,2):0;
     }
-    baseProdTotal+=producible;
     const tr=document.createElement("tr");
     tr.innerHTML=`<td class="name-cell">${esc(it.name)}</td><td>${q.toLocaleString("fa-IR")}</td><td>${producible.toLocaleString("fa-IR")}</td><td>${remain.toLocaleString("fa-IR")}</td><td>${need.toLocaleString("fa-IR")}</td><td>${days.toLocaleString("fa-IR")}</td>`;
     tbB.appendChild(tr);
@@ -418,34 +417,45 @@ async function renderList(date){
   });
 }
 
-$("go-form").onclick=async()=>{show("form");$("f-date").value=$("f-date").value||today();try{await loadStock($("f-date").value);renderFormRows(stockMap);}catch(e){renderFormRows({});$("form-msg").className="msg err";$("form-msg").textContent="خطا: "+e.message;}};
-$("go-list").onclick=()=>{show("list");$("l-date").value=$("l-date").value||today();};
-$("go-calc").onclick=async()=>{show("calc");$("c-date").value=$("c-date").value||today();try{await loadStock($("c-date").value);renderCalcs();}catch(e){$("calc-msg").className="msg err";$("calc-msg").textContent=e.message;}};
-document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show("home"));
-$("f-date").onchange=async function(){try{await loadStock(this.value);renderFormRows(stockMap);}catch(e){renderFormRows({});}};
-$("save-btn").onclick=()=>saveStock($("f-date").value,false);
-$("save-go-calc").onclick=()=>saveStock($("f-date").value,true);
-$("load-date").onclick=()=>renderList($("l-date").value);
-$("c-load").onclick=async()=>{try{await loadStock($("c-date").value);renderCalcs();}catch(e){$("calc-msg").className="msg err";$("calc-msg").textContent=e.message;}};
-$("load-latest").onclick=async()=>{
-  const {data}=await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
-  if(data&&data[0]){$("l-date").value=data[0].snapshot_date;renderList(data[0].snapshot_date);}
-};
-$("logout-btn").onclick=async()=>{await supabaseClient.auth.signOut();location.replace("../");};
-$("login-form").onsubmit=async e=>{
-  e.preventDefault();
-  try{
-    const u=$("loginUser").value,p=$("loginPass").value;
-    const {data,error}=await supabaseClient.auth.signInWithPassword({email:u+"@people-manager.invalid",password:p});
-    if(error)throw error;
-    const {data:prof}=await supabaseClient.from("user_profiles").select("*").eq("id",data.user.id).maybeSingle();
-    profile=prof||{id:data.user.id,full_name:data.user.email};
-    $("login-page").hidden=true;$("app").hidden=false;
-    $("user-label").textContent=profile.full_name||profile.username||"کاربر";
-    $("f-by").value=$("user-label").textContent;
-    show("home");
-  }catch(err){$("login-error").textContent=err.message||"خطا"}
-};
+function bind(){
+  $("go-form").onclick=async()=>{show("form");$("f-date").value=$("f-date").value||today();try{await loadStock($("f-date").value);renderFormRows(stockMap);}catch(e){renderFormRows({});$("form-msg").className="msg err";$("form-msg").textContent="خطا: "+e.message;}};
+  $("go-list").onclick=()=>{show("list");$("l-date").value=$("l-date").value||today();};
+  $("go-calc").onclick=async()=>{show("calc");$("c-date").value=$("c-date").value||today();try{await loadStock($("c-date").value);renderCalcs();}catch(e){$("calc-msg").className="msg err";$("calc-msg").textContent=e.message;}};
+  document.querySelectorAll("[data-back]").forEach(b=>b.onclick=()=>show("home"));
+  $("f-date").onchange=async function(){try{await loadStock(this.value);renderFormRows(stockMap);}catch(e){renderFormRows({});}};
+  $("save-btn").onclick=()=>saveStock($("f-date").value,false);
+  $("save-go-calc").onclick=()=>saveStock($("f-date").value,true);
+  $("load-date").onclick=()=>renderList($("l-date").value);
+  $("c-load").onclick=async()=>{try{await loadStock($("c-date").value);renderCalcs();}catch(e){$("calc-msg").className="msg err";$("calc-msg").textContent=e.message;}};
+  $("load-latest").onclick=async()=>{
+    const {data}=await supabaseClient.from(TABLE).select("snapshot_date").order("snapshot_date",{ascending:false}).limit(1);
+    if(data&&data[0]){$("l-date").value=data[0].snapshot_date;renderList(data[0].snapshot_date);}
+  };
+  $("logout-btn").onclick=async()=>{await supabaseClient.auth.signOut();location.replace("../");};
+  $("login-form").onsubmit=async e=>{
+    e.preventDefault();
+    try{
+      const u=$("loginUser").value,p=$("loginPass").value;
+      const emails=[u+"@people-manager.invalid"];
+      if(u.indexOf("mehdi-")===0) emails.push(u.replace("mehdi-","mahdi-")+"@people-manager.invalid");
+      if(u.indexOf("mahdi-")===0) emails.push(u.replace("mahdi-","mehdi-")+"@people-manager.invalid");
+      let data=null,error=null;
+      for(let i=0;i<emails.length;i++){
+        const res=await supabaseClient.auth.signInWithPassword({email:emails[i],password:p});
+        if(!res.error&&res.data&&res.data.user){data=res.data;error=null;break;}
+        error=res.error;
+      }
+      if(error)throw error;
+      const {data:prof}=await supabaseClient.from("user_profiles").select("*").eq("id",data.user.id).maybeSingle();
+      profile=prof||{id:data.user.id,full_name:data.user.email};
+      $("login-page").hidden=true;$("app").hidden=false;
+      $("user-label").textContent=profile.full_name||profile.username||"کاربر";
+      $("f-by").value=$("user-label").textContent;
+      show("home");
+    }catch(err){$("login-error").textContent=err.message||"خطا"}
+  };
+}
+bind();
 (async()=>{
   const {data:{session}}=await supabaseClient.auth.getSession();
   if(session&&session.user){
