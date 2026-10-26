@@ -39,6 +39,10 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
 #login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
 .login-box{max-width:380px;width:100%;padding:22px;border-radius:16px;border:1px solid #3d3428;background:#1a1610}
 .login-box input,.login-box select{width:100%;padding:10px;margin:6px 0 12px;border-radius:10px;border:1px solid #4a4030;background:#14110c;color:#f5f0e8;font-family:inherit}
+.role-ic{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:7px;font-size:.75rem;font-weight:900;margin-left:4px;vertical-align:middle}
+.role-op{background:linear-gradient(135deg,#f5a623,#e8910f);color:#1a1208}
+.role-as{background:#2a3a4a;color:#93c5fd;border:1px solid #3b6ea5}
+.role-tag{display:inline-flex;align-items:center;gap:4px;font-size:.82rem}
 .page-icon{width:48px;height:48px;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;background:linear-gradient(135deg,#f5a623,#d97706);color:#1a1208;box-shadow:0 8px 20px rgba(245,166,35,.3);flex-shrink:0}
 .brand-row{display:flex;align-items:center;gap:12px}
 [hidden]{display:none!important}
@@ -88,7 +92,9 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
 
   <div class="wrap">
     <div class="card">
-      <p class="hint">برای هر نفر، میانگین سه لایه امتیاز در بازه انتخابی محاسبه می‌شود. روی ردیف کلیک کنید تا جزئیات گزارش‌های همان نفر را ببینید.</p>
+      <p class="hint">برای هر نفر، میانگین سه لایه امتیاز در بازه انتخابی محاسبه می‌شود. روی ردیف کلیک کنید تا جزئیات را ببینید.
+        <br><span class="role-ic role-op">◎</span> اپراتور &nbsp; <span class="role-ic role-as">＋</span> کمک‌اپراتور
+      </p>
       <div class="filters">
         <div class="f"><label>از تاریخ</label><input type="date" id="f-from"></div>
         <div class="f"><label>تا تاریخ</label><input type="date" id="f-to"></div>
@@ -101,11 +107,14 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
             <option value="finalized">فقط نهایی‌شده</option>
           </select>
         </div>
-        <div class="f"><label>نقش نفر</label>
+        <div class="f"><label>اسم نفر</label>
+          <select id="f-person"><option value="">همه نفرات</option></select>
+        </div>
+        <div class="f"><label>نقش</label>
           <select id="f-role">
-            <option value="any">اپراتور یا کمک</option>
-            <option value="operator">فقط اپراتور</option>
-            <option value="assistant">فقط کمک</option>
+            <option value="any">همه نقش‌ها</option>
+            <option value="operator">◎ فقط اپراتور</option>
+            <option value="assistant">＋ فقط کمک</option>
           </select>
         </div>
         <button type="button" class="btn btn-primary" id="btn-run">محاسبه</button>
@@ -124,7 +133,7 @@ tr.clickable{cursor:pointer}tr.clickable:hover{background:#241e16}
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <p style="font-size:.75rem;color:#8a7a68;margin-top:10px">* درصد نهایی بر اساس آخرین مرحله موجود (کاظمی، وگرنه سلطانی، وگرنه ثبت) نسبت به سقف همان گزارش</p>
+      <p style="font-size:.75rem;color:#8a7a68;margin-top:10px">* درصد نهایی بر اساس آخرین مرحله موجود (کاظمی، وگرنه سلطانی، وگرنه ثبت)</p>
       <p id="empty" style="color:#a89a86;margin-top:12px;display:none">در این بازه داده‌ای نیست</p>
     </div>
   </div>
@@ -185,7 +194,29 @@ async function loadData(){
   Array.from(new Set(allRows.map(function(r){return r.area||""}).filter(Boolean))).sort().forEach(function(v){
     const o=document.createElement("option");o.value=v;o.textContent=v;ws.appendChild(o);
   });
-  ws.value=cur; compute();
+  ws.value=cur;
+  fillPersonFilter();
+  compute();
+}
+function fillPersonFilter(){
+  const sel=document.getElementById("f-person");
+  if(!sel) return;
+  const cur=sel.value;
+  const names=new Set();
+  allRows.forEach(function(r){
+    [r.operator_name,r.assistant1_name,r.assistant2_name,r.assistant3_name].forEach(function(n){
+      if(n&&String(n).trim()) names.add(String(n).trim());
+    });
+  });
+  sel.innerHTML='<option value="">همه نفرات</option>';
+  Array.from(names).sort().forEach(function(n){
+    const o=document.createElement("option"); o.value=n; o.textContent=n; sel.appendChild(o);
+  });
+  sel.value=cur;
+}
+function roleIcon(role){
+  if(role==="operator") return '<span class="role-tag"><span class="role-ic role-op" title="اپراتور">◎</span>اپراتور</span>';
+  return '<span class="role-tag"><span class="role-ic role-as" title="کمک">＋</span>کمک</span>';
 }
 function peopleOnRow(r, roleFilter){
   const list=[];
@@ -207,6 +238,7 @@ function compute(){
   const ws=document.getElementById("f-ws").value;
   const st=document.getElementById("f-status").value;
   const roleFilter=document.getElementById("f-role").value;
+  const personFilter=(document.getElementById("f-person")&&document.getElementById("f-person").value)||"";
   const filtered=allRows.filter(function(r){
     const d=r.audit_date||"";
     if(from && d<from) return false;
@@ -222,6 +254,7 @@ function compute(){
   filtered.forEach(function(r){
     const sc=scoresOf(r);
     peopleOnRow(r, roleFilter).forEach(function(p){
+      if(personFilter && p.name!==personFilter) return;
       if(!map[p.name]){ map[p.name]={name:p.name, count:0, reg:[], sol:[], kaz:[], pct:[], roles:{}}; detailMap[p.name]=[]; }
       const m=map[p.name]; m.count++; m.roles[p.role]=(m.roles[p.role]||0)+1;
       if(sc.reg!=null) m.reg.push(sc.reg);
@@ -248,7 +281,10 @@ function render(){
   kpis.innerHTML='<div class="kpi"><div class="n">'+personStats.length+'</div><div class="l">تعداد نفر</div></div><div class="kpi"><div class="n">'+round1(avg(allReg))+'</div><div class="l">میانگین ثبت</div></div><div class="kpi"><div class="n">'+round1(avg(allSol))+'</div><div class="l">میانگین سلطانی</div></div><div class="kpi"><div class="n">'+round1(avg(allKaz))+'</div><div class="l">میانگین کاظمی</div></div><div class="kpi"><div class="n">'+round1(avg(allPct))+'%</div><div class="l">میانگین درصد نهایی</div></div>';
   personStats.forEach(function(p,i){
     const tr=document.createElement("tr"); tr.className="clickable";
-    tr.innerHTML='<td>'+(i+1)+'</td><td><b>'+esc(p.name)+'</b></td><td>'+p.count+'</td><td>'+round1(p.aReg)+'</td><td>'+round1(p.aSol)+'</td><td>'+round1(p.aKaz)+'</td><td class="'+diffCls(p.dSolReg)+'">'+(p.dSolReg==null?"—":(p.dSolReg>0?"+":"")+round1(p.dSolReg))+'</td><td class="'+diffCls(p.dKazSol)+'">'+(p.dKazSol==null?"—":(p.dKazSol>0?"+":"")+round1(p.dKazSol))+'</td><td>'+(p.aPct==null?"—":round1(p.aPct)+"%")+'</td>';
+    var roleBits='';
+    if(p.roles&&p.roles.operator) roleBits+='<span class="role-ic role-op" title="اپراتور">◎</span>';
+    if(p.roles&&p.roles.assistant) roleBits+='<span class="role-ic role-as" title="کمک">＋</span>';
+    tr.innerHTML='<td>'+(i+1)+'</td><td><b>'+esc(p.name)+'</b> '+roleBits+'</td><td>'+p.count+'</td><td>'+round1(p.aReg)+'</td><td>'+round1(p.aSol)+'</td><td>'+round1(p.aKaz)+'</td><td class="'+diffCls(p.dSolReg)+'">'+(p.dSolReg==null?"—":(p.dSolReg>0?"+":"")+round1(p.dSolReg))+'</td><td class="'+diffCls(p.dKazSol)+'">'+(p.dKazSol==null?"—":(p.dKazSol>0?"+":"")+round1(p.dKazSol))+'</td><td>'+(p.aPct==null?"—":round1(p.aPct)+"%")+'</td>';
     tr.onclick=function(){openDetail(p.name)}; tb.appendChild(tr);
   });
 }
@@ -258,13 +294,13 @@ function openDetail(name){
   document.getElementById("modal-title").textContent="جزئیات: "+name;
   let h='<table><thead><tr><th>شماره</th><th>تاریخ</th><th>ایستگاه</th><th>نقش</th><th>ثبت</th><th>سلطانی</th><th>کاظمی</th><th>%</th><th>وضعیت</th></tr></thead><tbody>';
   rows.forEach(function(r){
-    h+='<tr><td>'+esc(r.reportNo)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.area)+'</td><td>'+(r.role==="operator"?"اپراتور":"کمک")+'</td><td>'+round1(r.reg)+'</td><td>'+round1(r.sol)+'</td><td>'+round1(r.kaz)+'</td><td>'+(r.pct==null?"—":round1(r.pct)+"%")+'</td><td>'+esc(r.status)+'</td></tr>';
+    h+='<tr><td>'+esc(r.reportNo)+'</td><td>'+esc(r.date)+'</td><td>'+esc(r.area)+'</td><td>'+roleIcon(r.role)+'</td><td>'+round1(r.reg)+'</td><td>'+round1(r.sol)+'</td><td>'+round1(r.kaz)+'</td><td>'+(r.pct==null?"—":round1(r.pct)+"%")+'</td><td>'+esc(r.status)+'</td></tr>';
   });
   h+='</tbody></table>'; document.getElementById("modal-body").innerHTML=h;
 }
 document.getElementById("modal-close").onclick=function(){document.getElementById("modal").hidden=true};
 document.getElementById("btn-run").onclick=compute;
-document.getElementById("btn-clear").onclick=function(){monthDefaults();document.getElementById("f-ws").value="";document.getElementById("f-status").value="";document.getElementById("f-role").value="any";compute();};
+document.getElementById("btn-clear").onclick=function(){monthDefaults();document.getElementById("f-ws").value="";document.getElementById("f-status").value="";document.getElementById("f-role").value="any";if(document.getElementById("f-person"))document.getElementById("f-person").value="";compute();};
 document.getElementById("btn-excel").onclick=function(){
   if(!personStats.length){alert("داده‌ای نیست");return;}
   function cell(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'}
