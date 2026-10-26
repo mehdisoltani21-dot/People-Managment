@@ -83,15 +83,13 @@
         <form id="record-form">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div><label>تاریخ وقوع</label><input type="date" id="occurrenceDate" required style="width:100%;padding:8px"></div>
-            <div><label>تاریخ گزارش</label><input type="date" id="reportDate" style="width:100%;padding:8px"></div>
+            <div><label>تاریخ گزارش</label><input type="date" id="reportDate" readonly style="width:100%;padding:8px;opacity:.85;cursor:not-allowed"></div>
             <div><label>نفر</label><select id="personSelect" required style="width:100%;padding:8px"></select></div>
             <div><label>کد نفر</label><input type="text" id="personIdDisplay" readonly style="width:100%;padding:8px"></div>
-            <div><label>ایستگاه کاری</label><input type="text" id="workstation" style="width:100%;padding:8px"></div>
+            <div><label>ایستگاه کاری</label><select id="workstation" required style="width:100%;padding:8px"><option value="">انتخاب ایستگاه</option></select></div>
             <div><label>نوع خطا</label>
               <select id="errorType" required style="width:100%;padding:8px">
-                <option value="">انتخاب</option>
-                <option>تأخیر</option><option>غیبت</option><option>کم‌کاری</option>
-                <option>عدم رعایت ایمنی</option><option>خرابی محصول</option><option>سایر</option>
+                <option value="">انتخاب نوع خطا</option>
               </select>
             </div>
             <div><label>نوع اخطار</label>
@@ -135,7 +133,7 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../script.js?v=22"></script>
+  <script src="../script.js?v=23"></script>
   <script>
     (function () {
       const home = document.getElementById("home-view");

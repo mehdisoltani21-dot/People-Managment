@@ -32,7 +32,19 @@ const peopleList = [
   { id: "7240", name: "Dariush Hazrati" }
 ];
 
-const ERROR_TYPES = ["تأخیر","غیبت","کم‌کاری","عدم رعایت ایمنی","خرابی محصول","سایر"];
+const WORKSTATIONS = [
+  "ورودی", "روکش زیرین", "سنباده پنل", "روکش فوقانی",
+  "اوستا باشی پنل", "اوستاباشی پروفیل", "گزارشگیر",
+  "بسته بندی پنل", "برش فویل", "روکش پروفیل",
+  "سنباده پروفیل", "فرزه", "سلکو", "پالت سازی"
+];
+const ERROR_TYPES = [
+  "عدم اجرای صحیح وظایف محوله", "غیبت و تأخیر", "وضعیت ظاهری نامناسب",
+  "استفاده غیر استاندارد لوازم مصرفی", "عدم استفاده از وسایل ایمنی فردی",
+  "عدم استفاده از وسایل حفاظت فردی", "ماشین آلات و تجهیزات", "مشکلات فرآیندی",
+  "عدم آموزش", "شرایط محیطی", "عدم رعایت مقررات ایمنی و دستورالعمل ها",
+  "ازدحام و بی نظمی"
+];
 
 let currentUser = null;
 let currentProfile = null;
@@ -50,6 +62,23 @@ function showApp() {
   if ($("app-page")) $("app-page").style.display = "block";
 }
 
+function todayStr() {
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+
+function lockReportDate() {
+  const rd = $("reportDate");
+  if (!rd) return;
+  rd.value = todayStr();
+  rd.readOnly = true;
+  rd.setAttribute("readonly", "readonly");
+  rd.style.opacity = "0.85";
+  rd.style.cursor = "not-allowed";
+  rd.addEventListener("keydown", function(e){ e.preventDefault(); });
+  rd.addEventListener("mousedown", function(e){ e.preventDefault(); rd.blur(); });
+}
+
 function fillSelects() {
   const sel = $("personSelect");
   if (sel) {
@@ -61,9 +90,19 @@ function fillSelects() {
       sel.appendChild(o);
     });
   }
+  const ws = $("workstation");
+  if (ws && ws.tagName === "SELECT") {
+    ws.innerHTML = '<option value="">انتخاب ایستگاه</option>';
+    WORKSTATIONS.forEach((t) => {
+      const o = document.createElement("option");
+      o.value = t;
+      o.textContent = t;
+      ws.appendChild(o);
+    });
+  }
   const et = $("errorType");
   if (et && et.tagName === "SELECT") {
-    et.innerHTML = '<option value="">انتخاب</option>';
+    et.innerHTML = '<option value="">انتخاب نوع خطا</option>';
     ERROR_TYPES.forEach((t) => {
       const o = document.createElement("option");
       o.value = t;
@@ -71,11 +110,6 @@ function fillSelects() {
       et.appendChild(o);
     });
   }
-}
-
-function todayStr() {
-  const d = new Date();
-  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 }
 
 async function loadProfile(user) {
@@ -139,9 +173,9 @@ function resetForm() {
   editingId = null;
   if ($("record-form")) $("record-form").reset();
   if ($("occurrenceDate")) $("occurrenceDate").value = todayStr();
-  if ($("reportDate")) $("reportDate").value = todayStr();
   if ($("form-title")) $("form-title").textContent = "ثبت رکورد جدید";
   if ($("cancel-btn")) $("cancel-btn").style.display = "none";
+  lockReportDate();
 }
 
 function editRecord(id) {
@@ -151,14 +185,13 @@ function editRecord(id) {
   if ($("form-title")) $("form-title").textContent = "ویرایش رکورد";
   if ($("cancel-btn")) $("cancel-btn").style.display = "inline-block";
   if ($("occurrenceDate")) $("occurrenceDate").value = r.occurrence_date || "";
-  if ($("reportDate")) $("reportDate").value = r.report_date || "";
+  if ($("reportDate")) { $("reportDate").value = r.report_date || todayStr(); $("reportDate").readOnly = true; }
   if ($("personSelect")) $("personSelect").value = r.person_id || "";
   if ($("personIdDisplay")) $("personIdDisplay").value = r.person_id || "";
   if ($("workstation")) $("workstation").value = r.workstation || "";
   if ($("errorType")) $("errorType").value = r.error_type || "";
   if ($("warningType")) $("warningType").value = r.warning_type || "";
   if ($("description")) $("description").value = r.description || "";
-  // show form view if home menu exists
   const home = $("home-view");
   const form = $("form-view");
   const list = $("records-panel");
@@ -170,7 +203,7 @@ function editRecord(id) {
 document.addEventListener("DOMContentLoaded", () => {
   fillSelects();
   if ($("occurrenceDate")) $("occurrenceDate").value = todayStr();
-  if ($("reportDate")) $("reportDate").value = todayStr();
+  lockReportDate();
 
   if ($("personSelect")) {
     $("personSelect").addEventListener("change", function () {
@@ -196,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const person = peopleList.find((p) => p.id === personId);
       const row = {
         occurrence_date: $("occurrenceDate").value,
-        report_date: $("reportDate") ? $("reportDate").value : $("occurrenceDate").value,
+        report_date: todayStr(),
         person_id: personId,
         person_name: person ? person.name : "",
         workstation: $("workstation") ? $("workstation").value : null,
@@ -206,6 +239,8 @@ document.addEventListener("DOMContentLoaded", () => {
         created_by: currentUser.id,
         created_by_name: (currentProfile && (currentProfile.full_name || currentProfile.username)) || "",
       };
+      if (!row.workstation) return alert("لطفاً ایستگاه کاری را انتخاب کنید.");
+      if (!row.error_type) return alert("لطفاً نوع خطا را انتخاب کنید.");
       let error;
       if (editingId) {
         ({ error } = await supabaseClient.from("people_error_records").update(row).eq("id", editingId));
@@ -215,7 +250,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (error) return alert("خطا: " + error.message);
       resetForm();
       await refresh();
-      // go list
       const home = $("home-view");
       const form = $("form-view");
       const list = $("records-panel");
@@ -246,7 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // session
   supabaseClient.auth.getSession().then(async (r) => {
     const s = r.data && r.data.session;
     if (s && s.user) {
