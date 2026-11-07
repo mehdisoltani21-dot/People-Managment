@@ -52,9 +52,11 @@
     if (html.indexOf("report-view.js") === -1) {
       html = html.replace("</body>", '<script src="report-view.js?v=7"><\/script></body>');
     }
-    // always inject image compress ~200KB
     if (html.indexOf("image-compress.js") === -1) {
       html = html.replace("</body>", '<script src="./image-compress.js?v=2"><\/script></body>');
+    }
+    if (html.indexOf("save-fix.js") === -1) {
+      html = html.replace("</body>", '<script src="./save-fix.js?v=1"><\/script></body>');
     }
 
     document.open();
