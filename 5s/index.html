@@ -30,10 +30,6 @@
     }
     if (!html) throw lastErr || new Error("load failed");
 
-    if (html.indexOf("compressImageFile") < 0 && html.indexOf("function handleFile") >= 0) {
-      html = html.replace("</body>", '<script src="./image-compress.js?v=1"><\/script></body>');
-    }
-
     html = html.replace(
       "let currentUser=null,currentProfile=null,auditsCache=[];",
       "let currentUser=null,currentProfile=null;window.auditsCache=[];"
@@ -45,11 +41,59 @@
     html = html.split("const r=auditsCache[idx]").join("const r=window.auditsCache[idx]");
     html = html.split("auditsCache[").join("window.auditsCache[");
 
+    html = html.replace(
+      /document\.getElementById\("logout-btn"\)\.onclick=async function\(\)\{await supabaseClient\.auth\.signOut\(\);currentUser=null;showLogin\(\)\};/,
+      'document.getElementById("logout-btn").onclick=async function(){await supabaseClient.auth.signOut();location.replace("../")};'
+    );
+
+    if (html.indexOf("gate.js") === -1) {
+      html = html.replace("<head>", '<head><script src="../gate.js?v=5"><\/script>');
+    }
+    if (html.indexOf("report-view.js") === -1) {
+      html = html.replace("</body>", '<script src="report-view.js?v=7"><\/script></body>');
+    }
+    // always inject image compress ~200KB
+    if (html.indexOf("image-compress.js") === -1) {
+      html = html.replace("</body>", '<script src="./image-compress.js?v=2"><\/script></body>');
+    }
+
     document.open();
     document.write(html);
     document.close();
+
+    try {
+      var grid = document.querySelector(".home-grid");
+      function addCard(id, href, iconText, title, sub) {
+        if (!grid || document.getElementById(id)) return;
+        var a = document.createElement("a");
+        a.id = id;
+        a.href = href;
+        a.className = "home-card";
+        a.style.textDecoration = "none";
+        a.innerHTML = '<div class="home-icon">' + iconText + '</div><h3>' + title + '</h3><span>' + sub + '</span>';
+        grid.appendChild(a);
+      }
+      addCard("go-analytics", "./analytics.html?v=11", "▤", "گزارش تحلیلی و فیلتر", "فیلتر نفر، ایستگاه، تاریخ + اکسل");
+      addCard("go-person-scores", "./person-scores.html?v=2", "Σ", "گزارش ماهانه نفرات", "میانگین ثبت · سلطانی · کاظمی");
+
+      var hdr = document.querySelector(".header") || document.querySelector("header") || document.querySelector(".app-header");
+      function addHdr(id, href, text) {
+        if (!hdr || document.getElementById(id)) return;
+        var ha = document.createElement("a");
+        ha.id = id;
+        ha.href = href;
+        ha.className = "nav-home";
+        ha.textContent = text;
+        ha.style.marginInlineStart = "6px";
+        hdr.appendChild(ha);
+      }
+      addHdr("hdr-analytics", "./analytics.html?v=11", "گزارش تحلیلی");
+      addHdr("hdr-person-scores", "./person-scores.html?v=2", "گزارش نفرات Σ");
+    } catch (e) { console.warn(e); }
   } catch (e) {
-    document.getElementById("boot").textContent = "خطا در بارگذاری: " + (e.message || e);
+    console.error(e);
+    var el = document.getElementById("boot");
+    if (el) el.textContent = "خطا در بارگذاری 5S: " + (e && e.message ? e.message : e);
   }
 })();
 </script>
