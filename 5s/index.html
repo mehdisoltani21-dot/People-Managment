@@ -58,6 +58,9 @@
     if (html.indexOf("save-fix.js") === -1) {
       html = html.replace("</body>", '<script src="./save-fix.js?v=1"><\/script></body>');
     }
+    if (html.indexOf("records-edit.js") === -1) {
+      html = html.replace("</body>", '<script src="./records-edit.js?v=1"><\/script></body>');
+    }
 
     document.open();
     document.write(html);
